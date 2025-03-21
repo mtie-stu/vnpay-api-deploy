@@ -9,7 +9,8 @@ namespace PDP104.Models
         public int Id { get; set; }
 
         [ForeignKey("Inventory")]
-        public int InventoryId { get; set; }
+        public int? InventoryId { get; set; }
+        public Inventory? Inventory { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -18,6 +19,7 @@ namespace PDP104.Models
         [Required]
         public int Quantity { get; set; }
 
-     
+
+
     }
 }

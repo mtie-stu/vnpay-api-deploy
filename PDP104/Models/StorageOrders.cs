@@ -21,7 +21,7 @@ namespace PDP104.Models
         public DateTime OrderDate { get; set; }
 
         [StringLength(100)]
-        [Display(Name = "Ngày Nhập Kho")]
+        [Display(Name = "Ngày Nhâp Kho")]
         public DateTime DateOfEntry { get; set; }
 
         [StringLength(100)]
@@ -46,5 +46,16 @@ namespace PDP104.Models
         [NotMapped]
         [Display(Name = "Chọn Hình")]
         public IFormFile? ImageFile { get; set; }
+
+        [ForeignKey("NguoiDung")]
+        public string? NguoiDungId { get; set; }
+        public NguoiDung? NguoiDung { get; set; }
+
+        [ForeignKey("Inventory")]
+        public int? InventoryId { get; set; }
+        public Inventory? Inventory { get; set; }
+
+        public ICollection<Services>? Services { get; set; }
+        public ICollection<StorageSpaces>? StorageSpaces { get; set; }
     }
 }

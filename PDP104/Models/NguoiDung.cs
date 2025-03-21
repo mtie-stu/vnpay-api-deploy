@@ -24,7 +24,7 @@ namespace PDP104.Models
         [StringLength(255)]
         public string NameND { get; set; }
 
-        
+
 
         [StringLength(100)]
         [Display(Name = "Hình")]
@@ -35,8 +35,8 @@ namespace PDP104.Models
         public IFormFile? ImageFile { get; set; }
 
 
+        public ICollection<StorageOrders>? StorageOrders { get; set; }
 
 
-        
     }
 }
