@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PDP104.Models
 {
@@ -11,7 +12,7 @@ namespace PDP104.Models
     public class StorageSpaces
     {
         [Key]
-        public int Id{ get; set; }
+        public int Id { get; set; }
 
         [StringLength(100)]
         [Display(Name = "Tầng")]
@@ -22,6 +23,13 @@ namespace PDP104.Models
         public string LoacationStorage { get; set; }
 
         public SatusStorage Satus { get; set; }
-       
+
+        [ForeignKey("StorageOrders")]
+        public int StorageOrdersId { get; set; }
+        public StorageOrders? StorageOrders { get; set; }
+
+        [ForeignKey("WareHouses")]
+        public int WareHouseId { get; set; }
+        public WareHouses? WareHouse { get; set; }
     }
 }

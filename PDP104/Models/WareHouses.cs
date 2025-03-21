@@ -17,5 +17,6 @@ namespace PDP104.Models
         [Display(Name = "Tổng Số lượng lưu trữ")]
         public int Space { get; set; }
 
+        public ICollection<StorageSpaces>? StorageSpaces { get; set; }
     }
 }
