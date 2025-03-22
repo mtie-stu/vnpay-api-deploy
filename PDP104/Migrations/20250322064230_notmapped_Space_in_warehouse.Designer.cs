@@ -12,8 +12,8 @@ using PDP104.Data;
 namespace PDP104.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250321085252_db")]
-    partial class db
+    [Migration("20250322064230_notmapped_Space_in_warehouse")]
+    partial class notmapped_Space_in_warehouse
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -376,8 +376,7 @@ namespace PDP104.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Space")
-                        .HasMaxLength(100)
+                    b.Property<int>("Satus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

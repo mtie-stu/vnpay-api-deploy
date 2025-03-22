@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PDP104.Data;
 
@@ -11,9 +12,11 @@ using PDP104.Data;
 namespace PDP104.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250322060023_updb")]
+    partial class updb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,12 +284,15 @@ namespace PDP104.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DateOfEntry")
+                        .HasMaxLength(100)
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateOfShipment")
+                        .HasMaxLength(100)
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Hinh")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -297,12 +303,15 @@ namespace PDP104.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("OrderDate")
+                        .HasMaxLength(100)
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Price")
+                        .HasMaxLength(100)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quanity")
+                        .HasMaxLength(100)
                         .HasColumnType("int");
 
                     b.Property<int>("SatusOrder")
@@ -328,17 +337,18 @@ namespace PDP104.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Floor")
+                        .HasMaxLength(100)
                         .HasColumnType("int");
 
-                    b.Property<string>("LocationStorage")
+                    b.Property<string>("LoacationStorage")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("Satus")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StorageOrdersId")
+                    b.Property<int>("StorageOrdersId")
                         .HasColumnType("int");
 
                     b.Property<int>("WareHouseId")
@@ -361,12 +371,13 @@ namespace PDP104.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Location")
+                    b.Property<string>("Loacation")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("Space")
+                        .HasMaxLength(100)
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -430,7 +441,9 @@ namespace PDP104.Migrations
                 {
                     b.HasOne("PDP104.Models.StorageOrders", "StorageOrders")
                         .WithMany("StorageSpaces")
-                        .HasForeignKey("StorageOrdersId");
+                        .HasForeignKey("StorageOrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PDP104.Models.WareHouses", "WareHouse")
                         .WithMany("StorageSpaces")

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PDP104.Migrations
 {
     /// <inheritdoc />
-    public partial class db : Migration
+    public partial class updb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

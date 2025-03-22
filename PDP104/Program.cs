@@ -2,10 +2,18 @@
 using Microsoft.EntityFrameworkCore;
 using PDP104.Data;
 using PDP104.Models;
+using PDP104.Service;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    options.JsonSerializerOptions.WriteIndented = true;
+});
 
 // Add services to the container.
+builder.Services.AddTransient<IWareHousesSvc, WareHouseSvc>();
+builder.Services.AddScoped<IStorageSpacesSvc, StorageSpaceSvc>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

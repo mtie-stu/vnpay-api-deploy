@@ -1,21 +1,27 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PDP104.Models
 {
+    public enum StatusWareHouse
+    {
+        Active,
+        Inactive
+    }
+
     public class WareHouses
     {
         [Key]
         public int Id { get; set; }
 
-
         [StringLength(100)]
         [Display(Name = "Vị Trí")]
-        public string Loacation { get; set; }
+        public string Location { get; set; }
 
+        [NotMapped]
+        public int Space => StorageSpaces?.Count() ?? 0; // Đếm số lượng StorageSpaces
 
-        [StringLength(100)]
-        [Display(Name = "Tổng Số lượng lưu trữ")]
-        public int Space { get; set; }
+        public StatusWareHouse Status { get; set; }
 
         public ICollection<StorageSpaces>? StorageSpaces { get; set; }
     }
