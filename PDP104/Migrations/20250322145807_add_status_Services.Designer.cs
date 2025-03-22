@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PDP104.Data;
 
@@ -11,9 +12,11 @@ using PDP104.Data;
 namespace PDP104.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250322145807_add_status_Services")]
+    partial class add_status_Services
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,13 +261,14 @@ namespace PDP104.Migrations
                     b.Property<int>("StatusService")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StorageOrdersId")
+                    b.Property<int>("StorageOrdersId")
                         .HasColumnType("int");
 
                     b.Property<int>("TypeService")
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
+                        .HasMaxLength(100)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -406,7 +410,9 @@ namespace PDP104.Migrations
                 {
                     b.HasOne("PDP104.Models.StorageOrders", "StorageOrders")
                         .WithMany("Services")
-                        .HasForeignKey("StorageOrdersId");
+                        .HasForeignKey("StorageOrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("StorageOrders");
                 });

@@ -9,6 +9,12 @@ namespace PDP104.Models
         Balet
 
     }
+    public enum StatusService
+    {
+        Active,
+        Inactive
+
+    }
     public class Services
     {
 
@@ -21,12 +27,13 @@ namespace PDP104.Models
         public string NameServices { get; set; }
 
         public TypeService TypeService { get; set; }
-        [StringLength(100)]
+        public StatusService StatusService { get; set; }
+
         [Display(Name = "Giá tiền dịch vụ/ Ngày")]
         public decimal UnitPrice { get; set; }
 
         [ForeignKey("StorageOrders")]
-        public int StorageOrdersId { get; set; }
+        public int? StorageOrdersId { get; set; }
         public StorageOrders? StorageOrders { get; set; }
     }
 }
