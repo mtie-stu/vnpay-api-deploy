@@ -45,7 +45,8 @@ namespace PDP104.API.Controllers
             if (newId == 0)
                 return BadRequest(new { message = "Thêm thất bại" });
 
-            return CreatedAtAction(nameof(Get), new { id = newId }, new { message = "Thêm thành công", id = newId });
+            return CreatedAtAction(nameof(Get), new { id = newId },
+                new { message = "Thêm thành công", id = newId });
         }
 
         // Chỉnh sửa StorageSpace theo ID
