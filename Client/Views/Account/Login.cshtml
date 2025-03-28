@@ -1,4 +1,5 @@
-﻿@{
+﻿@model LoginViewModel
+@{
     ViewBag.Title = "Login";
 }
 
@@ -23,36 +24,41 @@
         <!-- Khu vực form đăng nhập -->
         <div class="register-container">
             <h2>Login</h2>
-            <form>
+            <form asp-controller="Account" asp-action="Login" method="post">
                 <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" class="form-control" placeholder="Enter username">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="Email" class="form-control" asp-for="Email" placeholder="Enter username" required>
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" placeholder="Enter password">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="Password" class="form-control" asp-for="Password" placeholder="Enter password" required>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
                 <div class="forgot-password">
-                    <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="ForgotPassword">forgot-password</a>
+                    <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="ForgotPassword">Quên mật khẩu?</a>
                 </div>
 
                 <div class="form-group">
                     <label>
-                        <input type="checkbox"> Tôi đồng ý với điều khoản và dịch vụ
+                        <input type="checkbox" name="AgreeTerms" required> Tôi đồng ý với điều khoản và dịch vụ
                     </label>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary">Đăng nhập</button>
+
                 <div class="text-center no-account">
-                    <p style="font-size: 13px;">Chưa có tài khoản? <a style="color: #5dade2; font-size: 13px;" href="@Url.Action("Register", "Account")">Đăng ký ngay</a></p>
+                    <p style="font-size: 13px;">
+                        Chưa có tài khoản?
+                        <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="Register">Đăng ký ngay</a>
+                    </p>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
 
-<style>
-    
-</style>  
+

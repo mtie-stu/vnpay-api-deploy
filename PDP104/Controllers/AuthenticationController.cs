@@ -65,7 +65,6 @@ namespace PDP104.Controllers
                 NormalizedUserName = model.NameND.ToUpper(), // Chuẩn hóa NameND
                 Email = model.Email,
                 NormalizedEmail = model.Email.ToUpper(), // Chuẩn hóa Email
-                NameND = model.NameND,
                 EmailConfirmed = true // Cho phép đăng nhập ngay (hoặc có thể gửi email xác nhận)
             };
 
@@ -100,13 +99,15 @@ namespace PDP104.Controllers
                 return BadRequest(new
                 {
                     message = "Dữ liệu không hợp lệ",
-                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                    errors = ModelState.Values.SelectMany
+                    (v => v.Errors).Select(e => e.ErrorMessage)
                 });
             }
 
             // Tìm người dùng theo email (chuẩn hóa email để tránh lỗi)
             var normalizeddEmail = model.Email;
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == normalizeddEmail);
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.Email == normalizeddEmail);
 
             if (user == null)
             {
@@ -118,11 +119,15 @@ namespace PDP104.Controllers
             if (!user.EmailConfirmed)
             {
                 return Unauthorized(new
-                { message = "Email chưa được xác nhận. Vui lòng kiểm tra email để kích hoạt tài khoản." });
+                {
+                    message = "Email chưa được xác nhận. " +
+                              "Vui lòng kiểm tra email để kích hoạt tài khoản."
+                });
             }
 
             // Kiểm tra đăng nhập
-            var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+            var result = await _signInManager
+                .PasswordSignInAsync(user, model.Password, false, false);
 
             if (!result.Succeeded)
             {
@@ -135,13 +140,7 @@ namespace PDP104.Controllers
             return Ok(new
             {
                 message = "Đăng nhập thành công!",
-                user = new
-                {
-                    user.Email,
-                    user.NameND,
-                    Roles = roles, // Trả về danh sách quyền
-                },
-                token = token
+                token = token.Result
             });
         }
 
