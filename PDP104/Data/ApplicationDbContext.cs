@@ -33,6 +33,8 @@ namespace PDP104.Data
         }
 
         public DbSet<Services> Services { get; set; }
+        public DbSet<StorageOrderServices> StorageOrderServices { get; set; }
+
         public DbSet<StorageOrders> StorageOrders { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }

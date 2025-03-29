@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PDP104.Data;
 
@@ -11,9 +12,11 @@ using PDP104.Data;
 namespace PDP104.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250327160356_add_statusinventory_storageorder")]
+    partial class add_statusinventory_storageorder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,15 +253,15 @@ namespace PDP104.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("NameServices")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("StatusService")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StorageOrdersId")
                         .HasColumnType("int");
 
                     b.Property<int>("TypeService")
@@ -269,33 +272,9 @@ namespace PDP104.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StorageOrdersId");
+
                     b.ToTable("Services");
-                });
-
-            modelBuilder.Entity("PDP104.Models.StorageOrderServices", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServicesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StorageOrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServicesId");
-
-                    b.HasIndex("StorageOrderId");
-
-                    b.ToTable("StorageOrderServices");
                 });
 
             modelBuilder.Entity("PDP104.Models.StorageOrders", b =>
@@ -328,13 +307,13 @@ namespace PDP104.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("Quanity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SatusOrder")
                         .HasColumnType("int");
 
                     b.Property<int>("StatusInventory")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StatusOrder")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -429,23 +408,13 @@ namespace PDP104.Migrations
                     b.Navigation("Inventory");
                 });
 
-            modelBuilder.Entity("PDP104.Models.StorageOrderServices", b =>
+            modelBuilder.Entity("PDP104.Models.Services", b =>
                 {
-                    b.HasOne("PDP104.Models.Services", "Services")
-                        .WithMany("StorageOrderServices")
-                        .HasForeignKey("ServicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("PDP104.Models.StorageOrders", "StorageOrders")
+                        .WithMany("Services")
+                        .HasForeignKey("StorageOrdersId");
 
-                    b.HasOne("PDP104.Models.StorageOrders", "StorageOrder")
-                        .WithMany("StorageOrderServices")
-                        .HasForeignKey("StorageOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Services");
-
-                    b.Navigation("StorageOrder");
+                    b.Navigation("StorageOrders");
                 });
 
             modelBuilder.Entity("PDP104.Models.StorageOrders", b =>
@@ -487,14 +456,9 @@ namespace PDP104.Migrations
                     b.Navigation("inventoryItems");
                 });
 
-            modelBuilder.Entity("PDP104.Models.Services", b =>
-                {
-                    b.Navigation("StorageOrderServices");
-                });
-
             modelBuilder.Entity("PDP104.Models.StorageOrders", b =>
                 {
-                    b.Navigation("StorageOrderServices");
+                    b.Navigation("Services");
 
                     b.Navigation("StorageSpaces");
                 });
