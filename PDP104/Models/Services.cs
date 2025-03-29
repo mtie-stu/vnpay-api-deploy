@@ -7,6 +7,7 @@ namespace PDP104.Models
     {
         Container,
         Balet
+        
 
     }
     public enum StatusService
@@ -17,23 +18,22 @@ namespace PDP104.Models
     }
     public class Services
     {
-
         [Key]
         public int Id { get; set; }
 
-
+        [Required]
         [StringLength(100)]
-        [Display(Name = "Tên Dịch Vụ")]
+        [Display(Name = "Tên dịch vụ")]
         public string NameServices { get; set; }
-
         public TypeService TypeService { get; set; }
         public StatusService StatusService { get; set; }
+        [Display(Name = "Mô tả")]
+        public string? Description { get; set; }
 
-        [Display(Name = "Giá tiền dịch vụ/ Ngày")]
+        [Display(Name = "Giá dịch vụ")]
         public decimal UnitPrice { get; set; }
 
-        [ForeignKey("StorageOrders")]
-        public int? StorageOrdersId { get; set; }
-        public StorageOrders? StorageOrders { get; set; }
+        // Mối quan hệ nhiều-nhiều với StorageOrders
+        public ICollection<StorageOrderServices>? StorageOrderServices { get; set; }
     }
 }
