@@ -1,4 +1,5 @@
-﻿using PDP104.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PDP104.Data;
 using PDP104.Models;
 using PDP104.Models.ViewModel;
 using PDP104.ViewModel;
@@ -8,6 +9,7 @@ namespace PDP104.Service
     public interface IAdminStorageOrderSvc
     {
         List<Models.ViewModel.AdminStorageViewModel> GetAllStorageOrder();
+        List<AdminStorageViewModel> GetAllStorageOrderWhereInventoryActive();
         Models.ViewModel.AdminStorageViewModel GetStorageOrder(int id);
         int SetLocationStorageOrder(Models.ViewModel.AdminStorageViewModel adminStorageViewModel, StatusInventory statusInventory);
         int EditOrder(int id, Models.ViewModel.AdminStorageViewModel adminStorageViewModel);
@@ -207,6 +209,32 @@ namespace PDP104.Service
             }
             return 0;
         }
+        public List<AdminStorageViewModel> GetAllStorageOrderWhereInventoryActive()
+        {
+            return _context.StorageOrders
+                .Where(order => order.StatusInventory == StatusInventory.Active) // Chỉ lấy đơn hàng có StatusInventory là Active
+                .Select(order => new AdminStorageViewModel
+                {
+                    Id = order.Id,
+                    OrderDate = order.OrderDate,
+                    DateOfEntry = order.DateOfEntry,
+                    DateOfShipment = order.DateOfShipment,
+                    StatusOrder = order.StatusOrder,
+                    StatusInventory = order.StatusInventory,
+                    TypeOfGoods = order.TypeOfGoods,
+                    Price = order.Price,
+                    Quantity = order.Quantity,
+                    Hinh = order.Hinh,
+                    NguoiDungId = order.NguoiDungId,
+                    ServiceId = order.InventoryId ?? 0,
+                    Floor = order.StorageSpaces != null ? order.StorageSpaces.Count() : 0,
+                    LocationStorage = order.StorageSpaces != null ? string.Join(", ", order.StorageSpaces.Select(s => s.LocationStorage)) : ""
+                })
+                .ToList();
+        }
     }
+
+    
+
 }
 
