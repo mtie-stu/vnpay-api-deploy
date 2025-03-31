@@ -9,15 +9,17 @@ namespace PDP104.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {
-        }
+        { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             builder.Entity<Inventory>()
                 .HasOne(i => i.StorageOrders)
                 .WithOne(s => s.Inventory)
                 .HasForeignKey<StorageOrders>(s => s.InventoryId);
+
             builder.Entity<IdentityUserLogin<string>>().ToTable("AspNetUserLogins")
                        .HasKey(l => new { l.LoginProvider, l.ProviderKey });
 
@@ -30,6 +32,46 @@ namespace PDP104.Data
             builder.Entity<IdentityRoleClaim<string>>().ToTable("AspNetRoleClaims");
 
             builder.Entity<IdentityUserClaim<string>>().ToTable("AspNetUserClaims");
+
+            builder.Entity<IdentityRole>().ToTable("AspNetRoles");
+            builder.Entity<IdentityUser>().ToTable("AspNetUsers");
+
+            builder.Entity<IdentityRoleClaim<string>>()
+                    .HasOne<IdentityRole>()
+                    .WithMany()
+                    .HasForeignKey(rc => rc.RoleId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<IdentityUserClaim<string>>()
+                    .HasOne<IdentityUser>()
+                    .WithMany()
+                    .HasForeignKey(uc => uc.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.Entity<IdentityUserLogin<string>>()
+                    .HasOne<IdentityUser>()
+                    .WithMany()
+                    .HasForeignKey(ul => ul.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<IdentityUserToken<string>>()
+                    .HasOne<IdentityUser>()
+                    .WithMany()
+                    .HasForeignKey(ut => ut.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<IdentityUserRole<string>>()
+                    .HasOne<IdentityUser>()
+                    .WithMany()
+                    .HasForeignKey(ur => ur.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<IdentityUserRole<string>>()
+                    .HasOne<IdentityRole>()
+                    .WithMany()
+                    .HasForeignKey(ur => ur.RoleId)
+                    .OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<Services> Services { get; set; }
