@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PDP104.Data;
 
@@ -11,9 +12,11 @@ using PDP104.Data;
 namespace PDP104.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250401162514_Set_empty_for_storage_Space")]
+    partial class Set_empty_for_storage_Space
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -442,29 +445,6 @@ namespace PDP104.Migrations
                             TypeService = 2,
                             UnitPrice = 550000m
                         });
-                });
-
-            modelBuilder.Entity("PDP104.Models.StorageOrderImages", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("StorageOrdersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StorageOrdersId");
-
-                    b.ToTable("StorageOrderImages");
                 });
 
             modelBuilder.Entity("PDP104.Models.StorageOrderServices", b =>
@@ -7897,17 +7877,6 @@ namespace PDP104.Migrations
                     b.Navigation("Inventory");
                 });
 
-            modelBuilder.Entity("PDP104.Models.StorageOrderImages", b =>
-                {
-                    b.HasOne("PDP104.Models.StorageOrders", "StorageOrder")
-                        .WithMany("StorageOrderImages")
-                        .HasForeignKey("StorageOrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StorageOrder");
-                });
-
             modelBuilder.Entity("PDP104.Models.StorageOrderServices", b =>
                 {
                     b.HasOne("PDP104.Models.Services", "Services")
@@ -7973,8 +7942,6 @@ namespace PDP104.Migrations
 
             modelBuilder.Entity("PDP104.Models.StorageOrders", b =>
                 {
-                    b.Navigation("StorageOrderImages");
-
                     b.Navigation("StorageOrderServices");
 
                     b.Navigation("StorageSpaces");

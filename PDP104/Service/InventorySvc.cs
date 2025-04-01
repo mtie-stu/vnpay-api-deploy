@@ -31,7 +31,10 @@ namespace PDP104.Service
             return _context.StorageOrders
                 .Where(order => order.StatusInventory == StatusInventory.Active // Lọc kho đang hoạt động
                              && order.StorageSpaces.Any(space => space.Status == StatusStorage.full) // Chỉ lấy đơn hàng có kho đầy
-                             && order.TypeOfGoods == TypeOfGoods.Container && order.StatusOrder == StatusOrder.Imported) // Chỉ lấy đơn hàng có loại hàng là Container
+                             && (order.TypeOfGoods == TypeOfGoods.Container18ft
+                                 || order.TypeOfGoods == TypeOfGoods.Container20ft
+                                 || order.TypeOfGoods == TypeOfGoods.Container22ft) // Chỉ lấy đơn hàng có loại hàng là Container
+                             && order.StatusOrder == StatusOrder.Imported) // Chỉ lấy đơn hàng đã nhập kho
                 .OrderBy(order => order.DateOfEntry) // Sắp xếp theo ngày nhập kho tăng dần
                 .Select(order => new InventoryViewModel
                 {
@@ -43,6 +46,7 @@ namespace PDP104.Service
                 })
                 .ToList();
         }
+
         public List<InventoryViewModel> GetInventoryItemsByInventoryId(int inventoryId)
         {
             return _context.InventoryItems

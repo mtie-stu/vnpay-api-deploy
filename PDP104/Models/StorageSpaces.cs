@@ -27,8 +27,8 @@ namespace PDP104.Models
 
         [ForeignKey("StorageOrders")]
         public int? StorageOrdersId { get; set; }
-        [JsonIgnore] // Ngăn chặn vòng lặp
-
+/*        [JsonIgnore] // Ngăn chặn vòng lặp
+*/
         public StorageOrders? StorageOrders { get; set; }
 
         [ForeignKey("WareHouses")]

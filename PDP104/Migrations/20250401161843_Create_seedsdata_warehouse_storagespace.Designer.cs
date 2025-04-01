@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PDP104.Data;
 
@@ -11,9 +12,11 @@ using PDP104.Data;
 namespace PDP104.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250401161843_Create_seedsdata_warehouse_storagespace")]
+    partial class Create_seedsdata_warehouse_storagespace
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -444,29 +447,6 @@ namespace PDP104.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PDP104.Models.StorageOrderImages", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("StorageOrdersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StorageOrdersId");
-
-                    b.ToTable("StorageOrderImages");
-                });
-
             modelBuilder.Entity("PDP104.Models.StorageOrderServices", b =>
                 {
                     b.Property<int>("Id")
@@ -585,7 +565,7 @@ namespace PDP104.Migrations
                             Id = 1,
                             Floor = 0,
                             LocationStorage = "VNOS-001-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -601,7 +581,7 @@ namespace PDP104.Migrations
                             Id = 3,
                             Floor = 0,
                             LocationStorage = "VNOS-003-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -617,7 +597,7 @@ namespace PDP104.Migrations
                             Id = 5,
                             Floor = 0,
                             LocationStorage = "VNOS-005-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -633,7 +613,7 @@ namespace PDP104.Migrations
                             Id = 7,
                             Floor = 0,
                             LocationStorage = "VNOS-007-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -649,7 +629,7 @@ namespace PDP104.Migrations
                             Id = 9,
                             Floor = 0,
                             LocationStorage = "VNOS-009-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -665,7 +645,7 @@ namespace PDP104.Migrations
                             Id = 11,
                             Floor = 0,
                             LocationStorage = "VNOS-011-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -681,7 +661,7 @@ namespace PDP104.Migrations
                             Id = 13,
                             Floor = 0,
                             LocationStorage = "VNOS-013-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -697,7 +677,7 @@ namespace PDP104.Migrations
                             Id = 15,
                             Floor = 0,
                             LocationStorage = "VNOS-015-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -713,7 +693,7 @@ namespace PDP104.Migrations
                             Id = 17,
                             Floor = 0,
                             LocationStorage = "VNOS-017-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -729,7 +709,7 @@ namespace PDP104.Migrations
                             Id = 19,
                             Floor = 0,
                             LocationStorage = "VNOS-019-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -745,7 +725,7 @@ namespace PDP104.Migrations
                             Id = 21,
                             Floor = 0,
                             LocationStorage = "VNOS-021-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -761,7 +741,7 @@ namespace PDP104.Migrations
                             Id = 23,
                             Floor = 0,
                             LocationStorage = "VNOS-023-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -777,7 +757,7 @@ namespace PDP104.Migrations
                             Id = 25,
                             Floor = 0,
                             LocationStorage = "VNOS-025-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -793,7 +773,7 @@ namespace PDP104.Migrations
                             Id = 27,
                             Floor = 0,
                             LocationStorage = "VNOS-027-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -809,7 +789,7 @@ namespace PDP104.Migrations
                             Id = 29,
                             Floor = 0,
                             LocationStorage = "VNOS-029-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -825,7 +805,7 @@ namespace PDP104.Migrations
                             Id = 31,
                             Floor = 0,
                             LocationStorage = "VNOS-031-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -841,7 +821,7 @@ namespace PDP104.Migrations
                             Id = 33,
                             Floor = 0,
                             LocationStorage = "VNOS-033-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -857,7 +837,7 @@ namespace PDP104.Migrations
                             Id = 35,
                             Floor = 0,
                             LocationStorage = "VNOS-035-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -873,7 +853,7 @@ namespace PDP104.Migrations
                             Id = 37,
                             Floor = 0,
                             LocationStorage = "VNOS-037-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -889,7 +869,7 @@ namespace PDP104.Migrations
                             Id = 39,
                             Floor = 0,
                             LocationStorage = "VNOS-039-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -905,7 +885,7 @@ namespace PDP104.Migrations
                             Id = 41,
                             Floor = 0,
                             LocationStorage = "VNOS-041-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -921,7 +901,7 @@ namespace PDP104.Migrations
                             Id = 43,
                             Floor = 0,
                             LocationStorage = "VNOS-043-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -937,7 +917,7 @@ namespace PDP104.Migrations
                             Id = 45,
                             Floor = 0,
                             LocationStorage = "VNOS-045-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -953,7 +933,7 @@ namespace PDP104.Migrations
                             Id = 47,
                             Floor = 0,
                             LocationStorage = "VNOS-047-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -969,7 +949,7 @@ namespace PDP104.Migrations
                             Id = 49,
                             Floor = 0,
                             LocationStorage = "VNOS-049-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -985,7 +965,7 @@ namespace PDP104.Migrations
                             Id = 51,
                             Floor = 0,
                             LocationStorage = "VNOS-051-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1001,7 +981,7 @@ namespace PDP104.Migrations
                             Id = 53,
                             Floor = 0,
                             LocationStorage = "VNOS-053-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1017,7 +997,7 @@ namespace PDP104.Migrations
                             Id = 55,
                             Floor = 0,
                             LocationStorage = "VNOS-055-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1033,7 +1013,7 @@ namespace PDP104.Migrations
                             Id = 57,
                             Floor = 0,
                             LocationStorage = "VNOS-057-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1049,7 +1029,7 @@ namespace PDP104.Migrations
                             Id = 59,
                             Floor = 0,
                             LocationStorage = "VNOS-059-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1065,7 +1045,7 @@ namespace PDP104.Migrations
                             Id = 61,
                             Floor = 0,
                             LocationStorage = "VNOS-061-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1081,7 +1061,7 @@ namespace PDP104.Migrations
                             Id = 63,
                             Floor = 0,
                             LocationStorage = "VNOS-063-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1097,7 +1077,7 @@ namespace PDP104.Migrations
                             Id = 65,
                             Floor = 0,
                             LocationStorage = "VNOS-065-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1113,7 +1093,7 @@ namespace PDP104.Migrations
                             Id = 67,
                             Floor = 0,
                             LocationStorage = "VNOS-067-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1129,7 +1109,7 @@ namespace PDP104.Migrations
                             Id = 69,
                             Floor = 0,
                             LocationStorage = "VNOS-069-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1145,7 +1125,7 @@ namespace PDP104.Migrations
                             Id = 71,
                             Floor = 0,
                             LocationStorage = "VNOS-071-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1161,7 +1141,7 @@ namespace PDP104.Migrations
                             Id = 73,
                             Floor = 0,
                             LocationStorage = "VNOS-073-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1177,7 +1157,7 @@ namespace PDP104.Migrations
                             Id = 75,
                             Floor = 0,
                             LocationStorage = "VNOS-075-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1193,7 +1173,7 @@ namespace PDP104.Migrations
                             Id = 77,
                             Floor = 0,
                             LocationStorage = "VNOS-077-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1209,7 +1189,7 @@ namespace PDP104.Migrations
                             Id = 79,
                             Floor = 0,
                             LocationStorage = "VNOS-079-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1225,7 +1205,7 @@ namespace PDP104.Migrations
                             Id = 81,
                             Floor = 0,
                             LocationStorage = "VNOS-081-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1241,7 +1221,7 @@ namespace PDP104.Migrations
                             Id = 83,
                             Floor = 0,
                             LocationStorage = "VNOS-083-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1257,7 +1237,7 @@ namespace PDP104.Migrations
                             Id = 85,
                             Floor = 0,
                             LocationStorage = "VNOS-085-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1273,7 +1253,7 @@ namespace PDP104.Migrations
                             Id = 87,
                             Floor = 0,
                             LocationStorage = "VNOS-087-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1289,7 +1269,7 @@ namespace PDP104.Migrations
                             Id = 89,
                             Floor = 0,
                             LocationStorage = "VNOS-089-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1305,7 +1285,7 @@ namespace PDP104.Migrations
                             Id = 91,
                             Floor = 0,
                             LocationStorage = "VNOS-091-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1321,7 +1301,7 @@ namespace PDP104.Migrations
                             Id = 93,
                             Floor = 0,
                             LocationStorage = "VNOS-093-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1337,7 +1317,7 @@ namespace PDP104.Migrations
                             Id = 95,
                             Floor = 0,
                             LocationStorage = "VNOS-095-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1353,7 +1333,7 @@ namespace PDP104.Migrations
                             Id = 97,
                             Floor = 0,
                             LocationStorage = "VNOS-097-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1369,7 +1349,7 @@ namespace PDP104.Migrations
                             Id = 99,
                             Floor = 0,
                             LocationStorage = "VNOS-099-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 1
                         },
                         new
@@ -1385,7 +1365,7 @@ namespace PDP104.Migrations
                             Id = 1010,
                             Floor = 0,
                             LocationStorage = "VNIS-001-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1401,7 +1381,7 @@ namespace PDP104.Migrations
                             Id = 1012,
                             Floor = 2,
                             LocationStorage = "VNIS-001-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1417,7 +1397,7 @@ namespace PDP104.Migrations
                             Id = 1014,
                             Floor = 4,
                             LocationStorage = "VNIS-001-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1433,7 +1413,7 @@ namespace PDP104.Migrations
                             Id = 1016,
                             Floor = 6,
                             LocationStorage = "VNIS-001-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1457,7 +1437,7 @@ namespace PDP104.Migrations
                             Id = 1021,
                             Floor = 1,
                             LocationStorage = "VNIS-002-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1473,7 +1453,7 @@ namespace PDP104.Migrations
                             Id = 1023,
                             Floor = 3,
                             LocationStorage = "VNIS-002-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1489,7 +1469,7 @@ namespace PDP104.Migrations
                             Id = 1025,
                             Floor = 5,
                             LocationStorage = "VNIS-002-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1505,7 +1485,7 @@ namespace PDP104.Migrations
                             Id = 1027,
                             Floor = 7,
                             LocationStorage = "VNIS-002-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1513,7 +1493,7 @@ namespace PDP104.Migrations
                             Id = 1030,
                             Floor = 0,
                             LocationStorage = "VNIS-003-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1529,7 +1509,7 @@ namespace PDP104.Migrations
                             Id = 1032,
                             Floor = 2,
                             LocationStorage = "VNIS-003-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1545,7 +1525,7 @@ namespace PDP104.Migrations
                             Id = 1034,
                             Floor = 4,
                             LocationStorage = "VNIS-003-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1561,7 +1541,7 @@ namespace PDP104.Migrations
                             Id = 1036,
                             Floor = 6,
                             LocationStorage = "VNIS-003-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1585,7 +1565,7 @@ namespace PDP104.Migrations
                             Id = 1041,
                             Floor = 1,
                             LocationStorage = "VNIS-004-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1601,7 +1581,7 @@ namespace PDP104.Migrations
                             Id = 1043,
                             Floor = 3,
                             LocationStorage = "VNIS-004-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1617,7 +1597,7 @@ namespace PDP104.Migrations
                             Id = 1045,
                             Floor = 5,
                             LocationStorage = "VNIS-004-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1633,7 +1613,7 @@ namespace PDP104.Migrations
                             Id = 1047,
                             Floor = 7,
                             LocationStorage = "VNIS-004-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1641,7 +1621,7 @@ namespace PDP104.Migrations
                             Id = 1050,
                             Floor = 0,
                             LocationStorage = "VNIS-005-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1657,7 +1637,7 @@ namespace PDP104.Migrations
                             Id = 1052,
                             Floor = 2,
                             LocationStorage = "VNIS-005-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1673,7 +1653,7 @@ namespace PDP104.Migrations
                             Id = 1054,
                             Floor = 4,
                             LocationStorage = "VNIS-005-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1689,7 +1669,7 @@ namespace PDP104.Migrations
                             Id = 1056,
                             Floor = 6,
                             LocationStorage = "VNIS-005-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1713,7 +1693,7 @@ namespace PDP104.Migrations
                             Id = 1061,
                             Floor = 1,
                             LocationStorage = "VNIS-006-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1729,7 +1709,7 @@ namespace PDP104.Migrations
                             Id = 1063,
                             Floor = 3,
                             LocationStorage = "VNIS-006-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1745,7 +1725,7 @@ namespace PDP104.Migrations
                             Id = 1065,
                             Floor = 5,
                             LocationStorage = "VNIS-006-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1761,7 +1741,7 @@ namespace PDP104.Migrations
                             Id = 1067,
                             Floor = 7,
                             LocationStorage = "VNIS-006-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1769,7 +1749,7 @@ namespace PDP104.Migrations
                             Id = 1070,
                             Floor = 0,
                             LocationStorage = "VNIS-007-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1785,7 +1765,7 @@ namespace PDP104.Migrations
                             Id = 1072,
                             Floor = 2,
                             LocationStorage = "VNIS-007-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1801,7 +1781,7 @@ namespace PDP104.Migrations
                             Id = 1074,
                             Floor = 4,
                             LocationStorage = "VNIS-007-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1817,7 +1797,7 @@ namespace PDP104.Migrations
                             Id = 1076,
                             Floor = 6,
                             LocationStorage = "VNIS-007-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1841,7 +1821,7 @@ namespace PDP104.Migrations
                             Id = 1081,
                             Floor = 1,
                             LocationStorage = "VNIS-008-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1857,7 +1837,7 @@ namespace PDP104.Migrations
                             Id = 1083,
                             Floor = 3,
                             LocationStorage = "VNIS-008-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1873,7 +1853,7 @@ namespace PDP104.Migrations
                             Id = 1085,
                             Floor = 5,
                             LocationStorage = "VNIS-008-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1889,7 +1869,7 @@ namespace PDP104.Migrations
                             Id = 1087,
                             Floor = 7,
                             LocationStorage = "VNIS-008-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1897,7 +1877,7 @@ namespace PDP104.Migrations
                             Id = 1090,
                             Floor = 0,
                             LocationStorage = "VNIS-009-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1913,7 +1893,7 @@ namespace PDP104.Migrations
                             Id = 1092,
                             Floor = 2,
                             LocationStorage = "VNIS-009-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1929,7 +1909,7 @@ namespace PDP104.Migrations
                             Id = 1094,
                             Floor = 4,
                             LocationStorage = "VNIS-009-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1945,7 +1925,7 @@ namespace PDP104.Migrations
                             Id = 1096,
                             Floor = 6,
                             LocationStorage = "VNIS-009-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1969,7 +1949,7 @@ namespace PDP104.Migrations
                             Id = 1101,
                             Floor = 1,
                             LocationStorage = "VNIS-010-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -1985,7 +1965,7 @@ namespace PDP104.Migrations
                             Id = 1103,
                             Floor = 3,
                             LocationStorage = "VNIS-010-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2001,7 +1981,7 @@ namespace PDP104.Migrations
                             Id = 1105,
                             Floor = 5,
                             LocationStorage = "VNIS-010-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2017,7 +1997,7 @@ namespace PDP104.Migrations
                             Id = 1107,
                             Floor = 7,
                             LocationStorage = "VNIS-010-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2025,7 +2005,7 @@ namespace PDP104.Migrations
                             Id = 1110,
                             Floor = 0,
                             LocationStorage = "VNIS-011-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2041,7 +2021,7 @@ namespace PDP104.Migrations
                             Id = 1112,
                             Floor = 2,
                             LocationStorage = "VNIS-011-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2057,7 +2037,7 @@ namespace PDP104.Migrations
                             Id = 1114,
                             Floor = 4,
                             LocationStorage = "VNIS-011-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2073,7 +2053,7 @@ namespace PDP104.Migrations
                             Id = 1116,
                             Floor = 6,
                             LocationStorage = "VNIS-011-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2097,7 +2077,7 @@ namespace PDP104.Migrations
                             Id = 1121,
                             Floor = 1,
                             LocationStorage = "VNIS-012-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2113,7 +2093,7 @@ namespace PDP104.Migrations
                             Id = 1123,
                             Floor = 3,
                             LocationStorage = "VNIS-012-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2129,7 +2109,7 @@ namespace PDP104.Migrations
                             Id = 1125,
                             Floor = 5,
                             LocationStorage = "VNIS-012-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2145,7 +2125,7 @@ namespace PDP104.Migrations
                             Id = 1127,
                             Floor = 7,
                             LocationStorage = "VNIS-012-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2153,7 +2133,7 @@ namespace PDP104.Migrations
                             Id = 1130,
                             Floor = 0,
                             LocationStorage = "VNIS-013-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2169,7 +2149,7 @@ namespace PDP104.Migrations
                             Id = 1132,
                             Floor = 2,
                             LocationStorage = "VNIS-013-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2185,7 +2165,7 @@ namespace PDP104.Migrations
                             Id = 1134,
                             Floor = 4,
                             LocationStorage = "VNIS-013-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2201,7 +2181,7 @@ namespace PDP104.Migrations
                             Id = 1136,
                             Floor = 6,
                             LocationStorage = "VNIS-013-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2225,7 +2205,7 @@ namespace PDP104.Migrations
                             Id = 1141,
                             Floor = 1,
                             LocationStorage = "VNIS-014-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2241,7 +2221,7 @@ namespace PDP104.Migrations
                             Id = 1143,
                             Floor = 3,
                             LocationStorage = "VNIS-014-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2257,7 +2237,7 @@ namespace PDP104.Migrations
                             Id = 1145,
                             Floor = 5,
                             LocationStorage = "VNIS-014-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2273,7 +2253,7 @@ namespace PDP104.Migrations
                             Id = 1147,
                             Floor = 7,
                             LocationStorage = "VNIS-014-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2281,7 +2261,7 @@ namespace PDP104.Migrations
                             Id = 1150,
                             Floor = 0,
                             LocationStorage = "VNIS-015-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2297,7 +2277,7 @@ namespace PDP104.Migrations
                             Id = 1152,
                             Floor = 2,
                             LocationStorage = "VNIS-015-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2313,7 +2293,7 @@ namespace PDP104.Migrations
                             Id = 1154,
                             Floor = 4,
                             LocationStorage = "VNIS-015-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2329,7 +2309,7 @@ namespace PDP104.Migrations
                             Id = 1156,
                             Floor = 6,
                             LocationStorage = "VNIS-015-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2353,7 +2333,7 @@ namespace PDP104.Migrations
                             Id = 1161,
                             Floor = 1,
                             LocationStorage = "VNIS-016-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2369,7 +2349,7 @@ namespace PDP104.Migrations
                             Id = 1163,
                             Floor = 3,
                             LocationStorage = "VNIS-016-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2385,7 +2365,7 @@ namespace PDP104.Migrations
                             Id = 1165,
                             Floor = 5,
                             LocationStorage = "VNIS-016-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2401,7 +2381,7 @@ namespace PDP104.Migrations
                             Id = 1167,
                             Floor = 7,
                             LocationStorage = "VNIS-016-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2409,7 +2389,7 @@ namespace PDP104.Migrations
                             Id = 1170,
                             Floor = 0,
                             LocationStorage = "VNIS-017-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2425,7 +2405,7 @@ namespace PDP104.Migrations
                             Id = 1172,
                             Floor = 2,
                             LocationStorage = "VNIS-017-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2441,7 +2421,7 @@ namespace PDP104.Migrations
                             Id = 1174,
                             Floor = 4,
                             LocationStorage = "VNIS-017-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2457,7 +2437,7 @@ namespace PDP104.Migrations
                             Id = 1176,
                             Floor = 6,
                             LocationStorage = "VNIS-017-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2481,7 +2461,7 @@ namespace PDP104.Migrations
                             Id = 1181,
                             Floor = 1,
                             LocationStorage = "VNIS-018-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2497,7 +2477,7 @@ namespace PDP104.Migrations
                             Id = 1183,
                             Floor = 3,
                             LocationStorage = "VNIS-018-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2513,7 +2493,7 @@ namespace PDP104.Migrations
                             Id = 1185,
                             Floor = 5,
                             LocationStorage = "VNIS-018-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2529,7 +2509,7 @@ namespace PDP104.Migrations
                             Id = 1187,
                             Floor = 7,
                             LocationStorage = "VNIS-018-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2537,7 +2517,7 @@ namespace PDP104.Migrations
                             Id = 1190,
                             Floor = 0,
                             LocationStorage = "VNIS-019-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2553,7 +2533,7 @@ namespace PDP104.Migrations
                             Id = 1192,
                             Floor = 2,
                             LocationStorage = "VNIS-019-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2569,7 +2549,7 @@ namespace PDP104.Migrations
                             Id = 1194,
                             Floor = 4,
                             LocationStorage = "VNIS-019-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2585,7 +2565,7 @@ namespace PDP104.Migrations
                             Id = 1196,
                             Floor = 6,
                             LocationStorage = "VNIS-019-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2609,7 +2589,7 @@ namespace PDP104.Migrations
                             Id = 1201,
                             Floor = 1,
                             LocationStorage = "VNIS-020-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2625,7 +2605,7 @@ namespace PDP104.Migrations
                             Id = 1203,
                             Floor = 3,
                             LocationStorage = "VNIS-020-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2641,7 +2621,7 @@ namespace PDP104.Migrations
                             Id = 1205,
                             Floor = 5,
                             LocationStorage = "VNIS-020-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2657,7 +2637,7 @@ namespace PDP104.Migrations
                             Id = 1207,
                             Floor = 7,
                             LocationStorage = "VNIS-020-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2665,7 +2645,7 @@ namespace PDP104.Migrations
                             Id = 1210,
                             Floor = 0,
                             LocationStorage = "VNIS-021-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2681,7 +2661,7 @@ namespace PDP104.Migrations
                             Id = 1212,
                             Floor = 2,
                             LocationStorage = "VNIS-021-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2697,7 +2677,7 @@ namespace PDP104.Migrations
                             Id = 1214,
                             Floor = 4,
                             LocationStorage = "VNIS-021-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2713,7 +2693,7 @@ namespace PDP104.Migrations
                             Id = 1216,
                             Floor = 6,
                             LocationStorage = "VNIS-021-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2737,7 +2717,7 @@ namespace PDP104.Migrations
                             Id = 1221,
                             Floor = 1,
                             LocationStorage = "VNIS-022-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2753,7 +2733,7 @@ namespace PDP104.Migrations
                             Id = 1223,
                             Floor = 3,
                             LocationStorage = "VNIS-022-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2769,7 +2749,7 @@ namespace PDP104.Migrations
                             Id = 1225,
                             Floor = 5,
                             LocationStorage = "VNIS-022-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2785,7 +2765,7 @@ namespace PDP104.Migrations
                             Id = 1227,
                             Floor = 7,
                             LocationStorage = "VNIS-022-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2793,7 +2773,7 @@ namespace PDP104.Migrations
                             Id = 1230,
                             Floor = 0,
                             LocationStorage = "VNIS-023-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2809,7 +2789,7 @@ namespace PDP104.Migrations
                             Id = 1232,
                             Floor = 2,
                             LocationStorage = "VNIS-023-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2825,7 +2805,7 @@ namespace PDP104.Migrations
                             Id = 1234,
                             Floor = 4,
                             LocationStorage = "VNIS-023-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2841,7 +2821,7 @@ namespace PDP104.Migrations
                             Id = 1236,
                             Floor = 6,
                             LocationStorage = "VNIS-023-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2865,7 +2845,7 @@ namespace PDP104.Migrations
                             Id = 1241,
                             Floor = 1,
                             LocationStorage = "VNIS-024-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2881,7 +2861,7 @@ namespace PDP104.Migrations
                             Id = 1243,
                             Floor = 3,
                             LocationStorage = "VNIS-024-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2897,7 +2877,7 @@ namespace PDP104.Migrations
                             Id = 1245,
                             Floor = 5,
                             LocationStorage = "VNIS-024-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2913,7 +2893,7 @@ namespace PDP104.Migrations
                             Id = 1247,
                             Floor = 7,
                             LocationStorage = "VNIS-024-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2921,7 +2901,7 @@ namespace PDP104.Migrations
                             Id = 1250,
                             Floor = 0,
                             LocationStorage = "VNIS-025-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2937,7 +2917,7 @@ namespace PDP104.Migrations
                             Id = 1252,
                             Floor = 2,
                             LocationStorage = "VNIS-025-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2953,7 +2933,7 @@ namespace PDP104.Migrations
                             Id = 1254,
                             Floor = 4,
                             LocationStorage = "VNIS-025-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2969,7 +2949,7 @@ namespace PDP104.Migrations
                             Id = 1256,
                             Floor = 6,
                             LocationStorage = "VNIS-025-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -2993,7 +2973,7 @@ namespace PDP104.Migrations
                             Id = 1261,
                             Floor = 1,
                             LocationStorage = "VNIS-026-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3009,7 +2989,7 @@ namespace PDP104.Migrations
                             Id = 1263,
                             Floor = 3,
                             LocationStorage = "VNIS-026-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3025,7 +3005,7 @@ namespace PDP104.Migrations
                             Id = 1265,
                             Floor = 5,
                             LocationStorage = "VNIS-026-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3041,7 +3021,7 @@ namespace PDP104.Migrations
                             Id = 1267,
                             Floor = 7,
                             LocationStorage = "VNIS-026-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3049,7 +3029,7 @@ namespace PDP104.Migrations
                             Id = 1270,
                             Floor = 0,
                             LocationStorage = "VNIS-027-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3065,7 +3045,7 @@ namespace PDP104.Migrations
                             Id = 1272,
                             Floor = 2,
                             LocationStorage = "VNIS-027-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3081,7 +3061,7 @@ namespace PDP104.Migrations
                             Id = 1274,
                             Floor = 4,
                             LocationStorage = "VNIS-027-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3097,7 +3077,7 @@ namespace PDP104.Migrations
                             Id = 1276,
                             Floor = 6,
                             LocationStorage = "VNIS-027-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3121,7 +3101,7 @@ namespace PDP104.Migrations
                             Id = 1281,
                             Floor = 1,
                             LocationStorage = "VNIS-028-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3137,7 +3117,7 @@ namespace PDP104.Migrations
                             Id = 1283,
                             Floor = 3,
                             LocationStorage = "VNIS-028-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3153,7 +3133,7 @@ namespace PDP104.Migrations
                             Id = 1285,
                             Floor = 5,
                             LocationStorage = "VNIS-028-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3169,7 +3149,7 @@ namespace PDP104.Migrations
                             Id = 1287,
                             Floor = 7,
                             LocationStorage = "VNIS-028-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3177,7 +3157,7 @@ namespace PDP104.Migrations
                             Id = 1290,
                             Floor = 0,
                             LocationStorage = "VNIS-029-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3193,7 +3173,7 @@ namespace PDP104.Migrations
                             Id = 1292,
                             Floor = 2,
                             LocationStorage = "VNIS-029-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3209,7 +3189,7 @@ namespace PDP104.Migrations
                             Id = 1294,
                             Floor = 4,
                             LocationStorage = "VNIS-029-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3225,7 +3205,7 @@ namespace PDP104.Migrations
                             Id = 1296,
                             Floor = 6,
                             LocationStorage = "VNIS-029-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3249,7 +3229,7 @@ namespace PDP104.Migrations
                             Id = 1301,
                             Floor = 1,
                             LocationStorage = "VNIS-030-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3265,7 +3245,7 @@ namespace PDP104.Migrations
                             Id = 1303,
                             Floor = 3,
                             LocationStorage = "VNIS-030-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3281,7 +3261,7 @@ namespace PDP104.Migrations
                             Id = 1305,
                             Floor = 5,
                             LocationStorage = "VNIS-030-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3297,7 +3277,7 @@ namespace PDP104.Migrations
                             Id = 1307,
                             Floor = 7,
                             LocationStorage = "VNIS-030-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3305,7 +3285,7 @@ namespace PDP104.Migrations
                             Id = 1310,
                             Floor = 0,
                             LocationStorage = "VNIS-031-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3321,7 +3301,7 @@ namespace PDP104.Migrations
                             Id = 1312,
                             Floor = 2,
                             LocationStorage = "VNIS-031-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3337,7 +3317,7 @@ namespace PDP104.Migrations
                             Id = 1314,
                             Floor = 4,
                             LocationStorage = "VNIS-031-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3353,7 +3333,7 @@ namespace PDP104.Migrations
                             Id = 1316,
                             Floor = 6,
                             LocationStorage = "VNIS-031-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3377,7 +3357,7 @@ namespace PDP104.Migrations
                             Id = 1321,
                             Floor = 1,
                             LocationStorage = "VNIS-032-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3393,7 +3373,7 @@ namespace PDP104.Migrations
                             Id = 1323,
                             Floor = 3,
                             LocationStorage = "VNIS-032-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3409,7 +3389,7 @@ namespace PDP104.Migrations
                             Id = 1325,
                             Floor = 5,
                             LocationStorage = "VNIS-032-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3425,7 +3405,7 @@ namespace PDP104.Migrations
                             Id = 1327,
                             Floor = 7,
                             LocationStorage = "VNIS-032-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3433,7 +3413,7 @@ namespace PDP104.Migrations
                             Id = 1330,
                             Floor = 0,
                             LocationStorage = "VNIS-033-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3449,7 +3429,7 @@ namespace PDP104.Migrations
                             Id = 1332,
                             Floor = 2,
                             LocationStorage = "VNIS-033-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3465,7 +3445,7 @@ namespace PDP104.Migrations
                             Id = 1334,
                             Floor = 4,
                             LocationStorage = "VNIS-033-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3481,7 +3461,7 @@ namespace PDP104.Migrations
                             Id = 1336,
                             Floor = 6,
                             LocationStorage = "VNIS-033-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3505,7 +3485,7 @@ namespace PDP104.Migrations
                             Id = 1341,
                             Floor = 1,
                             LocationStorage = "VNIS-034-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3521,7 +3501,7 @@ namespace PDP104.Migrations
                             Id = 1343,
                             Floor = 3,
                             LocationStorage = "VNIS-034-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3537,7 +3517,7 @@ namespace PDP104.Migrations
                             Id = 1345,
                             Floor = 5,
                             LocationStorage = "VNIS-034-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3553,7 +3533,7 @@ namespace PDP104.Migrations
                             Id = 1347,
                             Floor = 7,
                             LocationStorage = "VNIS-034-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3561,7 +3541,7 @@ namespace PDP104.Migrations
                             Id = 1350,
                             Floor = 0,
                             LocationStorage = "VNIS-035-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3577,7 +3557,7 @@ namespace PDP104.Migrations
                             Id = 1352,
                             Floor = 2,
                             LocationStorage = "VNIS-035-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3593,7 +3573,7 @@ namespace PDP104.Migrations
                             Id = 1354,
                             Floor = 4,
                             LocationStorage = "VNIS-035-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3609,7 +3589,7 @@ namespace PDP104.Migrations
                             Id = 1356,
                             Floor = 6,
                             LocationStorage = "VNIS-035-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3633,7 +3613,7 @@ namespace PDP104.Migrations
                             Id = 1361,
                             Floor = 1,
                             LocationStorage = "VNIS-036-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3649,7 +3629,7 @@ namespace PDP104.Migrations
                             Id = 1363,
                             Floor = 3,
                             LocationStorage = "VNIS-036-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3665,7 +3645,7 @@ namespace PDP104.Migrations
                             Id = 1365,
                             Floor = 5,
                             LocationStorage = "VNIS-036-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3681,7 +3661,7 @@ namespace PDP104.Migrations
                             Id = 1367,
                             Floor = 7,
                             LocationStorage = "VNIS-036-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3689,7 +3669,7 @@ namespace PDP104.Migrations
                             Id = 1370,
                             Floor = 0,
                             LocationStorage = "VNIS-037-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3705,7 +3685,7 @@ namespace PDP104.Migrations
                             Id = 1372,
                             Floor = 2,
                             LocationStorage = "VNIS-037-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3721,7 +3701,7 @@ namespace PDP104.Migrations
                             Id = 1374,
                             Floor = 4,
                             LocationStorage = "VNIS-037-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3737,7 +3717,7 @@ namespace PDP104.Migrations
                             Id = 1376,
                             Floor = 6,
                             LocationStorage = "VNIS-037-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3761,7 +3741,7 @@ namespace PDP104.Migrations
                             Id = 1381,
                             Floor = 1,
                             LocationStorage = "VNIS-038-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3777,7 +3757,7 @@ namespace PDP104.Migrations
                             Id = 1383,
                             Floor = 3,
                             LocationStorage = "VNIS-038-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3793,7 +3773,7 @@ namespace PDP104.Migrations
                             Id = 1385,
                             Floor = 5,
                             LocationStorage = "VNIS-038-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3809,7 +3789,7 @@ namespace PDP104.Migrations
                             Id = 1387,
                             Floor = 7,
                             LocationStorage = "VNIS-038-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3817,7 +3797,7 @@ namespace PDP104.Migrations
                             Id = 1390,
                             Floor = 0,
                             LocationStorage = "VNIS-039-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3833,7 +3813,7 @@ namespace PDP104.Migrations
                             Id = 1392,
                             Floor = 2,
                             LocationStorage = "VNIS-039-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3849,7 +3829,7 @@ namespace PDP104.Migrations
                             Id = 1394,
                             Floor = 4,
                             LocationStorage = "VNIS-039-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3865,7 +3845,7 @@ namespace PDP104.Migrations
                             Id = 1396,
                             Floor = 6,
                             LocationStorage = "VNIS-039-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3889,7 +3869,7 @@ namespace PDP104.Migrations
                             Id = 1401,
                             Floor = 1,
                             LocationStorage = "VNIS-040-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3905,7 +3885,7 @@ namespace PDP104.Migrations
                             Id = 1403,
                             Floor = 3,
                             LocationStorage = "VNIS-040-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3921,7 +3901,7 @@ namespace PDP104.Migrations
                             Id = 1405,
                             Floor = 5,
                             LocationStorage = "VNIS-040-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3937,7 +3917,7 @@ namespace PDP104.Migrations
                             Id = 1407,
                             Floor = 7,
                             LocationStorage = "VNIS-040-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3945,7 +3925,7 @@ namespace PDP104.Migrations
                             Id = 1410,
                             Floor = 0,
                             LocationStorage = "VNIS-041-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3961,7 +3941,7 @@ namespace PDP104.Migrations
                             Id = 1412,
                             Floor = 2,
                             LocationStorage = "VNIS-041-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3977,7 +3957,7 @@ namespace PDP104.Migrations
                             Id = 1414,
                             Floor = 4,
                             LocationStorage = "VNIS-041-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -3993,7 +3973,7 @@ namespace PDP104.Migrations
                             Id = 1416,
                             Floor = 6,
                             LocationStorage = "VNIS-041-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4017,7 +3997,7 @@ namespace PDP104.Migrations
                             Id = 1421,
                             Floor = 1,
                             LocationStorage = "VNIS-042-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4033,7 +4013,7 @@ namespace PDP104.Migrations
                             Id = 1423,
                             Floor = 3,
                             LocationStorage = "VNIS-042-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4049,7 +4029,7 @@ namespace PDP104.Migrations
                             Id = 1425,
                             Floor = 5,
                             LocationStorage = "VNIS-042-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4065,7 +4045,7 @@ namespace PDP104.Migrations
                             Id = 1427,
                             Floor = 7,
                             LocationStorage = "VNIS-042-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4073,7 +4053,7 @@ namespace PDP104.Migrations
                             Id = 1430,
                             Floor = 0,
                             LocationStorage = "VNIS-043-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4089,7 +4069,7 @@ namespace PDP104.Migrations
                             Id = 1432,
                             Floor = 2,
                             LocationStorage = "VNIS-043-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4105,7 +4085,7 @@ namespace PDP104.Migrations
                             Id = 1434,
                             Floor = 4,
                             LocationStorage = "VNIS-043-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4121,7 +4101,7 @@ namespace PDP104.Migrations
                             Id = 1436,
                             Floor = 6,
                             LocationStorage = "VNIS-043-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4145,7 +4125,7 @@ namespace PDP104.Migrations
                             Id = 1441,
                             Floor = 1,
                             LocationStorage = "VNIS-044-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4161,7 +4141,7 @@ namespace PDP104.Migrations
                             Id = 1443,
                             Floor = 3,
                             LocationStorage = "VNIS-044-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4177,7 +4157,7 @@ namespace PDP104.Migrations
                             Id = 1445,
                             Floor = 5,
                             LocationStorage = "VNIS-044-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4193,7 +4173,7 @@ namespace PDP104.Migrations
                             Id = 1447,
                             Floor = 7,
                             LocationStorage = "VNIS-044-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4201,7 +4181,7 @@ namespace PDP104.Migrations
                             Id = 1450,
                             Floor = 0,
                             LocationStorage = "VNIS-045-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4217,7 +4197,7 @@ namespace PDP104.Migrations
                             Id = 1452,
                             Floor = 2,
                             LocationStorage = "VNIS-045-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4233,7 +4213,7 @@ namespace PDP104.Migrations
                             Id = 1454,
                             Floor = 4,
                             LocationStorage = "VNIS-045-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4249,7 +4229,7 @@ namespace PDP104.Migrations
                             Id = 1456,
                             Floor = 6,
                             LocationStorage = "VNIS-045-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4273,7 +4253,7 @@ namespace PDP104.Migrations
                             Id = 1461,
                             Floor = 1,
                             LocationStorage = "VNIS-046-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4289,7 +4269,7 @@ namespace PDP104.Migrations
                             Id = 1463,
                             Floor = 3,
                             LocationStorage = "VNIS-046-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4305,7 +4285,7 @@ namespace PDP104.Migrations
                             Id = 1465,
                             Floor = 5,
                             LocationStorage = "VNIS-046-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4321,7 +4301,7 @@ namespace PDP104.Migrations
                             Id = 1467,
                             Floor = 7,
                             LocationStorage = "VNIS-046-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4329,7 +4309,7 @@ namespace PDP104.Migrations
                             Id = 1470,
                             Floor = 0,
                             LocationStorage = "VNIS-047-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4345,7 +4325,7 @@ namespace PDP104.Migrations
                             Id = 1472,
                             Floor = 2,
                             LocationStorage = "VNIS-047-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4361,7 +4341,7 @@ namespace PDP104.Migrations
                             Id = 1474,
                             Floor = 4,
                             LocationStorage = "VNIS-047-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4377,7 +4357,7 @@ namespace PDP104.Migrations
                             Id = 1476,
                             Floor = 6,
                             LocationStorage = "VNIS-047-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4401,7 +4381,7 @@ namespace PDP104.Migrations
                             Id = 1481,
                             Floor = 1,
                             LocationStorage = "VNIS-048-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4417,7 +4397,7 @@ namespace PDP104.Migrations
                             Id = 1483,
                             Floor = 3,
                             LocationStorage = "VNIS-048-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4433,7 +4413,7 @@ namespace PDP104.Migrations
                             Id = 1485,
                             Floor = 5,
                             LocationStorage = "VNIS-048-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4449,7 +4429,7 @@ namespace PDP104.Migrations
                             Id = 1487,
                             Floor = 7,
                             LocationStorage = "VNIS-048-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4457,7 +4437,7 @@ namespace PDP104.Migrations
                             Id = 1490,
                             Floor = 0,
                             LocationStorage = "VNIS-049-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4473,7 +4453,7 @@ namespace PDP104.Migrations
                             Id = 1492,
                             Floor = 2,
                             LocationStorage = "VNIS-049-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4489,7 +4469,7 @@ namespace PDP104.Migrations
                             Id = 1494,
                             Floor = 4,
                             LocationStorage = "VNIS-049-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4505,7 +4485,7 @@ namespace PDP104.Migrations
                             Id = 1496,
                             Floor = 6,
                             LocationStorage = "VNIS-049-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4529,7 +4509,7 @@ namespace PDP104.Migrations
                             Id = 1501,
                             Floor = 1,
                             LocationStorage = "VNIS-050-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4545,7 +4525,7 @@ namespace PDP104.Migrations
                             Id = 1503,
                             Floor = 3,
                             LocationStorage = "VNIS-050-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4561,7 +4541,7 @@ namespace PDP104.Migrations
                             Id = 1505,
                             Floor = 5,
                             LocationStorage = "VNIS-050-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4577,7 +4557,7 @@ namespace PDP104.Migrations
                             Id = 1507,
                             Floor = 7,
                             LocationStorage = "VNIS-050-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4585,7 +4565,7 @@ namespace PDP104.Migrations
                             Id = 1510,
                             Floor = 0,
                             LocationStorage = "VNIS-051-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4601,7 +4581,7 @@ namespace PDP104.Migrations
                             Id = 1512,
                             Floor = 2,
                             LocationStorage = "VNIS-051-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4617,7 +4597,7 @@ namespace PDP104.Migrations
                             Id = 1514,
                             Floor = 4,
                             LocationStorage = "VNIS-051-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4633,7 +4613,7 @@ namespace PDP104.Migrations
                             Id = 1516,
                             Floor = 6,
                             LocationStorage = "VNIS-051-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4657,7 +4637,7 @@ namespace PDP104.Migrations
                             Id = 1521,
                             Floor = 1,
                             LocationStorage = "VNIS-052-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4673,7 +4653,7 @@ namespace PDP104.Migrations
                             Id = 1523,
                             Floor = 3,
                             LocationStorage = "VNIS-052-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4689,7 +4669,7 @@ namespace PDP104.Migrations
                             Id = 1525,
                             Floor = 5,
                             LocationStorage = "VNIS-052-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4705,7 +4685,7 @@ namespace PDP104.Migrations
                             Id = 1527,
                             Floor = 7,
                             LocationStorage = "VNIS-052-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4713,7 +4693,7 @@ namespace PDP104.Migrations
                             Id = 1530,
                             Floor = 0,
                             LocationStorage = "VNIS-053-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4729,7 +4709,7 @@ namespace PDP104.Migrations
                             Id = 1532,
                             Floor = 2,
                             LocationStorage = "VNIS-053-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4745,7 +4725,7 @@ namespace PDP104.Migrations
                             Id = 1534,
                             Floor = 4,
                             LocationStorage = "VNIS-053-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4761,7 +4741,7 @@ namespace PDP104.Migrations
                             Id = 1536,
                             Floor = 6,
                             LocationStorage = "VNIS-053-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4785,7 +4765,7 @@ namespace PDP104.Migrations
                             Id = 1541,
                             Floor = 1,
                             LocationStorage = "VNIS-054-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4801,7 +4781,7 @@ namespace PDP104.Migrations
                             Id = 1543,
                             Floor = 3,
                             LocationStorage = "VNIS-054-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4817,7 +4797,7 @@ namespace PDP104.Migrations
                             Id = 1545,
                             Floor = 5,
                             LocationStorage = "VNIS-054-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4833,7 +4813,7 @@ namespace PDP104.Migrations
                             Id = 1547,
                             Floor = 7,
                             LocationStorage = "VNIS-054-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4841,7 +4821,7 @@ namespace PDP104.Migrations
                             Id = 1550,
                             Floor = 0,
                             LocationStorage = "VNIS-055-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4857,7 +4837,7 @@ namespace PDP104.Migrations
                             Id = 1552,
                             Floor = 2,
                             LocationStorage = "VNIS-055-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4873,7 +4853,7 @@ namespace PDP104.Migrations
                             Id = 1554,
                             Floor = 4,
                             LocationStorage = "VNIS-055-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4889,7 +4869,7 @@ namespace PDP104.Migrations
                             Id = 1556,
                             Floor = 6,
                             LocationStorage = "VNIS-055-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4913,7 +4893,7 @@ namespace PDP104.Migrations
                             Id = 1561,
                             Floor = 1,
                             LocationStorage = "VNIS-056-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4929,7 +4909,7 @@ namespace PDP104.Migrations
                             Id = 1563,
                             Floor = 3,
                             LocationStorage = "VNIS-056-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4945,7 +4925,7 @@ namespace PDP104.Migrations
                             Id = 1565,
                             Floor = 5,
                             LocationStorage = "VNIS-056-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4961,7 +4941,7 @@ namespace PDP104.Migrations
                             Id = 1567,
                             Floor = 7,
                             LocationStorage = "VNIS-056-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4969,7 +4949,7 @@ namespace PDP104.Migrations
                             Id = 1570,
                             Floor = 0,
                             LocationStorage = "VNIS-057-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -4985,7 +4965,7 @@ namespace PDP104.Migrations
                             Id = 1572,
                             Floor = 2,
                             LocationStorage = "VNIS-057-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5001,7 +4981,7 @@ namespace PDP104.Migrations
                             Id = 1574,
                             Floor = 4,
                             LocationStorage = "VNIS-057-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5017,7 +4997,7 @@ namespace PDP104.Migrations
                             Id = 1576,
                             Floor = 6,
                             LocationStorage = "VNIS-057-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5041,7 +5021,7 @@ namespace PDP104.Migrations
                             Id = 1581,
                             Floor = 1,
                             LocationStorage = "VNIS-058-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5057,7 +5037,7 @@ namespace PDP104.Migrations
                             Id = 1583,
                             Floor = 3,
                             LocationStorage = "VNIS-058-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5073,7 +5053,7 @@ namespace PDP104.Migrations
                             Id = 1585,
                             Floor = 5,
                             LocationStorage = "VNIS-058-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5089,7 +5069,7 @@ namespace PDP104.Migrations
                             Id = 1587,
                             Floor = 7,
                             LocationStorage = "VNIS-058-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5097,7 +5077,7 @@ namespace PDP104.Migrations
                             Id = 1590,
                             Floor = 0,
                             LocationStorage = "VNIS-059-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5113,7 +5093,7 @@ namespace PDP104.Migrations
                             Id = 1592,
                             Floor = 2,
                             LocationStorage = "VNIS-059-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5129,7 +5109,7 @@ namespace PDP104.Migrations
                             Id = 1594,
                             Floor = 4,
                             LocationStorage = "VNIS-059-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5145,7 +5125,7 @@ namespace PDP104.Migrations
                             Id = 1596,
                             Floor = 6,
                             LocationStorage = "VNIS-059-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5169,7 +5149,7 @@ namespace PDP104.Migrations
                             Id = 1601,
                             Floor = 1,
                             LocationStorage = "VNIS-060-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5185,7 +5165,7 @@ namespace PDP104.Migrations
                             Id = 1603,
                             Floor = 3,
                             LocationStorage = "VNIS-060-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5201,7 +5181,7 @@ namespace PDP104.Migrations
                             Id = 1605,
                             Floor = 5,
                             LocationStorage = "VNIS-060-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5217,7 +5197,7 @@ namespace PDP104.Migrations
                             Id = 1607,
                             Floor = 7,
                             LocationStorage = "VNIS-060-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5225,7 +5205,7 @@ namespace PDP104.Migrations
                             Id = 1610,
                             Floor = 0,
                             LocationStorage = "VNIS-061-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5241,7 +5221,7 @@ namespace PDP104.Migrations
                             Id = 1612,
                             Floor = 2,
                             LocationStorage = "VNIS-061-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5257,7 +5237,7 @@ namespace PDP104.Migrations
                             Id = 1614,
                             Floor = 4,
                             LocationStorage = "VNIS-061-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5273,7 +5253,7 @@ namespace PDP104.Migrations
                             Id = 1616,
                             Floor = 6,
                             LocationStorage = "VNIS-061-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5297,7 +5277,7 @@ namespace PDP104.Migrations
                             Id = 1621,
                             Floor = 1,
                             LocationStorage = "VNIS-062-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5313,7 +5293,7 @@ namespace PDP104.Migrations
                             Id = 1623,
                             Floor = 3,
                             LocationStorage = "VNIS-062-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5329,7 +5309,7 @@ namespace PDP104.Migrations
                             Id = 1625,
                             Floor = 5,
                             LocationStorage = "VNIS-062-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5345,7 +5325,7 @@ namespace PDP104.Migrations
                             Id = 1627,
                             Floor = 7,
                             LocationStorage = "VNIS-062-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5353,7 +5333,7 @@ namespace PDP104.Migrations
                             Id = 1630,
                             Floor = 0,
                             LocationStorage = "VNIS-063-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5369,7 +5349,7 @@ namespace PDP104.Migrations
                             Id = 1632,
                             Floor = 2,
                             LocationStorage = "VNIS-063-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5385,7 +5365,7 @@ namespace PDP104.Migrations
                             Id = 1634,
                             Floor = 4,
                             LocationStorage = "VNIS-063-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5401,7 +5381,7 @@ namespace PDP104.Migrations
                             Id = 1636,
                             Floor = 6,
                             LocationStorage = "VNIS-063-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5425,7 +5405,7 @@ namespace PDP104.Migrations
                             Id = 1641,
                             Floor = 1,
                             LocationStorage = "VNIS-064-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5441,7 +5421,7 @@ namespace PDP104.Migrations
                             Id = 1643,
                             Floor = 3,
                             LocationStorage = "VNIS-064-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5457,7 +5437,7 @@ namespace PDP104.Migrations
                             Id = 1645,
                             Floor = 5,
                             LocationStorage = "VNIS-064-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5473,7 +5453,7 @@ namespace PDP104.Migrations
                             Id = 1647,
                             Floor = 7,
                             LocationStorage = "VNIS-064-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5481,7 +5461,7 @@ namespace PDP104.Migrations
                             Id = 1650,
                             Floor = 0,
                             LocationStorage = "VNIS-065-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5497,7 +5477,7 @@ namespace PDP104.Migrations
                             Id = 1652,
                             Floor = 2,
                             LocationStorage = "VNIS-065-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5513,7 +5493,7 @@ namespace PDP104.Migrations
                             Id = 1654,
                             Floor = 4,
                             LocationStorage = "VNIS-065-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5529,7 +5509,7 @@ namespace PDP104.Migrations
                             Id = 1656,
                             Floor = 6,
                             LocationStorage = "VNIS-065-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5553,7 +5533,7 @@ namespace PDP104.Migrations
                             Id = 1661,
                             Floor = 1,
                             LocationStorage = "VNIS-066-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5569,7 +5549,7 @@ namespace PDP104.Migrations
                             Id = 1663,
                             Floor = 3,
                             LocationStorage = "VNIS-066-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5585,7 +5565,7 @@ namespace PDP104.Migrations
                             Id = 1665,
                             Floor = 5,
                             LocationStorage = "VNIS-066-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5601,7 +5581,7 @@ namespace PDP104.Migrations
                             Id = 1667,
                             Floor = 7,
                             LocationStorage = "VNIS-066-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5609,7 +5589,7 @@ namespace PDP104.Migrations
                             Id = 1670,
                             Floor = 0,
                             LocationStorage = "VNIS-067-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5625,7 +5605,7 @@ namespace PDP104.Migrations
                             Id = 1672,
                             Floor = 2,
                             LocationStorage = "VNIS-067-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5641,7 +5621,7 @@ namespace PDP104.Migrations
                             Id = 1674,
                             Floor = 4,
                             LocationStorage = "VNIS-067-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5657,7 +5637,7 @@ namespace PDP104.Migrations
                             Id = 1676,
                             Floor = 6,
                             LocationStorage = "VNIS-067-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5681,7 +5661,7 @@ namespace PDP104.Migrations
                             Id = 1681,
                             Floor = 1,
                             LocationStorage = "VNIS-068-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5697,7 +5677,7 @@ namespace PDP104.Migrations
                             Id = 1683,
                             Floor = 3,
                             LocationStorage = "VNIS-068-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5713,7 +5693,7 @@ namespace PDP104.Migrations
                             Id = 1685,
                             Floor = 5,
                             LocationStorage = "VNIS-068-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5729,7 +5709,7 @@ namespace PDP104.Migrations
                             Id = 1687,
                             Floor = 7,
                             LocationStorage = "VNIS-068-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5737,7 +5717,7 @@ namespace PDP104.Migrations
                             Id = 1690,
                             Floor = 0,
                             LocationStorage = "VNIS-069-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5753,7 +5733,7 @@ namespace PDP104.Migrations
                             Id = 1692,
                             Floor = 2,
                             LocationStorage = "VNIS-069-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5769,7 +5749,7 @@ namespace PDP104.Migrations
                             Id = 1694,
                             Floor = 4,
                             LocationStorage = "VNIS-069-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5785,7 +5765,7 @@ namespace PDP104.Migrations
                             Id = 1696,
                             Floor = 6,
                             LocationStorage = "VNIS-069-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5809,7 +5789,7 @@ namespace PDP104.Migrations
                             Id = 1701,
                             Floor = 1,
                             LocationStorage = "VNIS-070-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5825,7 +5805,7 @@ namespace PDP104.Migrations
                             Id = 1703,
                             Floor = 3,
                             LocationStorage = "VNIS-070-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5841,7 +5821,7 @@ namespace PDP104.Migrations
                             Id = 1705,
                             Floor = 5,
                             LocationStorage = "VNIS-070-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5857,7 +5837,7 @@ namespace PDP104.Migrations
                             Id = 1707,
                             Floor = 7,
                             LocationStorage = "VNIS-070-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5865,7 +5845,7 @@ namespace PDP104.Migrations
                             Id = 1710,
                             Floor = 0,
                             LocationStorage = "VNIS-071-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5881,7 +5861,7 @@ namespace PDP104.Migrations
                             Id = 1712,
                             Floor = 2,
                             LocationStorage = "VNIS-071-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5897,7 +5877,7 @@ namespace PDP104.Migrations
                             Id = 1714,
                             Floor = 4,
                             LocationStorage = "VNIS-071-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5913,7 +5893,7 @@ namespace PDP104.Migrations
                             Id = 1716,
                             Floor = 6,
                             LocationStorage = "VNIS-071-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5937,7 +5917,7 @@ namespace PDP104.Migrations
                             Id = 1721,
                             Floor = 1,
                             LocationStorage = "VNIS-072-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5953,7 +5933,7 @@ namespace PDP104.Migrations
                             Id = 1723,
                             Floor = 3,
                             LocationStorage = "VNIS-072-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5969,7 +5949,7 @@ namespace PDP104.Migrations
                             Id = 1725,
                             Floor = 5,
                             LocationStorage = "VNIS-072-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5985,7 +5965,7 @@ namespace PDP104.Migrations
                             Id = 1727,
                             Floor = 7,
                             LocationStorage = "VNIS-072-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -5993,7 +5973,7 @@ namespace PDP104.Migrations
                             Id = 1730,
                             Floor = 0,
                             LocationStorage = "VNIS-073-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6009,7 +5989,7 @@ namespace PDP104.Migrations
                             Id = 1732,
                             Floor = 2,
                             LocationStorage = "VNIS-073-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6025,7 +6005,7 @@ namespace PDP104.Migrations
                             Id = 1734,
                             Floor = 4,
                             LocationStorage = "VNIS-073-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6041,7 +6021,7 @@ namespace PDP104.Migrations
                             Id = 1736,
                             Floor = 6,
                             LocationStorage = "VNIS-073-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6065,7 +6045,7 @@ namespace PDP104.Migrations
                             Id = 1741,
                             Floor = 1,
                             LocationStorage = "VNIS-074-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6081,7 +6061,7 @@ namespace PDP104.Migrations
                             Id = 1743,
                             Floor = 3,
                             LocationStorage = "VNIS-074-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6097,7 +6077,7 @@ namespace PDP104.Migrations
                             Id = 1745,
                             Floor = 5,
                             LocationStorage = "VNIS-074-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6113,7 +6093,7 @@ namespace PDP104.Migrations
                             Id = 1747,
                             Floor = 7,
                             LocationStorage = "VNIS-074-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6121,7 +6101,7 @@ namespace PDP104.Migrations
                             Id = 1750,
                             Floor = 0,
                             LocationStorage = "VNIS-075-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6137,7 +6117,7 @@ namespace PDP104.Migrations
                             Id = 1752,
                             Floor = 2,
                             LocationStorage = "VNIS-075-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6153,7 +6133,7 @@ namespace PDP104.Migrations
                             Id = 1754,
                             Floor = 4,
                             LocationStorage = "VNIS-075-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6169,7 +6149,7 @@ namespace PDP104.Migrations
                             Id = 1756,
                             Floor = 6,
                             LocationStorage = "VNIS-075-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6193,7 +6173,7 @@ namespace PDP104.Migrations
                             Id = 1761,
                             Floor = 1,
                             LocationStorage = "VNIS-076-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6209,7 +6189,7 @@ namespace PDP104.Migrations
                             Id = 1763,
                             Floor = 3,
                             LocationStorage = "VNIS-076-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6225,7 +6205,7 @@ namespace PDP104.Migrations
                             Id = 1765,
                             Floor = 5,
                             LocationStorage = "VNIS-076-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6241,7 +6221,7 @@ namespace PDP104.Migrations
                             Id = 1767,
                             Floor = 7,
                             LocationStorage = "VNIS-076-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6249,7 +6229,7 @@ namespace PDP104.Migrations
                             Id = 1770,
                             Floor = 0,
                             LocationStorage = "VNIS-077-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6265,7 +6245,7 @@ namespace PDP104.Migrations
                             Id = 1772,
                             Floor = 2,
                             LocationStorage = "VNIS-077-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6281,7 +6261,7 @@ namespace PDP104.Migrations
                             Id = 1774,
                             Floor = 4,
                             LocationStorage = "VNIS-077-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6297,7 +6277,7 @@ namespace PDP104.Migrations
                             Id = 1776,
                             Floor = 6,
                             LocationStorage = "VNIS-077-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6321,7 +6301,7 @@ namespace PDP104.Migrations
                             Id = 1781,
                             Floor = 1,
                             LocationStorage = "VNIS-078-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6337,7 +6317,7 @@ namespace PDP104.Migrations
                             Id = 1783,
                             Floor = 3,
                             LocationStorage = "VNIS-078-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6353,7 +6333,7 @@ namespace PDP104.Migrations
                             Id = 1785,
                             Floor = 5,
                             LocationStorage = "VNIS-078-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6369,7 +6349,7 @@ namespace PDP104.Migrations
                             Id = 1787,
                             Floor = 7,
                             LocationStorage = "VNIS-078-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6377,7 +6357,7 @@ namespace PDP104.Migrations
                             Id = 1790,
                             Floor = 0,
                             LocationStorage = "VNIS-079-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6393,7 +6373,7 @@ namespace PDP104.Migrations
                             Id = 1792,
                             Floor = 2,
                             LocationStorage = "VNIS-079-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6409,7 +6389,7 @@ namespace PDP104.Migrations
                             Id = 1794,
                             Floor = 4,
                             LocationStorage = "VNIS-079-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6425,7 +6405,7 @@ namespace PDP104.Migrations
                             Id = 1796,
                             Floor = 6,
                             LocationStorage = "VNIS-079-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6449,7 +6429,7 @@ namespace PDP104.Migrations
                             Id = 1801,
                             Floor = 1,
                             LocationStorage = "VNIS-080-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6465,7 +6445,7 @@ namespace PDP104.Migrations
                             Id = 1803,
                             Floor = 3,
                             LocationStorage = "VNIS-080-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6481,7 +6461,7 @@ namespace PDP104.Migrations
                             Id = 1805,
                             Floor = 5,
                             LocationStorage = "VNIS-080-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6497,7 +6477,7 @@ namespace PDP104.Migrations
                             Id = 1807,
                             Floor = 7,
                             LocationStorage = "VNIS-080-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6505,7 +6485,7 @@ namespace PDP104.Migrations
                             Id = 1810,
                             Floor = 0,
                             LocationStorage = "VNIS-081-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6521,7 +6501,7 @@ namespace PDP104.Migrations
                             Id = 1812,
                             Floor = 2,
                             LocationStorage = "VNIS-081-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6537,7 +6517,7 @@ namespace PDP104.Migrations
                             Id = 1814,
                             Floor = 4,
                             LocationStorage = "VNIS-081-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6553,7 +6533,7 @@ namespace PDP104.Migrations
                             Id = 1816,
                             Floor = 6,
                             LocationStorage = "VNIS-081-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6577,7 +6557,7 @@ namespace PDP104.Migrations
                             Id = 1821,
                             Floor = 1,
                             LocationStorage = "VNIS-082-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6593,7 +6573,7 @@ namespace PDP104.Migrations
                             Id = 1823,
                             Floor = 3,
                             LocationStorage = "VNIS-082-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6609,7 +6589,7 @@ namespace PDP104.Migrations
                             Id = 1825,
                             Floor = 5,
                             LocationStorage = "VNIS-082-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6625,7 +6605,7 @@ namespace PDP104.Migrations
                             Id = 1827,
                             Floor = 7,
                             LocationStorage = "VNIS-082-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6633,7 +6613,7 @@ namespace PDP104.Migrations
                             Id = 1830,
                             Floor = 0,
                             LocationStorage = "VNIS-083-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6649,7 +6629,7 @@ namespace PDP104.Migrations
                             Id = 1832,
                             Floor = 2,
                             LocationStorage = "VNIS-083-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6665,7 +6645,7 @@ namespace PDP104.Migrations
                             Id = 1834,
                             Floor = 4,
                             LocationStorage = "VNIS-083-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6681,7 +6661,7 @@ namespace PDP104.Migrations
                             Id = 1836,
                             Floor = 6,
                             LocationStorage = "VNIS-083-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6705,7 +6685,7 @@ namespace PDP104.Migrations
                             Id = 1841,
                             Floor = 1,
                             LocationStorage = "VNIS-084-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6721,7 +6701,7 @@ namespace PDP104.Migrations
                             Id = 1843,
                             Floor = 3,
                             LocationStorage = "VNIS-084-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6737,7 +6717,7 @@ namespace PDP104.Migrations
                             Id = 1845,
                             Floor = 5,
                             LocationStorage = "VNIS-084-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6753,7 +6733,7 @@ namespace PDP104.Migrations
                             Id = 1847,
                             Floor = 7,
                             LocationStorage = "VNIS-084-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6761,7 +6741,7 @@ namespace PDP104.Migrations
                             Id = 1850,
                             Floor = 0,
                             LocationStorage = "VNIS-085-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6777,7 +6757,7 @@ namespace PDP104.Migrations
                             Id = 1852,
                             Floor = 2,
                             LocationStorage = "VNIS-085-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6793,7 +6773,7 @@ namespace PDP104.Migrations
                             Id = 1854,
                             Floor = 4,
                             LocationStorage = "VNIS-085-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6809,7 +6789,7 @@ namespace PDP104.Migrations
                             Id = 1856,
                             Floor = 6,
                             LocationStorage = "VNIS-085-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6833,7 +6813,7 @@ namespace PDP104.Migrations
                             Id = 1861,
                             Floor = 1,
                             LocationStorage = "VNIS-086-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6849,7 +6829,7 @@ namespace PDP104.Migrations
                             Id = 1863,
                             Floor = 3,
                             LocationStorage = "VNIS-086-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6865,7 +6845,7 @@ namespace PDP104.Migrations
                             Id = 1865,
                             Floor = 5,
                             LocationStorage = "VNIS-086-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6881,7 +6861,7 @@ namespace PDP104.Migrations
                             Id = 1867,
                             Floor = 7,
                             LocationStorage = "VNIS-086-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6889,7 +6869,7 @@ namespace PDP104.Migrations
                             Id = 1870,
                             Floor = 0,
                             LocationStorage = "VNIS-087-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6905,7 +6885,7 @@ namespace PDP104.Migrations
                             Id = 1872,
                             Floor = 2,
                             LocationStorage = "VNIS-087-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6921,7 +6901,7 @@ namespace PDP104.Migrations
                             Id = 1874,
                             Floor = 4,
                             LocationStorage = "VNIS-087-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6937,7 +6917,7 @@ namespace PDP104.Migrations
                             Id = 1876,
                             Floor = 6,
                             LocationStorage = "VNIS-087-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6961,7 +6941,7 @@ namespace PDP104.Migrations
                             Id = 1881,
                             Floor = 1,
                             LocationStorage = "VNIS-088-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6977,7 +6957,7 @@ namespace PDP104.Migrations
                             Id = 1883,
                             Floor = 3,
                             LocationStorage = "VNIS-088-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -6993,7 +6973,7 @@ namespace PDP104.Migrations
                             Id = 1885,
                             Floor = 5,
                             LocationStorage = "VNIS-088-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7009,7 +6989,7 @@ namespace PDP104.Migrations
                             Id = 1887,
                             Floor = 7,
                             LocationStorage = "VNIS-088-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7017,7 +6997,7 @@ namespace PDP104.Migrations
                             Id = 1890,
                             Floor = 0,
                             LocationStorage = "VNIS-089-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7033,7 +7013,7 @@ namespace PDP104.Migrations
                             Id = 1892,
                             Floor = 2,
                             LocationStorage = "VNIS-089-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7049,7 +7029,7 @@ namespace PDP104.Migrations
                             Id = 1894,
                             Floor = 4,
                             LocationStorage = "VNIS-089-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7065,7 +7045,7 @@ namespace PDP104.Migrations
                             Id = 1896,
                             Floor = 6,
                             LocationStorage = "VNIS-089-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7089,7 +7069,7 @@ namespace PDP104.Migrations
                             Id = 1901,
                             Floor = 1,
                             LocationStorage = "VNIS-090-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7105,7 +7085,7 @@ namespace PDP104.Migrations
                             Id = 1903,
                             Floor = 3,
                             LocationStorage = "VNIS-090-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7121,7 +7101,7 @@ namespace PDP104.Migrations
                             Id = 1905,
                             Floor = 5,
                             LocationStorage = "VNIS-090-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7137,7 +7117,7 @@ namespace PDP104.Migrations
                             Id = 1907,
                             Floor = 7,
                             LocationStorage = "VNIS-090-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7145,7 +7125,7 @@ namespace PDP104.Migrations
                             Id = 1910,
                             Floor = 0,
                             LocationStorage = "VNIS-091-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7161,7 +7141,7 @@ namespace PDP104.Migrations
                             Id = 1912,
                             Floor = 2,
                             LocationStorage = "VNIS-091-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7177,7 +7157,7 @@ namespace PDP104.Migrations
                             Id = 1914,
                             Floor = 4,
                             LocationStorage = "VNIS-091-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7193,7 +7173,7 @@ namespace PDP104.Migrations
                             Id = 1916,
                             Floor = 6,
                             LocationStorage = "VNIS-091-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7217,7 +7197,7 @@ namespace PDP104.Migrations
                             Id = 1921,
                             Floor = 1,
                             LocationStorage = "VNIS-092-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7233,7 +7213,7 @@ namespace PDP104.Migrations
                             Id = 1923,
                             Floor = 3,
                             LocationStorage = "VNIS-092-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7249,7 +7229,7 @@ namespace PDP104.Migrations
                             Id = 1925,
                             Floor = 5,
                             LocationStorage = "VNIS-092-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7265,7 +7245,7 @@ namespace PDP104.Migrations
                             Id = 1927,
                             Floor = 7,
                             LocationStorage = "VNIS-092-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7273,7 +7253,7 @@ namespace PDP104.Migrations
                             Id = 1930,
                             Floor = 0,
                             LocationStorage = "VNIS-093-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7289,7 +7269,7 @@ namespace PDP104.Migrations
                             Id = 1932,
                             Floor = 2,
                             LocationStorage = "VNIS-093-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7305,7 +7285,7 @@ namespace PDP104.Migrations
                             Id = 1934,
                             Floor = 4,
                             LocationStorage = "VNIS-093-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7321,7 +7301,7 @@ namespace PDP104.Migrations
                             Id = 1936,
                             Floor = 6,
                             LocationStorage = "VNIS-093-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7345,7 +7325,7 @@ namespace PDP104.Migrations
                             Id = 1941,
                             Floor = 1,
                             LocationStorage = "VNIS-094-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7361,7 +7341,7 @@ namespace PDP104.Migrations
                             Id = 1943,
                             Floor = 3,
                             LocationStorage = "VNIS-094-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7377,7 +7357,7 @@ namespace PDP104.Migrations
                             Id = 1945,
                             Floor = 5,
                             LocationStorage = "VNIS-094-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7393,7 +7373,7 @@ namespace PDP104.Migrations
                             Id = 1947,
                             Floor = 7,
                             LocationStorage = "VNIS-094-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7401,7 +7381,7 @@ namespace PDP104.Migrations
                             Id = 1950,
                             Floor = 0,
                             LocationStorage = "VNIS-095-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7417,7 +7397,7 @@ namespace PDP104.Migrations
                             Id = 1952,
                             Floor = 2,
                             LocationStorage = "VNIS-095-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7433,7 +7413,7 @@ namespace PDP104.Migrations
                             Id = 1954,
                             Floor = 4,
                             LocationStorage = "VNIS-095-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7449,7 +7429,7 @@ namespace PDP104.Migrations
                             Id = 1956,
                             Floor = 6,
                             LocationStorage = "VNIS-095-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7473,7 +7453,7 @@ namespace PDP104.Migrations
                             Id = 1961,
                             Floor = 1,
                             LocationStorage = "VNIS-096-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7489,7 +7469,7 @@ namespace PDP104.Migrations
                             Id = 1963,
                             Floor = 3,
                             LocationStorage = "VNIS-096-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7505,7 +7485,7 @@ namespace PDP104.Migrations
                             Id = 1965,
                             Floor = 5,
                             LocationStorage = "VNIS-096-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7521,7 +7501,7 @@ namespace PDP104.Migrations
                             Id = 1967,
                             Floor = 7,
                             LocationStorage = "VNIS-096-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7529,7 +7509,7 @@ namespace PDP104.Migrations
                             Id = 1970,
                             Floor = 0,
                             LocationStorage = "VNIS-097-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7545,7 +7525,7 @@ namespace PDP104.Migrations
                             Id = 1972,
                             Floor = 2,
                             LocationStorage = "VNIS-097-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7561,7 +7541,7 @@ namespace PDP104.Migrations
                             Id = 1974,
                             Floor = 4,
                             LocationStorage = "VNIS-097-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7577,7 +7557,7 @@ namespace PDP104.Migrations
                             Id = 1976,
                             Floor = 6,
                             LocationStorage = "VNIS-097-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7601,7 +7581,7 @@ namespace PDP104.Migrations
                             Id = 1981,
                             Floor = 1,
                             LocationStorage = "VNIS-098-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7617,7 +7597,7 @@ namespace PDP104.Migrations
                             Id = 1983,
                             Floor = 3,
                             LocationStorage = "VNIS-098-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7633,7 +7613,7 @@ namespace PDP104.Migrations
                             Id = 1985,
                             Floor = 5,
                             LocationStorage = "VNIS-098-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7649,7 +7629,7 @@ namespace PDP104.Migrations
                             Id = 1987,
                             Floor = 7,
                             LocationStorage = "VNIS-098-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7657,7 +7637,7 @@ namespace PDP104.Migrations
                             Id = 1990,
                             Floor = 0,
                             LocationStorage = "VNIS-099-0",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7673,7 +7653,7 @@ namespace PDP104.Migrations
                             Id = 1992,
                             Floor = 2,
                             LocationStorage = "VNIS-099-2",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7689,7 +7669,7 @@ namespace PDP104.Migrations
                             Id = 1994,
                             Floor = 4,
                             LocationStorage = "VNIS-099-4",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7705,7 +7685,7 @@ namespace PDP104.Migrations
                             Id = 1996,
                             Floor = 6,
                             LocationStorage = "VNIS-099-6",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7729,7 +7709,7 @@ namespace PDP104.Migrations
                             Id = 2001,
                             Floor = 1,
                             LocationStorage = "VNIS-100-1",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7745,7 +7725,7 @@ namespace PDP104.Migrations
                             Id = 2003,
                             Floor = 3,
                             LocationStorage = "VNIS-100-3",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7761,7 +7741,7 @@ namespace PDP104.Migrations
                             Id = 2005,
                             Floor = 5,
                             LocationStorage = "VNIS-100-5",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         },
                         new
@@ -7777,7 +7757,7 @@ namespace PDP104.Migrations
                             Id = 2007,
                             Floor = 7,
                             LocationStorage = "VNIS-100-7",
-                            Status = 0,
+                            Status = 1,
                             WareHouseId = 2
                         });
                 });
@@ -7897,17 +7877,6 @@ namespace PDP104.Migrations
                     b.Navigation("Inventory");
                 });
 
-            modelBuilder.Entity("PDP104.Models.StorageOrderImages", b =>
-                {
-                    b.HasOne("PDP104.Models.StorageOrders", "StorageOrder")
-                        .WithMany("StorageOrderImages")
-                        .HasForeignKey("StorageOrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StorageOrder");
-                });
-
             modelBuilder.Entity("PDP104.Models.StorageOrderServices", b =>
                 {
                     b.HasOne("PDP104.Models.Services", "Services")
@@ -7973,8 +7942,6 @@ namespace PDP104.Migrations
 
             modelBuilder.Entity("PDP104.Models.StorageOrders", b =>
                 {
-                    b.Navigation("StorageOrderImages");
-
                     b.Navigation("StorageOrderServices");
 
                     b.Navigation("StorageSpaces");

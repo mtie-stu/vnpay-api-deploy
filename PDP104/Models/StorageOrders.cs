@@ -20,7 +20,9 @@ namespace PDP104.Models
     public enum TypeOfGoods
     {
         Balet,
-        Container
+        Container18ft,
+        Container20ft,
+        Container22ft
     }
 
     public class StorageOrders
@@ -69,5 +71,7 @@ namespace PDP104.Models
 
         // Mối quan hệ 1-nhiều với StorageSpaces
         public ICollection<StorageSpaces>? StorageSpaces { get; set; }
+        public virtual ICollection<StorageOrderImages> StorageOrderImages { get; set; } = new List<StorageOrderImages>();
+
     }
 }

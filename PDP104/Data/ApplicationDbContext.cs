@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PDP104.Models;
+using System.Reflection.Emit;
 
 namespace PDP104.Data
 {
@@ -14,6 +15,7 @@ namespace PDP104.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Seed(); // thêm dữ liệu mẫu
 
             builder.Entity<Inventory>()
                 .HasOne(i => i.StorageOrders)
@@ -75,6 +77,8 @@ namespace PDP104.Data
         }
 
         public DbSet<Services> Services { get; set; }
+        public DbSet<StorageOrderImages> StorageOrderImages { get; set; }
+
         public DbSet<StorageOrderServices> StorageOrderServices { get; set; }
 
         public DbSet<StorageOrders> StorageOrders { get; set; }

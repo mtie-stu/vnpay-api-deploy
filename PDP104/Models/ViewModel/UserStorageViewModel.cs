@@ -34,7 +34,7 @@ namespace PDP104.Models.ViewModel
 
         [NotMapped]
         [Display(Name = "Chọn Hình")]
-        public IFormFile? ImageFile { get; set; }
+        public List<IFormFile>? ImageFiles { get; set; } // Cho phép upload nhiều ảnh
 
         public string? NguoiDungId { get; set; }
 

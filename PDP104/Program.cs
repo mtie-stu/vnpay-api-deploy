@@ -91,9 +91,9 @@ builder.Services.AddCors(options =>
 });
 
 
-builder.Services.AddIdentity<NguoiDung, IdentityRole>()
+/*builder.Services.AddIdentity<NguoiDung, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders();*/
 // Add services to the container.
 builder.Services.AddTransient<IWareHousesSvc, WareHouseSvc>();
 builder.Services.AddScoped<IStorageSpacesSvc, StorageSpaceSvc>();

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.IO;
 
-namespace ASMC5_Sever.Controllers
+namespace PDP104.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
