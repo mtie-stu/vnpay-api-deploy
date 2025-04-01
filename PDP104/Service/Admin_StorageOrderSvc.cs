@@ -74,43 +74,135 @@ namespace PDP104.Service
                 .FirstOrDefault();
         }
 
-        public int SetLocationStorageOrder(int orderId, AdminStorageViewModel adminStorageViewModel)
+        public int SetLocationStorageOrder(int orderId, AdminStorageViewModel adminStorageViewModel, StatusInventory statusInventory)
         {
             var order = _context.StorageOrders.FirstOrDefault(o => o.Id == orderId);
             if (order == null) return 0; // Nếu đơn hàng không tồn tại
 
-            // Lấy danh sách các vị trí còn trống
+            // Tính tổng số ngày lưu trữ
+            int totalDays = (order.DateOfShipment - order.DateOfEntry).Days;
+
+            // Xác định kho hàng dựa trên loại hàng hóa
+            int warehouseId = order.TypeOfGoods == TypeOfGoods.Balet ? 2 : 1;
+
+            // Lấy danh sách các vị trí còn trống theo loại hàng hóa
             var availableSpaces = _context.StorageSpaces
-                .Where(s => s.StorageOrdersId == null) // Chưa có đơn hàng
-                .OrderBy(s => s.Floor) // Sắp xếp theo tầng để gán hợp lý
-                .Take(adminStorageViewModel.Quantity) // Lấy đúng số lượng cần
+                .Where(s => s.StorageOrdersId == null && s.WareHouseId == warehouseId)
+                .OrderBy(s => s.Floor)
+                .Take(adminStorageViewModel.Quantity)
                 .ToList();
 
-            // Kiểm tra nếu không đủ chỗ chứa
             if (availableSpaces.Count < adminStorageViewModel.Quantity)
             {
                 return -1; // Không đủ vị trí lưu trữ
             }
 
-            // Gán đơn hàng vào các vị trí lưu trữ
             foreach (var space in availableSpaces)
             {
                 space.StorageOrdersId = order.Id;
                 space.LocationStorage = adminStorageViewModel.LocationStorage;
                 space.Floor = adminStorageViewModel.Floor;
-/*                space.Status = StatusStorage.full; // Đánh dấu vị trí đã được sử dụng
-*/            }
+                space.Status = StatusStorage.full;
+            }
 
-            // Cập nhật trạng thái đơn hàng
+            var servicesList = new List<int>();
+            decimal totalPrice = 0;
+
+            if (totalDays <= 30)
+            {
+                int serviceId = GetServiceId(order.TypeOfGoods, "day");
+                servicesList.Add(serviceId);
+                totalPrice += GetServicePrice(serviceId) * order.Quantity;
+            }
+            else if (totalDays == 365)
+            {
+                int serviceId = GetServiceId(order.TypeOfGoods, "year");
+                servicesList.Add(serviceId);
+                totalPrice += GetServicePrice(serviceId) * order.Quantity;
+            }
+            else
+            {
+                int months = totalDays / 30;
+                int days = totalDays % 30;
+
+                for (int i = 0; i < months; i++)
+                {
+                    int serviceId = GetServiceId(order.TypeOfGoods, "month");
+                    servicesList.Add(serviceId);
+                    totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                }
+                if (days > 0)
+                {
+                    int serviceId = GetServiceId(order.TypeOfGoods, "day");
+                    servicesList.Add(serviceId);
+                    totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                }
+            }
+            // Nếu StatusInventory là Active, tạo một bản ghi Inventory mới
+            if (statusInventory == StatusInventory.Active)
+            {
+                var newInventory = new Inventory
+                {
+                    RequestDate = DateTime.Now,
+                    StorageOrdersId = order.Id
+                };
+                _context.Inventories.Add(newInventory);
+                _context.SaveChanges();
+            }
+            if (order.StatusInventory == StatusInventory.Active)
+            {
+                int serviceId = GetInventoryServiceId(order.TypeOfGoods);
+                servicesList.Add(serviceId);
+                totalPrice += GetServicePrice(serviceId) * order.Quantity;
+            }
+
+            var serviceOrders = servicesList.Select(serviceId => new StorageOrderServices
+            {
+                StorageOrderId = order.Id,
+                ServiceId = serviceId
+            }).ToList();
+
+            _context.StorageOrderServices.AddRange(serviceOrders);
+
             order.StatusOrder = StatusOrder.Confirmed;
+            order.Price = totalPrice;
 
-            // Lưu vào database
             _context.UpdateRange(availableSpaces);
             _context.Update(order);
             _context.SaveChanges();
 
-            return 1; // Thành công
+            return 1;
         }
+
+
+        private int GetServiceId(TypeOfGoods typeOfGoods, string duration)
+        {
+            return typeOfGoods switch
+            {
+                TypeOfGoods.Balet => duration == "day" ? 1 : duration == "month" ? 2 : 3,
+                TypeOfGoods.Container18ft => duration == "day" ? 4 : duration == "month" ? 5 : 6,
+                TypeOfGoods.Container20ft => duration == "day" ? 7 : duration == "month" ? 8 : 9,
+                TypeOfGoods.Container22ft => duration == "day" ? 10 : duration == "month" ? 11 : 12,
+                _ => 0
+            };
+        }
+
+        private int GetInventoryServiceId(TypeOfGoods typeOfGoods)
+        {
+            return typeOfGoods switch
+            {
+                TypeOfGoods.Container18ft => 13,
+                TypeOfGoods.Container20ft => 14,
+                TypeOfGoods.Container22ft => 15,
+                _ => 0
+            };
+        }
+
+        private decimal GetServicePrice(int serviceId)
+        {
+            return _context.Services.FirstOrDefault(s => s.Id == serviceId)?.UnitPrice ?? 0;
+        }
+
 
 
         public int EditOrder(int id, AdminStorageViewModel adminStorageViewModel)
@@ -135,8 +227,6 @@ namespace PDP104.Service
 
                 order.DateOfEntry = adminStorageViewModel.DateOfEntry;
                 order.DateOfShipment = adminStorageViewModel.DateOfShipment;
-                order.Price = adminStorageViewModel.Price;
-                order.Quantity = adminStorageViewModel.Quantity;
 
                 _context.Update(order);
                 _context.SaveChanges();

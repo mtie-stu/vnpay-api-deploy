@@ -13,8 +13,8 @@ namespace PDP104.Service
         List<Models.ViewModel.UserStorageViewModel> GetAllStorageOrderByUser(string nguoiDungId);
         Models.ViewModel.UserStorageViewModel GetStorageOrder(int id);
         int AddStorageOrder(Models.ViewModel.UserStorageViewModel userStorageViewModel, StatusInventory statusInventory);
-        int EditService(int id, Models.ViewModel.UserStorageViewModel userStorageViewModel);
-    }
+/*        int EditService(int id, Models.ViewModel.UserStorageViewModel userStorageViewModel);
+*/    }
 
     public class UserStorageOrderSvc : IUserStorageOrder
     {
@@ -73,9 +73,9 @@ namespace PDP104.Service
                 DateOfShipment = userStorageViewModel.DateOfShipment,
                 TypeOfGoods=userStorageViewModel.TypeOfGoods,
                 StatusOrder = StatusOrder.Confirming, // Đặt trạng thái mặc định là Confirming
-                StatusInventory = userStorageViewModel.StatusInventory, // Đặt trạng thái mặc định là Confirming
-                Price = userStorageViewModel.Price,
-                Quantity = userStorageViewModel.Quantity,
+                StatusInventory = userStorageViewModel.StatusInventory, 
+/*                Price = userStorageViewModel.Price,
+*/                Quantity = userStorageViewModel.Quantity,
                 Hinh = userStorageViewModel.Hinh,
                 NguoiDungId = userStorageViewModel.NguoiDungId // Đảm bảo có ID người dùng
             };
@@ -83,17 +83,7 @@ namespace PDP104.Service
             _context.StorageOrders.Add(newOrder);
             _context.SaveChanges();
 
-            // Nếu StatusInventory là Active, tạo một bản ghi Inventory mới
-            if (statusInventory == StatusInventory.Active)
-            {
-                var newInventory = new Inventory
-                {
-                    RequestDate = DateTime.Now,
-                    StorageOrdersId = newOrder.Id
-                };
-                _context.Inventories.Add(newInventory);
-                _context.SaveChanges();
-            }
+          
 
             return newOrder.Id;
         }
@@ -102,7 +92,7 @@ namespace PDP104.Service
 
 
 
-        public int EditService(int id, Models.ViewModel.UserStorageViewModel userStorageViewModel)
+   /*     public int EditOrder(int id, Models.ViewModel.UserStorageViewModel userStorageViewModel)
         {
             var order = _context.StorageOrders.Find(id);
             if (order == null)
@@ -110,7 +100,8 @@ namespace PDP104.Service
                 return 0; // Trả về 0 nếu không tìm thấy đơn hàng
             }
 
-        
+            order.DateOfEntry = userStorageViewModel.DateOfEntry;
+
             order.DateOfShipment = userStorageViewModel.DateOfShipment;
 
 
@@ -118,7 +109,7 @@ namespace PDP104.Service
             _context.SaveChanges();
 
             return order.Id;
-        }
+        }*/
 
     }
 }

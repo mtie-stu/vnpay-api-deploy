@@ -5,9 +5,14 @@ namespace PDP104.Models
 {
     public enum TypeService
     {
-        Container,
-        Balet
-        
+        Inventory18ft,
+        Inventory20ft,
+        Inventory22ft,
+        Balet,
+        Container18ft,
+        Container20ft,
+        Container22ft
+
 
     }
     public enum StatusService
