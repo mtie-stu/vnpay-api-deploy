@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Client.Models
+namespace Client.Models.AuthenViewModel
 {
     public class RegisterViewModel
     {
@@ -15,7 +15,7 @@ namespace Client.Models
 
         public string SĐT { get; set; }
 
-        public string DiaChi { get; set; }
+        //public string DiaChi { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu.")]
         [DataType(DataType.Password)]
