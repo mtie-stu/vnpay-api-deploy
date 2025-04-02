@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PDP104.Data;
 using PDP104.Models;
 using PDP104.Models.ViewModel.AuthenModel;
 using PDP104.Service;
-using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace PDP104.Controllers
 {
@@ -61,11 +62,11 @@ namespace PDP104.Controllers
 
             var user = new NguoiDung
             {
-                UserName = model.NameND, // Sử dụng NameND làm UserName
-                NormalizedUserName = model.NameND.ToUpper(), // Chuẩn hóa NameND
+                UserName = model.NameND,
+                NormalizedUserName = model.NameND.ToUpper(),
                 Email = model.Email,
-                NormalizedEmail = model.Email.ToUpper(), // Chuẩn hóa Email
-                EmailConfirmed = true // Cho phép đăng nhập ngay (hoặc có thể gửi email xác nhận)
+                NormalizedEmail = model.Email.ToUpper(),
+                EmailConfirmed = true
             };
 
             var result = await
@@ -81,13 +82,10 @@ namespace PDP104.Controllers
                     });
             }
 
-            // Gán quyền mặc định "User"
             await _userManager.AddToRoleAsync(user, "User");
-
             return Ok(new
             {
                 message = "Đăng ký thành công!",
-                userId = user.Id
             });
         }
 
@@ -133,8 +131,6 @@ namespace PDP104.Controllers
             {
                 return Unauthorized(new { message = "Sai tài khoản hoặc mật khẩu" });
             }
-            // Lấy danh sách Role của người dùng
-            var roles = await _userManager.GetRolesAsync(user);
             var token = _tokenService.GenerateJwtToken(user);
             // Trả về thông tin người dùng
             return Ok(new
@@ -150,6 +146,90 @@ namespace PDP104.Controllers
         {
             await _signInManager.SignOutAsync();
             return Ok(new { message = "Đăng xuất thành công!" });
+        }
+
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+            return Ok(new
+            {
+                message = "Lấy thông tin người dùng thành công!",
+                user = new
+                {
+                    user.Id,
+                    user.NameND,
+                    user.Email,
+                    user.PhoneNumber,
+                    user.Hinh
+                }
+            });
+        }
+
+        [HttpPut("EditProfile")]
+        [Authorize]
+        public async Task<IActionResult> EditProfile([FromBody] EditProfileModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound(new { message = "Người dùng không tồn tại!" });
+            }
+
+            // Cập nhật thông tin người dùng
+            user.NameND = model.NameND;
+            user.Email = model.Email;
+            user.PhoneNumber = model.PhoneNumber;
+            user.Hinh = model.Hinh;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(new { message = "Cập nhật thất bại!", errors = result.Errors });
+            }
+            return Ok(new { message = "Cập nhật thông tin thành công!" });
+        }
+
+        [HttpGet("loginGoogle")]
+        public IActionResult LoginWithGoogle()
+        {
+            var redirectUrl = Url.Action(nameof(GoogleResponse), "GoogleAuth", null, Request.Scheme);
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = redirectUrl
+            };
+
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet("callback")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest("Đăng nhập thất bại!");
+            }
+
+            var claims = result.Principal.Identities.FirstOrDefault()?.Claims;
+            var userEmail = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                return BadRequest("Không lấy được thông tin từ Google.");
+            }
+            return Ok(userEmail);
         }
     }
 }

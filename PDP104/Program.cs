@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -78,6 +79,24 @@ builder.Services.AddAuthentication(auth =>
         ValidateIssuerSigningKey = true
     };
 });
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        //options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.None; // Cho phép cookie hoạt động trong cross-site
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Bắt buộc dùng HTTPS
+        options.LoginPath = "/api/Authentication/loginGoogle";
+        options.LogoutPath = "/api/Authentication/logout";
+    })
+   .AddGoogle(options =>
+   {
+       var googleAuth = builder.Configuration.GetSection("Authentication:Google");
+       options.ClientId = googleAuth["ClientId"];
+       options.ClientSecret = googleAuth["ClientSecret"];
+       options.CallbackPath = "/api/Authentication/callback"; // Đường dẫn callback
+       options.SaveTokens = true;
+   });
 
 builder.Services.AddCors(options =>
 {
