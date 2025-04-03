@@ -37,8 +37,13 @@
             }
 
                 .sidebar a:hover {
-                    background: #ffcc00;
-                    color: black;
+                    background: #1e5f7d;
+                    color: white;
+                }
+
+                .sidebar #img:hover {
+                background: #32ADE6;
+                    color: white;
                 }
 
         .content {
@@ -101,8 +106,8 @@
 <body>
     <nav class="sidebar">
         <div>
-            <a class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Index">
-                <img src="~/Images/tachnen.png" alt="Logo" class="img-fluid">
+            <a id="img" class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Index">
+                <img src="~/Images/MỌT-Photoroom.png" alt="Logo" class="img-fluid">
             </a>
             <a href="#">Dashboard</a>
             <a href="#">Order Management</a>
