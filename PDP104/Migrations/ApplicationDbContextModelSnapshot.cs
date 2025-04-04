@@ -441,6 +441,15 @@ namespace PDP104.Migrations
                             StatusService = 0,
                             TypeService = 2,
                             UnitPrice = 550000m
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Description = "Balet",
+                            NameServices = "Null ",
+                            StatusService = 0,
+                            TypeService = 3,
+                            UnitPrice = 0m
                         });
                 });
 
@@ -478,15 +487,12 @@ namespace PDP104.Migrations
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ServicesId")
-                        .HasColumnType("int");
-
                     b.Property<int>("StorageOrderId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ServicesId");
+                    b.HasIndex("ServiceId");
 
                     b.HasIndex("StorageOrderId");
 
@@ -7910,9 +7916,9 @@ namespace PDP104.Migrations
 
             modelBuilder.Entity("PDP104.Models.StorageOrderServices", b =>
                 {
-                    b.HasOne("PDP104.Models.Services", "Services")
+                    b.HasOne("PDP104.Models.Services", "Service")
                         .WithMany("StorageOrderServices")
-                        .HasForeignKey("ServicesId")
+                        .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -7922,7 +7928,7 @@ namespace PDP104.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Services");
+                    b.Navigation("Service");
 
                     b.Navigation("StorageOrder");
                 });

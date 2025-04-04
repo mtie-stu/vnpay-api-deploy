@@ -8,17 +8,16 @@ namespace PDP104.Service
 {
     public interface IAdminStorageOrderSvc
     {
-        List<Models.ViewModel.AdminStorageViewModel> GetAllStorageOrder();
+        List<AdminStorageViewModel> GetAllStorageOrder();
+        AdminStorageViewModel GetStorageOrder(int id);
+        int SetLocationStorageOrder(int orderId, AdminStorageViewModel adminStorageViewModel);
+        int EditOrder(int id, AdminStorageViewModel adminStorageViewModel);
+        int ImportingOrder(int id);
+        int ExportingOrder(int id, DateTime dateOfShipment);
         List<AdminStorageViewModel> GetAllStorageOrderWhereInventoryActive();
-        Models.ViewModel.AdminStorageViewModel GetStorageOrder(int id);
-        int SetLocationStorageOrder(Models.ViewModel.AdminStorageViewModel adminStorageViewModel, StatusInventory statusInventory);
-        int EditOrder(int id, Models.ViewModel.AdminStorageViewModel adminStorageViewModel);
-        int ImportingOder(int id, Models.ViewModel.AdminStorageViewModel adminStorageViewModel);
-        int ExportingOrder(int id, Models.ViewModel.AdminStorageViewModel adminStorageViewModel);
-
 
     }
-    public class Admin_StorageOrderSvc
+    public class Admin_StorageOrderSvc : IAdminStorageOrderSvc
     {
         private readonly ApplicationDbContext _context;
 
@@ -74,51 +73,244 @@ namespace PDP104.Service
                 .FirstOrDefault();
         }
 
-        public int SetLocationStorageOrder(int orderId, AdminStorageViewModel adminStorageViewModel, StatusInventory statusInventory)
+        /* public int SetLocationStorageOrder(int orderId, AdminStorageViewModel adminStorageViewModel)
+         {
+             Console.WriteLine($"➡ Bắt đầu xử lý SetLocationStorageOrder cho OrderId: {orderId}");
+
+             var order = _context.StorageOrders.FirstOrDefault(o => o.Id == orderId);
+             if (order == null)
+             {
+                 Console.WriteLine($"❌ Lỗi: Không tìm thấy đơn hàng với OrderId: {orderId}");
+                 return 0;
+             }
+
+             int totalDays = (order.DateOfShipment - order.DateOfEntry).Days;
+             Console.WriteLine($"📅 Tổng số ngày lưu trữ: {totalDays}");
+
+             int warehouseId = order.TypeOfGoods == TypeOfGoods.Balet ? 2 : 1;
+             Console.WriteLine($"🏢 Xác định kho hàng: {warehouseId}");
+
+             var availableSpaces = _context.StorageSpaces
+                 .Where(s => s.StorageOrdersId == null && s.WareHouseId == warehouseId )
+                 .OrderBy(s => s.Floor)
+                 .Take(order.Quantity)
+                 .ToList();
+
+             Console.WriteLine($"📦 Số lượng vị trí trống tìm thấy: {availableSpaces.Count}");
+
+             if (availableSpaces.Count < adminStorageViewModel.Quantity)
+             {
+                 Console.WriteLine("❌ Lỗi: Không đủ vị trí lưu trữ.");
+                 return -1;
+             }
+
+             foreach (var space in availableSpaces)
+             {
+                 space.StorageOrdersId = adminStorageViewModel.Id;
+                 space.LocationStorage = adminStorageViewModel.LocationStorage;
+                 space.Floor = adminStorageViewModel.Floor;
+                 adminStorageViewModel.StatusStorage = StatusStorage.booked;
+             }
+
+             var servicesList = new List<int>();
+             decimal totalPrice = 0;
+
+             if (totalDays <= 30)
+             {
+                 int serviceId = GetServiceId(order.TypeOfGoods, "day");
+                 if (IsValidService(serviceId))
+                 {
+                     servicesList.Add(serviceId);
+                     totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                 }
+             }
+             else if (totalDays == 365)
+             {
+                 int serviceId = GetServiceId(order.TypeOfGoods, "year");
+                 if (IsValidService(serviceId))
+                 {
+                     servicesList.Add(serviceId);
+                     totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                 }
+             }
+             else
+             {
+                 int months = totalDays / 30;
+                 int days = totalDays % 30;
+
+                 for (int i = 0; i < months; i++)
+                 {
+                     int serviceId = GetServiceId(order.TypeOfGoods, "month");
+                     if (IsValidService(serviceId))
+                     {
+                         servicesList.Add(serviceId);
+                         totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                     }
+                 }
+                 if (days > 0)
+                 {
+                     int serviceId = GetServiceId(order.TypeOfGoods, "day");
+                     if (IsValidService(serviceId))
+                     {
+                         servicesList.Add(serviceId);
+                         totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                     }
+                 }
+             }
+
+             if (order.StatusInventory == StatusInventory.Active)
+             {
+                 Console.WriteLine("📋 Tạo bản ghi kiểm kê mới.");
+                 var newInventory = new Inventory
+                 {
+                     RequestDate = DateTime.Now,
+                     StorageOrdersId = order.Id
+                 };
+                 _context.Inventories.Add(newInventory);
+ *//*                _context.SaveChanges();
+ *//*            }
+
+             if (order.StatusInventory == StatusInventory.Active)
+             {
+                 int serviceId = GetInventoryServiceId(order.TypeOfGoods);
+                 if (IsValidService(serviceId))
+                 {
+                     servicesList.Add(serviceId);
+                     totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                 }
+             }
+
+             Console.WriteLine("📜 Danh sách ServiceId hợp lệ:");
+             foreach (var serviceId in servicesList)
+             {
+                 Console.WriteLine($"✔ ServiceId: {serviceId}");
+             }
+
+             var validServiceOrders = servicesList
+                 .Where(serviceId => IsValidService(serviceId))
+                 .Select(serviceId => new StorageOrderServices
+                 {
+                     StorageOrderId = order.Id,
+                     ServiceId = serviceId
+                 }).ToList();
+
+             if (!validServiceOrders.Any())
+             {
+                 Console.WriteLine("❌ Lỗi: Không có ServiceId hợp lệ để lưu vào StorageOrderServices.");
+                 return -6;
+             }
+
+             Console.WriteLine("📌 Các ServiceId được thêm vào StorageOrderServices:");
+             foreach (var service in validServiceOrders)
+             {
+                 Console.WriteLine($"✔ StorageOrderId: {service.StorageOrderId}, ServiceId: {service.ServiceId}");
+             }
+
+             try
+             {
+                 _context.StorageOrderServices.AddRange(validServiceOrders);
+                 order.StatusOrder = StatusOrder.Confirmed;
+                 order.Price = totalPrice;
+
+                 Console.WriteLine($"💰 Tổng giá trị đơn hàng: {totalPrice}");
+                 Console.WriteLine($"🔄 Cập nhật trạng thái đơn hàng: {order.StatusOrder}");
+
+                 _context.UpdateRange(availableSpaces);
+                 _context.Update(order);
+                 _context.SaveChanges();
+
+                 Console.WriteLine("✅ Cập nhật dữ liệu thành công.");
+                 return 1;
+             }
+             catch (Exception ex)
+             {
+                 Console.WriteLine($"❌ Lỗi khi lưu dữ liệu: {ex.Message}");
+                 return -99;
+             }
+         }*/
+
+        public int SetLocationStorageOrder(int orderId, AdminStorageViewModel adminStorageViewModel)
         {
+            Console.WriteLine($"➡ Bắt đầu xử lý SetLocationStorageOrder cho OrderId: {orderId}");
+
             var order = _context.StorageOrders.FirstOrDefault(o => o.Id == orderId);
-            if (order == null) return 0; // Nếu đơn hàng không tồn tại
+            if (order == null)
+            {
+                Console.WriteLine($"❌ Lỗi: Không tìm thấy đơn hàng với OrderId: {orderId}");
+                return 0;
+            }
 
-            // Tính tổng số ngày lưu trữ
             int totalDays = (order.DateOfShipment - order.DateOfEntry).Days;
+            Console.WriteLine($"📅 Tổng số ngày lưu trữ: {totalDays}");
 
-            // Xác định kho hàng dựa trên loại hàng hóa
             int warehouseId = order.TypeOfGoods == TypeOfGoods.Balet ? 2 : 1;
+            Console.WriteLine($"🏢 Xác định kho hàng: {warehouseId}");
 
-            // Lấy danh sách các vị trí còn trống theo loại hàng hóa
             var availableSpaces = _context.StorageSpaces
                 .Where(s => s.StorageOrdersId == null && s.WareHouseId == warehouseId)
                 .OrderBy(s => s.Floor)
-                .Take(adminStorageViewModel.Quantity)
+                .Take(order.Quantity)
                 .ToList();
 
-            if (availableSpaces.Count < adminStorageViewModel.Quantity)
+            Console.WriteLine($"📦 Số lượng vị trí trống tìm thấy: {availableSpaces.Count}");
+
+            if (availableSpaces.Count < order.Quantity)
             {
-                return -1; // Không đủ vị trí lưu trữ
+                Console.WriteLine("❌ Lỗi: Không đủ vị trí lưu trữ.");
+                return -1;
             }
 
+            // Kiểm tra StorageOrdersId hợp lệ
+            if (!_context.StorageOrders.Any(o => o.Id == order.Id))
+            {
+                Console.WriteLine("❌ Lỗi: Không tồn tại StorageOrder với Id: " + order.Id);
+                return -1;
+            }
+
+            // Kiểm tra các giá trị khác như LocationStorage và Floor
             foreach (var space in availableSpaces)
             {
+                if (order.Id == null || order.Id == 0)
+                {
+                    Console.WriteLine("❌ Lỗi: StorageOrdersId không hợp lệ.");
+                    return -1;
+                }
+
+                if (string.IsNullOrEmpty(space.LocationStorage))
+                {
+                    Console.WriteLine("❌ Lỗi: LocationStorage không được để trống.");
+                    return -1;
+                }
+
+             
+
+                // Cập nhật các thuộc tính của các vị trí lưu trữ
                 space.StorageOrdersId = order.Id;
-                space.LocationStorage = adminStorageViewModel.LocationStorage;
-                space.Floor = adminStorageViewModel.Floor;
-                space.Status = StatusStorage.full;
+                adminStorageViewModel.StatusStorage = StatusStorage.booked;
+
             }
 
             var servicesList = new List<int>();
             decimal totalPrice = 0;
 
+            // Tính toán giá trị dịch vụ tùy theo số ngày lưu trữ
             if (totalDays <= 30)
             {
                 int serviceId = GetServiceId(order.TypeOfGoods, "day");
-                servicesList.Add(serviceId);
-                totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                if (IsValidService(serviceId))
+                {
+                    servicesList.Add(serviceId);
+                    totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                }
             }
             else if (totalDays == 365)
             {
                 int serviceId = GetServiceId(order.TypeOfGoods, "year");
-                servicesList.Add(serviceId);
-                totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                if (IsValidService(serviceId))
+                {
+                    servicesList.Add(serviceId);
+                    totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                }
             }
             else
             {
@@ -128,53 +320,105 @@ namespace PDP104.Service
                 for (int i = 0; i < months; i++)
                 {
                     int serviceId = GetServiceId(order.TypeOfGoods, "month");
-                    servicesList.Add(serviceId);
-                    totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                    if (IsValidService(serviceId))
+                    {
+                        servicesList.Add(serviceId);
+                        totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                    }
                 }
                 if (days > 0)
                 {
                     int serviceId = GetServiceId(order.TypeOfGoods, "day");
-                    servicesList.Add(serviceId);
-                    totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                    if (IsValidService(serviceId))
+                    {
+                        servicesList.Add(serviceId);
+                        totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                    }
                 }
             }
-            // Nếu StatusInventory là Active, tạo một bản ghi Inventory mới
-            if (statusInventory == StatusInventory.Active)
+
+            // Kiểm tra và tạo bản ghi kiểm kê nếu đơn hàng đang hoạt động
+            if (order.StatusInventory == StatusInventory.Active)
             {
+                Console.WriteLine("📋 Tạo bản ghi kiểm kê mới.");
                 var newInventory = new Inventory
                 {
                     RequestDate = DateTime.Now,
                     StorageOrdersId = order.Id
                 };
                 _context.Inventories.Add(newInventory);
-                _context.SaveChanges();
             }
+
+            // Tính toán dịch vụ cho việc kiểm kê nếu có
             if (order.StatusInventory == StatusInventory.Active)
             {
                 int serviceId = GetInventoryServiceId(order.TypeOfGoods);
-                servicesList.Add(serviceId);
-                totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                if (IsValidService(serviceId))
+                {
+                    servicesList.Add(serviceId);
+                    totalPrice += GetServicePrice(serviceId) * order.Quantity;
+                }
             }
 
-            var serviceOrders = servicesList.Select(serviceId => new StorageOrderServices
+            Console.WriteLine("📜 Danh sách ServiceId hợp lệ:");
+            foreach (var serviceId in servicesList)
             {
-                StorageOrderId = order.Id,
-                ServiceId = serviceId
-            }).ToList();
+                Console.WriteLine($"✔ ServiceId: {serviceId}");
+            }
 
-            _context.StorageOrderServices.AddRange(serviceOrders);
+            var validServiceOrders = servicesList
+                .Where(serviceId => IsValidService(serviceId))
+                .Select(serviceId => new StorageOrderServices
+                {
+                    StorageOrderId = order.Id,
+                    ServiceId = serviceId
+                }).ToList();
 
-            order.StatusOrder = StatusOrder.Confirmed;
-            order.Price = totalPrice;
+            if (!validServiceOrders.Any())
+            {
+                Console.WriteLine("❌ Lỗi: Không có ServiceId hợp lệ để lưu vào StorageOrderServices.");
+                return -6;
+            }
 
-            _context.UpdateRange(availableSpaces);
-            _context.Update(order);
-            _context.SaveChanges();
+            Console.WriteLine("📌 Các ServiceId được thêm vào StorageOrderServices:");
+            foreach (var service in validServiceOrders)
+            {
+                Console.WriteLine($"✔ StorageOrderId: {service.StorageOrderId}, ServiceId: {service.ServiceId}");
+            }
 
-            return 1;
+            try
+            {
+                // Thêm các dịch vụ hợp lệ vào StorageOrderServices
+                _context.StorageOrderServices.AddRange(validServiceOrders);
+                order.StatusOrder = StatusOrder.Confirmed;
+                order.Price = totalPrice;
+
+                Console.WriteLine($"💰 Tổng giá trị đơn hàng: {totalPrice}");
+                Console.WriteLine($"🔄 Cập nhật trạng thái đơn hàng: {order.StatusOrder}");
+
+                // Cập nhật các vị trí lưu trữ và đơn hàng
+                _context.UpdateRange(availableSpaces);
+                _context.Update(order);
+                _context.SaveChanges();
+
+                Console.WriteLine("✅ Cập nhật dữ liệu thành công.");
+                return 1;
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine($"❌ Lỗi SQL: {ex.InnerException?.Message ?? ex.Message}");
+                return -99;
+            }
         }
 
+        // Kiểm tra xem ServiceId có tồn tại trong bảng Services không
+        private bool IsValidService(int serviceId)
+        {
+            if (serviceId == 0) return false;
+            return _context.Services.Any(s => s.Id == serviceId);
+        }
 
+        // Hàm lấy ServiceId theo loại hàng hóa và thời gian lưu trữ
         private int GetServiceId(TypeOfGoods typeOfGoods, string duration)
         {
             return typeOfGoods switch
@@ -187,6 +431,7 @@ namespace PDP104.Service
             };
         }
 
+        // Hàm lấy ServiceId cho kiểm kê hàng hóa
         private int GetInventoryServiceId(TypeOfGoods typeOfGoods)
         {
             return typeOfGoods switch
@@ -194,14 +439,16 @@ namespace PDP104.Service
                 TypeOfGoods.Container18ft => 13,
                 TypeOfGoods.Container20ft => 14,
                 TypeOfGoods.Container22ft => 15,
-                _ => 0
+                _ => 16
             };
         }
 
+        // Hàm lấy giá của dịch vụ từ bảng Services
         private decimal GetServicePrice(int serviceId)
         {
             return _context.Services.FirstOrDefault(s => s.Id == serviceId)?.UnitPrice ?? 0;
         }
+
 
 
 
@@ -239,33 +486,29 @@ namespace PDP104.Service
 
         public int ImportingOrder(int id)
         {
-            var today = DateTime.Now;
+            var today = DateTime.Today; // Lấy ngày hiện tại, loại bỏ giờ
 
             var order = _context.StorageOrders.FirstOrDefault(o => o.Id == id);
             if (order == null) return 0; // Nếu đơn hàng không tồn tại
-            if (order.DateOfEntry < today || order.DateOfEntry > today)
+
+            if (order.DateOfEntry.Date == today) // Chỉ so sánh ngày
             {
-                // Cập nhật ngày nhập hàng và trạng thái đơn hàng
                 order.StatusOrder = StatusOrder.Imported;
 
-                // Lấy danh sách các vị trí lưu trữ của đơn hàng
                 var storageSpaces = _context.StorageSpaces.Where(s => s.StorageOrdersId == id).ToList();
-
-                // Cập nhật trạng thái của các vị trí lưu trữ thành Full
                 foreach (var space in storageSpaces)
                 {
-                    space.Status = StatusStorage.full; // Đánh dấu vị trí đã được sử dụng
+                    space.Status = StatusStorage.full;
                 }
 
-                // Lưu thay đổi vào database
-                _context.UpdateRange(storageSpaces);
-                _context.Update(order);
                 _context.SaveChanges();
-
                 return 1; // Thành công
             }
-            return 0;
+            return 0; // Ngày không khớp
         }
+
+
+
 
 
         public int ExportingOrder(int id, DateTime dateOfShipment)

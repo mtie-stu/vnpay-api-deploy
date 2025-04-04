@@ -19,6 +19,8 @@ namespace PDP104.Models.ViewModel
         public StatusOrder StatusOrder { get; set; }
         public StatusInventory StatusInventory { get; set; }
         public TypeOfGoods TypeOfGoods { get; set; }
+        public StatusStorage StatusStorage { get; set; }
+
 
 
         [Display(Name = "Tổng Giá ")]
