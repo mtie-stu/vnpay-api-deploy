@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using PDP104.Service;
 using PDP104.Models.ViewModel;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using PDP104.Models;
 
 namespace PDP104.Controllers
@@ -13,73 +13,70 @@ namespace PDP104.Controllers
     [Authorize(Roles = "Admin")] // Chỉ Admin mới có quyền truy cập
     public class AdminStorageOrderController : ControllerBase
     {
-        private readonly IAdminStorageOrderSvc _adminStorageOrderSvc;
+        private readonly IAdminStorageOrderSvc _storageOrderService;
 
-        public AdminStorageOrderController(IAdminStorageOrderSvc adminStorageOrderSvc)
+        public AdminStorageOrderController(IAdminStorageOrderSvc storageOrderService)
         {
-            _adminStorageOrderSvc = adminStorageOrderSvc;
+            _storageOrderService = storageOrderService;
         }
 
-        // 1. Lấy danh sách tất cả đơn hàng lưu trữ
         [HttpGet("GetAll")]
-        public IActionResult GetAllStorageOrders()
+        public ActionResult<List<AdminStorageViewModel>> GetAllStorageOrders()
         {
-            var orders = _adminStorageOrderSvc.GetAllStorageOrder();
-            return Ok(orders);
+            return Ok(_storageOrderService.GetAllStorageOrder());
         }
 
-        // 2. Lấy danh sách đơn hàng có StatusInventory = Active
-        [HttpGet("GetActiveInventoryOrders")]
-        public IActionResult GetActiveStorageOrders()
+        [HttpGet("Get/{id}")]
+        public ActionResult<AdminStorageViewModel> GetStorageOrder(int id)
         {
-            var orders = _adminStorageOrderSvc.GetAllStorageOrderWhereInventoryActive();
-            return Ok(orders);
-        }
-
-        // 3. Lấy chi tiết đơn hàng theo ID
-        [HttpGet("{id}")]
-        public IActionResult GetStorageOrder(int id)
-        {
-            var order = _adminStorageOrderSvc.GetStorageOrder(id);
-            if (order == null) return NotFound("Không tìm thấy đơn hàng.");
+            var order = _storageOrderService.GetStorageOrder(id);
+            if (order == null)
+                return NotFound();
             return Ok(order);
         }
 
-        // 4. Cập nhật thông tin đơn hàng
+        [HttpPut("SetLocation/{orderId}")]
+        public ActionResult SetLocationStorageOrder(int orderId, [FromForm] AdminStorageViewModel model)
+        {
+            int result = _storageOrderService.SetLocationStorageOrder(orderId, model);
+            if (result == -1)
+                return BadRequest("Không đủ vị trí lưu trữ");
+            if (result == 0)
+                return NotFound("Đơn hàng không tồn tại");
+            return Ok("Cập nhật vị trí thành công");
+        }
+
         [HttpPut("Edit/{id}")]
-        public IActionResult EditOrder(int id, [FromBody] AdminStorageViewModel orderModel)
+        public ActionResult EditOrder(int id, [FromBody] AdminStorageViewModel model)
         {
-            var result = _adminStorageOrderSvc.EditOrder(id, orderModel);
-            if (result == 1) return Ok("Cập nhật thành công.");
-            return BadRequest("Không thể cập nhật đơn hàng.");
+            int result = _storageOrderService.EditOrder(id, model);
+            if (result == 0)
+                return BadRequest("Không thể chỉnh sửa đơn hàng");
+            return Ok("Chỉnh sửa đơn hàng thành công");
         }
 
-        // 5. Thiết lập vị trí lưu trữ cho đơn hàng
-        [HttpPost("SetLocation/{id}")]
-        public IActionResult SetLocationStorageOrder(int id, [FromBody] AdminStorageViewModel orderModel, [FromQuery] StatusInventory statusInventory)
+        [HttpPut("Import/{id}")]
+        public ActionResult ImportOrder(int id)
         {
-            var result = _adminStorageOrderSvc.SetLocationStorageOrder(orderModel, statusInventory);
-            if (result == 1) return Ok("Thiết lập vị trí thành công.");
-            if (result == -1) return BadRequest("Không đủ vị trí lưu trữ.");
-            return NotFound("Không tìm thấy đơn hàng.");
+            int result = _storageOrderService.ImportingOrder(id);
+            if (result == 0)
+                return BadRequest("Không thể nhập hàng");
+            return Ok("Nhập hàng thành công");
         }
 
-        // 6. Nhập hàng
-        [HttpPost("Import/{id}")]
-        public IActionResult ImportOrder(int id, [FromBody] AdminStorageViewModel orderModel)
+        [HttpPut("Export/{id}")]
+        public ActionResult ExportOrder(int id, [FromQuery] DateTime dateOfShipment)
         {
-            var result = _adminStorageOrderSvc.ImportingOder(id, orderModel);
-            if (result == 1) return Ok("Nhập hàng thành công.");
-            return BadRequest("Không thể nhập hàng.");
+            int result = _storageOrderService.ExportingOrder(id, dateOfShipment);
+            if (result == 0)
+                return BadRequest("Không thể xuất hàng");
+            return Ok("Xuất hàng thành công");
         }
 
-        // 7. Xuất hàng
-        [HttpPost("Export/{id}")]
-        public IActionResult ExportOrder(int id, [FromBody] AdminStorageViewModel orderModel)
+        [HttpGet("GetAllActiveInventory")]
+        public ActionResult<List<AdminStorageViewModel>> GetAllStorageOrdersWhereInventoryActive()
         {
-            var result = _adminStorageOrderSvc.ExportingOrder(id, orderModel);
-            if (result == 1) return Ok("Xuất hàng thành công.");
-            return BadRequest("Không thể xuất hàng.");
+            return Ok(_storageOrderService.GetAllStorageOrderWhereInventoryActive());
         }
     }
 }

@@ -7,6 +7,7 @@ namespace PDP104.Models
     public enum StatusStorage
     {
         empty,
+        booked,
         full
     }
 
