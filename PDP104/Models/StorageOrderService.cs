@@ -12,8 +12,8 @@ namespace PDP104.Models
         public int StorageOrderId { get; set; }
         public StorageOrders StorageOrder { get; set; }
 
-        [ForeignKey("Service")]
+        [ForeignKey("ServiceId")]
         public int ServiceId { get; set; }
-        public Services Services { get; set; }
+        public Services Service { get; set; }
     }
 }

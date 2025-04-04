@@ -25,8 +25,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddTransient<IWareHousesSvc, WareHouseSvc>();
-builder.Services.AddScoped<IStorageSpacesSvc, StorageSpaceSvc>();
+builder.Services.AddTransient<IStorageSpacesSvc, StorageSpaceSvc>();
 builder.Services.AddTransient<IServicesSvc, ServicesSvc>();
+builder.Services.AddTransient<IUserStorageOrder, UserStorageOrderSvc>();
+builder.Services.AddTransient<IAdminStorageOrderSvc, Admin_StorageOrderSvc>();
+builder.Services.AddTransient<IInvetorySvc, InventorySvc>();
+
 builder.Services.AddIdentity<NguoiDung, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
