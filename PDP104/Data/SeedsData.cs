@@ -31,7 +31,9 @@ namespace PDP104.Data
                 // Inventory Contaier
                 new Services { Id = 13, NameServices = "Kiểm kê Container 18ft ", TypeService = TypeService.Inventory18ft, StatusService = StatusService.Active, Description = "Dịch vụ Kiểm kê Container 18ft", UnitPrice = 350000M },
                 new Services { Id = 14, NameServices = "Kiểm kê Container 20ft ", TypeService = TypeService.Inventory20ft, StatusService = StatusService.Active, Description = "Dịch vụ Kiểm kê Container 20ft", UnitPrice = 450000M },
-                new Services { Id = 15, NameServices = "Kiểm kê Container 22ft ", TypeService = TypeService.Inventory22ft, StatusService = StatusService.Active, Description = "Dịch vụ Kiểm kê Container 22ft", UnitPrice = 550000M }
+                new Services { Id = 15, NameServices = "Kiểm kê Container 22ft ", TypeService = TypeService.Inventory22ft, StatusService = StatusService.Active, Description = "Dịch vụ Kiểm kê Container 22ft", UnitPrice = 550000M },
+
+                new Services { Id = 16, NameServices = "Null ", TypeService = TypeService.Balet, StatusService = StatusService.Active, Description = "Balet", UnitPrice = 0M }
 
             );
             modelBuilder.Entity<WareHouses>().HasData(
