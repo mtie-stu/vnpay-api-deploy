@@ -151,5 +151,17 @@ namespace PDP104.Controllers
             await _signInManager.SignOutAsync();
             return Ok(new { message = "Đăng xuất thành công!" });
         }
+
+        // GET: api/Users/{id}/name
+        [HttpGet("{id}/name")]
+        public async Task<IActionResult> GetUserName(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound(new { Message = "Người dùng không tồn tại." });
+            }
+            return Ok(new { UserName = user.UserName });
+        }
     }
 }
