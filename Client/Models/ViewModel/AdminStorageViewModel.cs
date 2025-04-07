@@ -51,5 +51,7 @@ namespace Client.Models.ViewModel
 
         public int StorageSpaceId { get; set; }
 
+        public List<string> ImageUrls { get; set; }
+
     }
 }

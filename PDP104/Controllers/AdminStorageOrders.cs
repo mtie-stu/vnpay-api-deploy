@@ -36,9 +36,9 @@ namespace PDP104.Controllers
         }
 
         [HttpPut("SetLocation/{orderId}")]
-        public ActionResult SetLocationStorageOrder(int orderId, [FromForm] AdminStorageViewModel model)
+        public ActionResult SetLocationStorageOrder(int orderId)
         {
-            int result = _storageOrderService.SetLocationStorageOrder(orderId, model);
+            int result = _storageOrderService.SetLocationStorageOrder(orderId);
             if (result == -1)
                 return BadRequest("Không đủ vị trí lưu trữ");
             if (result == 0)

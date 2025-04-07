@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<!-- Main Content -->
+<div class="container-fluid">
+    <h2>Quản lý tài khoản</h2>
+    <div class="table-container">
+        <div class="table-header d-flex justify-content-between align-items-center p-3">
+            <div>
+                <input type="checkbox" id="selectAll" class="me-2">
+                <label for="selectAll">All</label>
+                <select class="form-select ms-2" id="roleFilter" style="width: 100px;">
+                    <option value="">All</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Nhân viên">Nhân viên</option>
+                    <option value="Khách hàng">Khách hàng</option>
+                </select>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary">Thêm</button>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search">
+                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+                </div>
+                <button class="btn btn-light"><i class="bi bi-three-dots-vertical"></i></button>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col"><input type="checkbox"></th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="accountTable">
+                <tr class="table-row" data-role="Admin" data-name="Jane Cooper">
+                    <td><input type="checkbox"></td>
+                    <td>Jane Cooper</td>
+                    <td><span class="role-badge">Admin</span></td>
+                    <td>jessica.hanson@example.com</td>
+                    <td>27/05/2025</td>
+                    <td>
+                        <button class="btn btn-sm btn-info"><i class="bi bi-eye"></i></button>
+                        <button class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                    </td>
+                </tr>
+                <tr class="table-row" data-role="Nhân viên" data-name="Wade Warren">
+                    <td><input type="checkbox"></td>
+                    <td>Wade Warren</td>
+                    <td><span class="role-badge">Nhân viên</span></td>
+                    <td>willie.jennings@example.com</td>
+                    <td>19/05/2025</td>
+                    <td>
+                        <button class="btn btn-sm btn-info"><i class="bi bi-eye"></i></button>
+                        <button class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                    </td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>

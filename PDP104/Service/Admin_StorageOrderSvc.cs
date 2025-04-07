@@ -10,7 +10,7 @@ namespace PDP104.Service
     {
         List<AdminStorageViewModel> GetAllStorageOrder();
         AdminStorageViewModel GetStorageOrder(int id);
-        int SetLocationStorageOrder(int orderId, AdminStorageViewModel adminStorageViewModel);
+        int SetLocationStorageOrder(int orderId/*, AdminStorageViewModel adminStorageViewModel*/);
         int EditOrder(int id, AdminStorageViewModel adminStorageViewModel);
         int ImportingOrder(int id);
         int ExportingOrder(int id, DateTime dateOfShipment);
@@ -229,7 +229,7 @@ namespace PDP104.Service
              }
          }*/
 
-        public int SetLocationStorageOrder(int orderId, AdminStorageViewModel adminStorageViewModel)
+        public int SetLocationStorageOrder(int orderId/*, AdminStorageViewModel adminStorageViewModel*/)
         {
             Console.WriteLine($"➡ Bắt đầu xử lý SetLocationStorageOrder cho OrderId: {orderId}");
 
@@ -286,7 +286,8 @@ namespace PDP104.Service
 
                 // Cập nhật các thuộc tính của các vị trí lưu trữ
                 space.StorageOrdersId = order.Id;
-                adminStorageViewModel.StatusStorage = StatusStorage.booked;
+               
+                space.Status = StatusStorage.booked;
 
             }
 
