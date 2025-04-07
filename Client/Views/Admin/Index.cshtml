@@ -1,0 +1,68 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid">
+   
+            <div class="row">
+                <div class="col-md-6">
+            <h2 class="mt-4 text-center" style="color: #32ADE6;">Danh Sách Nhân Viên</h2>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover mt-3" style="background-color: #32ADE6; color: white;">
+                            <thead style="background-color: #32ADE6; color: white;">
+                                <tr>
+                                    <th>Mã Nhân Viên</th>
+                                    <th>Tên</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ádaa</td>
+                                    <td>Ben</td>
+                                    <td><span class="badge bg-success">Online</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h2 class="mt-4 text-center" style="color: #32ADE6;">Biểu đồ danh thu</h2>
+                    <div class="chart-container" style="position: relative; height:50vh; width:100%">
+                        <canvas id="revenueChart" class="mt-3"></canvas>
+                    </div>
+                </div>
+            </div>
+        
+</div>
+
+<!-- Chart.js for Revenue Chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('revenueChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['T12', 'T1', 'T2', 'T3', 'T4', 'T5'],
+            datasets: [{
+                label: 'Revenue',
+                data: [200000, 180000, 250000, 270000, 190000, 50000],
+                backgroundColor: 'rgba(50, 173, 230, 0.6)',
+                borderColor: 'rgba(50, 173, 230, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
