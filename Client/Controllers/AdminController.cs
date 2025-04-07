@@ -15,6 +15,10 @@ namespace Client.Controllers
 			return View();
 		}
 
+		public IActionResult QuanLyUser()
+		{
+			return View();
+		}
 		public IActionResult BaoCaoThongKe()
 		{
 			return View();
