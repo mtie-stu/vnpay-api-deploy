@@ -1,0 +1,90 @@
+﻿@* @model IEnumerable<User.Models.Order> *@
+
+@{
+    ViewData["Title"] = "Trang chủ";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<div class="order-section">
+    <div class="order-title">
+        Đơn của bạn:
+        <a asp-action="Index" asp-controller="Orders" class="view-all">Xem tất cả ></a>
+    </div>
+
+    <div class="filter-menu">
+        <select id="filter-status">
+            <option value="all">Tất cả</option>
+            <option value="pending">Đang chờ</option>
+            <option value="completed">Hoàn thành</option>
+            <option value="cancelled">Đã hủy</option>
+        </select>
+        <select id="filter-sort">
+            <option value="newest">Mới nhất</option>
+            <option value="oldest">Cũ nhất</option>
+        </select>
+    </div>
+
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Tìm kiếm đơn hàng..." />
+    </div>
+
+    <div class="order-cards" id="order-cards">
+        @* @foreach (var order in Model)
+        {
+            <div class="order-card" data-id="@order.Id" data-status="@order.Status.ToLower()">
+                <div class="card-item"><i class="fas fa-list card-icon"></i> Đơn hàng #@order.Id</div>
+                <div class="card-item"><i class="fas fa-calendar card-icon"></i> @order.CreatedDate.ToString("dd/MM/yyyy")</div>
+                <div class="status-btn">
+                    @order.Status switch
+                    {
+                    "Pending" => "Đang xử lý",
+                    "Completed" => "Hoàn thành",
+                    "Cancelled" => "Đã hủy",
+                    _ => "Không xác định"
+                    }
+                </div>
+            </div>
+        } *@
+        <div class="order-cards" id="order-cards">
+            <div class="order-card" data-id="1" data-status="pending">
+                <div class="card-item"><i class="fas fa-list card-icon"></i> Đơn hàng #1</div>
+                <div class="card-item"><i class="fas fa-calendar card-icon"></i> 01/01/2023</div>
+                <div class="status-btn">Đang xử lý</div>
+            </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const filterStatus = document.getElementById('filter-status');
+        const filterSort = document.getElementById('filter-sort');
+        const searchInput = document.getElementById('search-input');
+        const orderCardsContainer = document.getElementById('order-cards');
+
+        function filterAndSearchOrders() {
+            const statusFilter = filterStatus.value;
+            const sortOption = filterSort.value;
+            const searchText = searchInput.value.toLowerCase();
+            const orderCards = Array.from(orderCardsContainer.getElementsByClassName('order-card'));
+
+            let filteredOrders = orderCards.filter(card => {
+                const cardStatus = card.getAttribute('data-status');
+                const cardText = card.textContent.toLowerCase();
+                return (statusFilter === 'all' || cardStatus === statusFilter) && cardText.includes(searchText);
+            });
+
+            filteredOrders.sort((a, b) => {
+                const idA = parseInt(a.getAttribute('data-id'));
+                const idB = parseInt(b.getAttribute('data-id'));
+                return sortOption === 'newest' ? idB - idA : idA - idB;
+            });
+
+            orderCardsContainer.innerHTML = '';
+            filteredOrders.forEach(card => orderCardsContainer.appendChild(card));
+        }
+
+        filterStatus.addEventListener('change', filterAndSearchOrders);
+        filterSort.addEventListener('change', filterAndSearchOrders);
+        searchInput.addEventListener('input', filterAndSearchOrders);
+    </script>
+}
