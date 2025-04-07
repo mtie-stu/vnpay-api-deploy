@@ -1,4 +1,5 @@
 ﻿using Client.Models;
+using Client.Models.AuthenViewModel;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
