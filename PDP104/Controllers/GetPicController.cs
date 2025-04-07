@@ -1,16 +1,49 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PDP104.Data;
 using System.IO;
 
-namespace ASMC5_Sever.Controllers
+namespace PDP104.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ImagesController : ControllerBase
     {
+
+        [Route("api/[controller]")]
+        [ApiController]
+        public class GetImgStorageOrder : ControllerBase
+        {
+
+            private readonly ApplicationDbContext _context;
+
+            public GetImgStorageOrder(ApplicationDbContext context)
+            {
+                _context = context;
+            }
+            [HttpGet("GetImages/{orderId}")]
+            public IActionResult GetImages(int orderId)
+            {
+                var images = _context.StorageOrderImages
+                                     .Where(img => img.StorageOrdersId == orderId)
+                                     .Select(img => new
+                                     {
+                                         img.Id,
+                                         ImageUrl = Path.GetFileName(img.ImageUrl) // Ensure no leading slash
+                                     })
+                                     .ToList();
+
+                if (images == null || images.Count == 0)
+                    return NotFound("Không tìm thấy hình ảnh nào cho đơn hàng này.");
+
+                return Ok(images);
+            }
+
+
+        }
         [HttpGet("{filename}")]
         public IActionResult GetImage(string filename)
         {
-            var filePath = Path.Combine("D:\\fpt poly\\NET1051 - C#5\\ASM\\ASM\\ASMC5\\ASMC5_Sever\\Uploads\\", filename); // Thay 'path_to_your_image_folder' bằng đường dẫn thực tế  
+            var filePath = Path.Combine("D:\\fpt poly\\PDP104\\Project_fearure-Dot\\PDP104\\uploads", filename); // Thay 'path_to_your_image_folder' bằng đường dẫn thực tế  
 
 
             if (!System.IO.File.Exists(filePath))

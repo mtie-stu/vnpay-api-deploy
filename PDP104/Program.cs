@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,6 +10,7 @@ using PDP104.Service;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+/*builder.Services.AddControllers().AddJsonOptions(options =>
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -16,9 +18,18 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     System.Text.Json.Serialization.ReferenceHandler.Preserve;
     options.JsonSerializerOptions.WriteIndented = true;
 });
+});*/
 // Đăng ký ApplicationDbContext với SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add services to the container.
+builder.Services.AddTransient<IWareHousesSvc, WareHouseSvc>();
+builder.Services.AddTransient<IStorageSpacesSvc, StorageSpaceSvc>();
+builder.Services.AddTransient<IServicesSvc, ServicesSvc>();
+builder.Services.AddTransient<IUserStorageOrder, UserStorageOrderSvc>();
+builder.Services.AddTransient<IAdminStorageOrderSvc, Admin_StorageOrderSvc>();
+builder.Services.AddTransient<IInvetorySvc, InventorySvc>();
 
 builder.Services.AddIdentity<NguoiDung, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -73,6 +84,39 @@ builder.Services.AddAuthentication(auth =>
     };
 });
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        //options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.None; // Cho phép cookie hoạt động trong cross-site
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Bắt buộc dùng HTTPS
+        options.LoginPath = "/api/Authentication/loginGoogle";
+        options.LogoutPath = "/api/Authentication/logout";
+    })
+   .AddGoogle(options =>
+   {
+       var googleAuth = builder.Configuration.GetSection("Authentication:Google");
+       options.ClientId = googleAuth["ClientId"];
+       options.ClientSecret = googleAuth["ClientSecret"];
+       options.CallbackPath = "/api/Authentication/callback"; // Đường dẫn callback
+       options.SaveTokens = true;
+   });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost", policy =>
+    {
+        policy.WithOrigins("https://localhost:7091")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
+
+/*builder.Services.AddIdentity<NguoiDung, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();*/
 // Add services to the container.
 builder.Services.AddTransient<IWareHousesSvc, WareHouseSvc>();
 builder.Services.AddScoped<IStorageSpacesSvc, StorageSpaceSvc>();
@@ -86,7 +130,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowLocalhost");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

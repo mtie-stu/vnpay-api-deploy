@@ -15,6 +15,21 @@
             </button>
         </div>
     </div>
+    @if (ViewBag.Errors != null)
+    {
+        <div class="alert alert-danger">
+            @foreach (var error in ViewBag.Errors)
+            {
+                <strong>@error.Key:</strong>
+                <ul>
+                    @foreach (var message in error.Value)
+                    {
+                        <li>@message</li>
+                    }
+                </ul>
+            }
+        </div>
+    }
 
     <!-- Khu vực form đăng ký -->
     <div class="register-container">
@@ -22,14 +37,21 @@
         <form action="@Url.Action("Register", "Account")" method="post">
             <div class="form-group">
                 <label>User Name</label>
-                <input type="text" class="form-control" name="UserName" placeholder="Enter username" required>
+                <input type="text" class="form-control" name="nameND" placeholder="Enter username" required>
             </div>
 
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" class="form-control" name="Email" placeholder="Enter email" required>
             </div>
-
+            <div class="form-group">
+                <label>Sdt</label>
+                <input type="number" class="form-control" name="SĐT" placeholder="Enter SDT" required>
+            </div>
+           @*  <div class="form-group">
+                <label>Địa chỉ</label>
+                <input type="text" class="form-control" name="DiaChi" placeholder="Enter địa chỉ" required>
+            </div> *@
             <div class="form-group">
                 <label>Password</label>
                 <input type="password" class="form-control" name="Password" placeholder="Enter password" required>
@@ -56,7 +78,7 @@
 <style>
     .frame {
         width: 800px;
-        height: 500px;
+        height: 550px;
         background-color: #3498db;
         color: white;
         border: 2px solid #217dbb;
@@ -72,6 +94,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 20px;
+        margin-top: 40px;
     }
 
     /* Khu vực logo + social login */

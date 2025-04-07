@@ -13,9 +13,6 @@ namespace PDP104.Models
          KhachHang=2 ,
          [Display(Name = "Nhân Viên ")]
          NhanVien=3,
-
-
-
      }*/
     public class NguoiDung : IdentityUser
     {
@@ -23,8 +20,6 @@ namespace PDP104.Models
         [Display(Name = "Tên Người Dùng")]
         [StringLength(255)]
         public string NameND { get; set; }
-
-
 
         [StringLength(100)]
         [Display(Name = "Hình")]
@@ -34,9 +29,8 @@ namespace PDP104.Models
         [Display(Name = "Chọn Hình")]
         public IFormFile? ImageFile { get; set; }
 
-
+        public bool IsActive { get; set; } = true;
         public ICollection<StorageOrders>? StorageOrders { get; set; }
-
 
     }
 }
