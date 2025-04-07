@@ -1,10 +1,19 @@
-﻿namespace Client.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Client.Models
 {
     public enum StatusOrder
     {
+        [Display(Name = "Đang xác nhận")]
         Confirming,
+
+        [Display(Name = "Đã xác nhận")]
         Confirmed,
+
+        [Display(Name = "Đã nhập hàng")]
         Imported,
+
+        [Display(Name = "Đã xuất hàng")]
         Exported
     }
 
@@ -15,15 +24,25 @@
     }
     public enum TypeOfGoods
     {
+        [Display(Name = "Balet")]
         Balet,
+        [Display(Name = "Container 18ft")]
         Container18ft,
+        [Display(Name = "Container 20ft")]
         Container20ft,
+        [Display(Name = "Container 22ft")]
         Container22ft
     }
     public enum StatusStorage
     {
+       
+        [Display(Name = "Trống")]
         empty,
+
+        [Display(Name = "Đã đặt chỗ")]
         booked,
+
+        [Display(Name = "Đã Đầy")]
         full
     }
     public enum InventoryStatus
