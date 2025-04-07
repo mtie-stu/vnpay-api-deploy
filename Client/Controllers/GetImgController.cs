@@ -18,7 +18,7 @@ namespace Client.Controllers
 
         public async Task<IActionResult> GetImages(int orderId)
         {
-            var images = await _httpClient.GetFromJsonAsync<List<object>>($"Images/GetImages/{orderId}");
+            var images = await _httpClient.GetFromJsonAsync<List<object>>($"Images/GetImgForId/{orderId}");
             if (images == null || images.Count == 0) return NotFound("Không tìm thấy hình ảnh nào cho đơn hàng này.");
             return View(images);
         }
