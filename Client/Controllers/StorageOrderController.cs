@@ -115,27 +115,77 @@ namespace Client.Controllers
             return RedirectToAction("Details", new { id = id });
         }
 
+        public IActionResult Edit() => View();
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, AdminStorageViewModel model)
         {
-            var response = await _httpClient.PutAsJsonAsync($"api/AdminStorageOrder/Edit/{id}", model);
-            if (!response.IsSuccessStatusCode) return BadRequest("Không thể chỉnh sửa đơn hàng");
-            return RedirectToAction("Index");
+            /* var response = await _httpClient.PutAsJsonAsync($"api/", model);
+             if (!response.IsSuccessStatusCode) return BadRequest("Không thể chỉnh sửa đơn hàng");
+             return RedirectToAction("Index");*/
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Gọi API lấy đơn hàng có xác thực
+            var orderRequest = new HttpRequestMessage(HttpMethod.Put, $"AdminStorageOrder/Edit/{id}");
+            orderRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var orderResponse = await _httpClient.SendAsync(orderRequest);
+            if (!orderResponse.IsSuccessStatusCode)
+            {
+                return BadRequest("Không thể chỉnh sửa đơn hàng do ngày nhập/ xuất không hợp lệ");
+            }
+            return RedirectToAction("Details", new { id = id });
         }
 
+
+        [HttpPost]
         public async Task<IActionResult> Import(int id)
         {
-            var response = await _httpClient.PutAsync($"api/AdminStorageOrder/Import/{id}", null);
-            if (!response.IsSuccessStatusCode) return BadRequest("Không thể nhập hàng");
-            return RedirectToAction("Index");
+          
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Gọi API lấy đơn hàng có xác thực
+            var orderRequest = new HttpRequestMessage(HttpMethod.Put, $"AdminStorageOrder/Import/{id}");
+            orderRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var orderResponse = await _httpClient.SendAsync(orderRequest);
+            if (!orderResponse.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            return RedirectToAction("Details", new { id = id });
         }
 
-        public async Task<IActionResult> Export(int id, DateTime dateOfShipment)
+        [HttpPost]
+        public async Task<IActionResult> Export(int id)
         {
-            var response = await _httpClient.PutAsync($"api/AdminStorageOrder/Export/{id}?dateOfShipment={dateOfShipment:yyyy-MM-ddTHH:mm:ss}", null);
-            if (!response.IsSuccessStatusCode) return BadRequest("Không thể xuất hàng");
-            return RedirectToAction("Index");
+            /* var response = await _httpClient.PutAsync($"api/AdminStorageOrder/Export/{id}?dateOfShipment={dateOfShipment:yyyy-MM-ddTHH:mm:ss}", null);
+             if (!response.IsSuccessStatusCode) return BadRequest("Không thể xuất hàng");
+             return RedirectToAction("Index");*/
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Gọi API lấy đơn hàng có xác thực
+            var orderRequest = new HttpRequestMessage(HttpMethod.Put, $"AdminStorageOrder/Export/{id}");
+            orderRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var orderResponse = await _httpClient.SendAsync(orderRequest);
+            if (!orderResponse.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            return RedirectToAction("Details", new { id = id });
         }
         public async Task<IActionResult> GetImage(string filename)
         {

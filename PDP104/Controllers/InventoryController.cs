@@ -49,7 +49,8 @@ namespace PDP104.Controllers
         public async Task<IActionResult> CreateInventoryItem(int inventoryId, [FromBody] string model)
         {
             var item = await _inventorySvc.CreateInventoryItem(inventoryId, model);
-            return CreatedAtAction(nameof(GetInventoryItem), new { inventoryItemId = item.Id }, item);
+            return Ok();
+
         }
 
         // 5. Cập nhật số lượng sản phẩm trong kho
