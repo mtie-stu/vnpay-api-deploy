@@ -1,95 +1,119 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý dịch vụ khách hàng</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    @{
-        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    }
-    <style>
-        .status-confirmed {
-            background-color: #28a745;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-        }
+﻿@using Client.Models
+@model IEnumerable<Client.Models.ViewModel.AdminStorageViewModel>
+@using Client.Services
+@inject ImageService imageService
 
-        .status-pending {
-            background-color: #ffc107;
-            color: black;
-            padding: 5px 10px;
-            border-radius: 15px;
-        }
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 
-        .status-rejected {
-            background-color: #dc3545;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-        }
+    var typeOfGoodsList = Enum.GetValues(typeof(TypeOfGoods)).Cast<TypeOfGoods>().ToList();
+    var statusOrderList = Enum.GetValues(typeof(StatusOrder)).Cast<StatusOrder>().ToList();
+}
 
-        .pagination {
-            justify-content: center;
-        }
-    </style>
-</head>
-<body>
-    <div class="container mt-4">
-        <h3>Quản lý dịch vụ giao dịch khách hàng</h3>
-        <div class="d-flex justify-content-between mb-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmServiceModal">
-                Thêm
-            </button>
-            <input type="text" class="form-control w-25" placeholder="Search">
+<div class="container mt-5">
+    <h2 class="mb-4">Danh sách đơn hàng</h2>
+
+    <!-- Bộ lọc -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <label for="typeFilter" class="form-label">Lọc theo loại hàng</label>
+            <select id="typeFilter" class="form-select">
+                <option value="">Tất cả</option>
+                @foreach (var type in typeOfGoodsList)
+                {
+                    <option value="@type.GetDisplayName()">@type.GetDisplayName()</option>
+                }
+            </select>
         </div>
-        <table class="table table-hover">
-            <thead class="table-light">
+
+        <div class="col-md-4">
+            <label for="statusFilter" class="form-label">Lọc theo trạng thái đơn</label>
+            <select id="statusFilter" class="form-select">
+                <option value="">Tất cả</option>
+                @foreach (var status in statusOrderList)
+                {
+                    <option value="@status.GetDisplayName()">@status.GetDisplayName()</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label for="searchInput" class="form-label">Tìm kiếm</label>
+            <input type="text" id="searchInput" class="form-control" placeholder="Nhập từ khóa...">
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table id="orderTable" class="table table-bordered table-hover align-middle fs-5">
+            <thead class="table-primary">
                 <tr>
-                    <th><input type="checkbox"></th>
-                    <th>Tên</th>
-                    <th>Hành Động</th>
-                    <th>Email</th>
-                    <th>Date</th>
-                    <th></th>
+                    <th>Mã đơn</th>
+                    <th>Người dùng ID</th>
+                    <th>Ngày đặt</th>
+                    <th>Trạng thái đơn</th>
+                    <th>Trạng thái kho</th>
+                    <th>Loại hàng</th>
+                    <th>Số lượng</th>
+                    <th>Thao tác</th>
                 </tr>
             </thead>
             <tbody>
-                @* dữ liệu ở dưới test thôi nha *@
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>Jane Cooper</td>
-                    <td><span class="status-confirmed">Xác Nhận</span></td>
-                    <td>jessica.hanson@example.com</td>
-                    <td>27/05/2025</td>
-                    <td><i class="fas fa-info-circle"></i></td>
-                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.NguoiDungId</td>
+                        <td>@item.OrderDate.ToString("dd/MM/yyyy")</td>
+                        <td>@item.StatusOrder.GetDisplayName()</td>
+                        <td>@item.StatusStorage.GetDisplayName()</td>
+                        <td>@item.TypeOfGoods.GetDisplayName()</td>
+                        <td>@item.Quantity</td>
+                        <td>
+                            <a asp-controller="AdminStorageOrder" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Xem</a>
 
+                            @if (item.StatusOrder == StatusOrder.Confirming)
+                            {
+                                <a asp-controller="AdminStorageOrder" asp-action="ActiveOrder" asp-route-id="@item.Id" class="btn btn-sm btn-success mt-1">Xác nhận</a>
+                                <a asp-controller="AdminStorageOrder" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning mt-1">Chỉnh sửa</a>
+                            }
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
-
     </div>
-    @* Cái đoạn dưới sử dụng chatgpt nó là boostrap nên có j lên chat kêu cách xác nhân *@
-    <div class="modal fade" id="confirmServiceModal" tabindex="-1" aria-labelledby="confirmServiceLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmServiceLabel">Xác nhận dịch vụ</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Bạn có chắc chắn muốn xác nhận dịch vụ này không?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-success" id="confirmBtn">Xác nhận</button> @* thêm sử kiện vào để xác nhận *@
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+@section Scripts {
+    <script>
+        const typeFilter = document.getElementById('typeFilter');
+        const statusFilter = document.getElementById('statusFilter');
+        const searchInput = document.getElementById('searchInput');
+
+        typeFilter.addEventListener('change', filterTable);
+        statusFilter.addEventListener('change', filterTable);
+        searchInput.addEventListener('input', filterTable);
+
+        function filterTable() {
+            const typeVal = typeFilter.value.toLowerCase();
+            const statusVal = statusFilter.value.toLowerCase();
+            const searchVal = searchInput.value.toLowerCase();
+
+            const rows = document.querySelectorAll('#orderTable tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowText = Array.from(cells).map(c => c.textContent.toLowerCase()).join(' ');
+                const typeText = cells[5].textContent.toLowerCase();
+                const statusText = cells[3].textContent.toLowerCase();
+
+                const matchSearch = rowText.includes(searchVal);
+                const matchType = typeVal === "" || typeText.includes(typeVal);
+                const matchStatus = statusVal === "" || statusText.includes(statusVal);
+
+                row.style.display = (matchSearch && matchType && matchStatus) ? '' : 'none';
+            });
+        }
+    </script>
+}

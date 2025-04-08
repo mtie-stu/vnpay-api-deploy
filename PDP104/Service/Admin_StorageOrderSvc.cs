@@ -13,7 +13,7 @@ namespace PDP104.Service
         int SetLocationStorageOrder(int orderId/*, AdminStorageViewModel adminStorageViewModel*/);
         int EditOrder(int id, AdminStorageViewModel adminStorageViewModel);
         int ImportingOrder(int id);
-        int ExportingOrder(int id, DateTime dateOfShipment);
+        int ExportingOrder(int id);
         List<AdminStorageViewModel> GetAllStorageOrderWhereInventoryActive();
 
     }
@@ -501,6 +501,9 @@ namespace PDP104.Service
                 {
                     space.Status = StatusStorage.full;
                 }
+                _context.UpdateRange(storageSpaces);
+
+                _context.Update(order);
 
                 _context.SaveChanges();
                 return 1; // Thành công
@@ -512,16 +515,16 @@ namespace PDP104.Service
 
 
 
-        public int ExportingOrder(int id, DateTime dateOfShipment)
+        public int ExportingOrder(int id)
         {
             var today = DateTime.Now;
 
             var order = _context.StorageOrders.FirstOrDefault(o => o.Id == id);
             if (order == null) return 0; // Nếu đơn hàng không tồn tại
-            if (dateOfShipment.Date == today.Date)
+            if (order.DateOfShipment.Date == today.Date)
             {
                 // Cập nhật ngày xuất hàng và trạng thái đơn hàng
-                order.DateOfShipment = dateOfShipment;
+              
                 order.StatusOrder = StatusOrder.Exported;
 
                 // Lấy danh sách các vị trí lưu trữ của đơn hàng

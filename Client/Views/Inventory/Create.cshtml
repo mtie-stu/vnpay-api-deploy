@@ -1,0 +1,33 @@
+﻿@model Client.Models.InventoryItemViewModel
+
+@{
+    ViewBag.Title = "Thêm sản phẩm mới";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Thêm mới sản phẩm kiểm kê</h2>
+
+    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label asp-for="InventoryId" class="form-label">Mã kiểm kê </label>
+            <input asp-for="InventoryId" class="form-control" value="@Model.InventoryId" />
+            <span asp-validation-for="InventoryId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Model" class="form-label">Tên Model</label>
+            <input asp-for="Model" class="form-control" />
+            <span asp-validation-for="Model" class="text-danger"></span>
+        </div>
+
+   
+
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

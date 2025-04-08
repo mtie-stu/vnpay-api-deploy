@@ -36,7 +36,7 @@ namespace PDP104.API.Controllers
 
         // Thêm mới StorageSpace
         [HttpPost]
-        public ActionResult<int> Create([FromForm] StorageSpacesViewModel model)
+        public ActionResult<int> Create([FromBody] StorageSpacesViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

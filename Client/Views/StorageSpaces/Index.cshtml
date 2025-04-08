@@ -1,0 +1,86 @@
+﻿@using Client.Models
+@using Client.Models.ViewModel
+
+@model IEnumerable<Client.Models.ViewModel.StorageSpacesViewModel>
+@using System.ComponentModel.DataAnnotations
+@{
+    ViewBag.Title = "Danh sách vị trí lưu trữ";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+    var statusList = Enum.GetValues(typeof(StatusStorage)).Cast<StatusStorage>().ToList();
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Danh sách vị trí lưu trữ</h2>
+
+    <!-- Bộ lọc -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <label for="statusFilter" class="form-label">Lọc theo trạng thái</label>
+            <select id="statusFilter" class="form-select">
+                <option value="">Tất cả</option>
+                @foreach (var status in statusList)
+                {
+                    <option value="@status.GetDisplayName()">@status.GetDisplayName()</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="searchInput" class="form-label">Tìm kiếm</label>
+            <input type="text" id="searchInput" class="form-control" placeholder="Nhập từ khóa...">
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table id="storageTable" class="table table-bordered table-hover align-middle fs-5">
+            <thead class="table-primary">
+                <tr>
+                    <th>Kho</th>
+                    <th>Vị trí</th>
+                    <th>Trạng thái</th>
+                    
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.WareHouseId</td>
+                        <td>@item.LocationStorage</td>
+                        <td>@item.Status.GetDisplayName()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const statusFilter = document.getElementById('statusFilter');
+        const searchInput = document.getElementById('searchInput');
+
+        statusFilter.addEventListener('change', filterTable);
+        searchInput.addEventListener('input', filterTable);
+
+        function filterTable() {
+            const statusVal = statusFilter.value.toLowerCase();
+            const searchVal = searchInput.value.toLowerCase();
+
+            const rows = document.querySelectorAll('#storageTable tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowText = Array.from(cells).map(c => c.textContent.toLowerCase()).join(' ');
+                const statusText = cells[2].textContent.toLowerCase();
+
+                const matchSearch = rowText.includes(searchVal);
+                const matchStatus = statusVal === "" || statusText.includes(statusVal);
+
+                row.style.display = (matchSearch && matchStatus) ? '' : 'none';
+            });
+        }
+    </script>
+}
