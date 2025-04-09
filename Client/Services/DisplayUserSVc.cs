@@ -1,4 +1,4 @@
-﻿public static class UserNameExtensions
+﻿/*public static class UserNameExtensions
 {
     public static async Task<string> GetUserNameAsync(this string userId, AccountsService accountService)
     {
@@ -8,3 +8,4 @@
         return name ?? "Không tìm thấy";
     }
 }
+*/

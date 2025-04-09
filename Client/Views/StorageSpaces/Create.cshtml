@@ -1,0 +1,62 @@
+﻿@using Client.Models.ViewModel
+@model StorageSpacesViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Thêm Vị Trí Lưu Trữ</h2>
+
+    <form id="editForm" asp-action="Create" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="LocationStorage" class="form-label"></label>
+            <input asp-for="LocationStorage" class="form-control" id="locationStorageInput" />
+            <span asp-validation-for="LocationStorage" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3" id="floorGroup">
+            <label asp-for="Floor" class="form-label"></label>
+            <input asp-for="Floor" class="form-control" />
+            <span asp-validation-for="Floor" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="WareHouseId" class="control-label"></label>
+            <select asp-for="WareHouseId" class="form-control" asp-items="ViewBag.WareHouses" id="warehouseSelect"></select>
+            <span asp-validation-for="WareHouseId" class="text-danger"></span>
+        </div>
+
+        <div id="validationMessage" class="text-danger mb-3"></div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        function updateFormBehavior() {
+            const warehouseId = document.getElementById('warehouseSelect').value;
+            const floorGroup = document.getElementById('floorGroup');
+            const locationStorageInput = document.getElementById('locationStorageInput');
+
+            if (warehouseId === '1') {
+                floorGroup.style.display = 'none';
+                locationStorageInput.value = 'VNOS-';
+            } else if (warehouseId === '2') {
+                floorGroup.style.display = 'block';
+                locationStorageInput.value = 'VNIS-';
+            } else {
+                floorGroup.style.display = 'block';
+                locationStorageInput.value = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            updateFormBehavior(); // Gọi khi trang load
+            document.getElementById('warehouseSelect').addEventListener('change', updateFormBehavior);
+        });
+    </script>
+}

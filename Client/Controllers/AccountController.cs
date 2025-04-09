@@ -84,7 +84,7 @@ namespace Client.Controllers
             }
 
             TempData["Error"] = "Lỗi khi đăng xuất!";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Admin");
         }
 
 
