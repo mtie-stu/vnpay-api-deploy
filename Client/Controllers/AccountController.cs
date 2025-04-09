@@ -1,11 +1,10 @@
-﻿using Client.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Client.Models.AuthenViewModel;
+using Client.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
-using Client.Models.AuthenViewModel;
 
 namespace Client.Controllers
 {

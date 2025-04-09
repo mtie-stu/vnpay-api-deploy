@@ -1,0 +1,64 @@
+﻿@using User.Models.AuthenViewModel
+@model LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container">
+    <div class="frame d-flex justify-content-center align-items-center">
+        <!-- Khu vực logo + Đăng nhập bằng Google, Facebook -->
+        <div class="logo-section">
+            <img src="~/Images/tachnen.png" alt="Logo" class="img-fluid rounded-circle" style="width: 400px; height: 200px; object-fit: cover;">
+            <div class="social-login">
+                <button class="btn-social btn-google">
+                    <i class="fab fa-google"></i>
+                </button>
+                <button class="btn-social btn-facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Khu vực form đăng nhập -->
+        <div class="register-container">
+            <h2>Login</h2>
+            <form asp-controller="Account" asp-action="Login" method="post">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="Email" class="form-control" asp-for="Email" placeholder="Enter username" required>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="Password" class="form-control" asp-for="Password" placeholder="Enter password" required>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="forgot-password">
+                    <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="ForgotPassword">Quên mật khẩu?</a>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="AgreeTerms" required> Tôi đồng ý với điều khoản và dịch vụ
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Đăng nhập</button>
+
+                <div class="text-center no-account">
+                    <p style="font-size: 13px;">
+                        Chưa có tài khoản?
+                        <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="Register">Đăng ký ngay</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

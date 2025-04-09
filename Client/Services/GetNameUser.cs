@@ -1,4 +1,4 @@
-﻿using Client.Models;
+﻿using Client.Models.AuthenViewModel;
 
 public class AccountsService
 {
