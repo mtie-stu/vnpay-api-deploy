@@ -2,12 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using PDP104.Data;
 using PDP104.Models;
+using PDP104.Models.ViewModel;
 
 namespace PDP104.Service
 {
     public interface IWareHousesSvc
     {
-        List<WareHouses> GetWareHousesAll();
+        List<WareHouseViewModel> GetWareHousesAll();
         WareHouses GetWareHouses(int id);
         int AddWareHouse(WareHouses wareHouses);
         int EditWareHouses(int id, WareHouses wareHouses);
@@ -22,12 +23,18 @@ namespace PDP104.Service
             _context = context;
         }
 
-        public List<WareHouses> GetWareHousesAll()
+        public List<WareHouseViewModel> GetWareHousesAll()
         {
             return _context.WareHouses
-                .Include(w => w.StorageSpaces) // Bao gồm StorageSpaces để tính toán Space
+                .Select(w => new WareHouseViewModel
+                {
+                    Id = w.Id,
+                    Location = w.Location,
+                    Status = w.Status
+                })
                 .ToList();
         }
+
 
 
         public WareHouses GetWareHouses(int id)

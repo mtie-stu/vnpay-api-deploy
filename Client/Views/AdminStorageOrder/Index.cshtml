@@ -1,0 +1,119 @@
+﻿@using Client.Models
+@model IEnumerable<Client.Models.ViewModel.AdminStorageViewModel>
+@using Client.Services
+@inject ImageService imageService
+
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+    var typeOfGoodsList = Enum.GetValues(typeof(TypeOfGoods)).Cast<TypeOfGoods>().ToList();
+    var statusOrderList = Enum.GetValues(typeof(StatusOrder)).Cast<StatusOrder>().ToList();
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Danh sách đơn hàng</h2>
+
+    <!-- Bộ lọc -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <label for="typeFilter" class="form-label">Lọc theo loại hàng</label>
+            <select id="typeFilter" class="form-select">
+                <option value="">Tất cả</option>
+                @foreach (var type in typeOfGoodsList)
+                {
+                    <option value="@type.GetDisplayName()">@type.GetDisplayName()</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label for="statusFilter" class="form-label">Lọc theo trạng thái đơn</label>
+            <select id="statusFilter" class="form-select">
+                <option value="">Tất cả</option>
+                @foreach (var status in statusOrderList)
+                {
+                    <option value="@status.GetDisplayName()">@status.GetDisplayName()</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label for="searchInput" class="form-label">Tìm kiếm</label>
+            <input type="text" id="searchInput" class="form-control" placeholder="Nhập từ khóa...">
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table id="orderTable" class="table table-bordered table-hover align-middle fs-5">
+            <thead class="table-primary">
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Người dùng ID</th>
+                    <th>Ngày đặt</th>
+                    <th>Trạng thái đơn</th>
+                    <th>Trạng thái kho</th>
+                    <th>Loại hàng</th>
+                    <th>Số lượng</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.NguoiDungId</td>
+                        <td>@item.OrderDate.ToString("dd/MM/yyyy")</td>
+                        <td>@item.StatusOrder.GetDisplayName()</td>
+                        <td>@item.StatusStorage.GetDisplayName()</td>
+                        <td>@item.TypeOfGoods.GetDisplayName()</td>
+                        <td>@item.Quantity</td>
+                        <td>
+                            <a asp-controller="AdminStorageOrder" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Xem</a>
+
+                            @if (item.StatusOrder == StatusOrder.Confirming)
+                            {
+                                <a asp-controller="AdminStorageOrder" asp-action="ActiveOrder" asp-route-id="@item.Id" class="btn btn-sm btn-success mt-1">Xác nhận</a>
+                                <a asp-controller="AdminStorageOrder" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning mt-1">Chỉnh sửa</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const typeFilter = document.getElementById('typeFilter');
+        const statusFilter = document.getElementById('statusFilter');
+        const searchInput = document.getElementById('searchInput');
+
+        typeFilter.addEventListener('change', filterTable);
+        statusFilter.addEventListener('change', filterTable);
+        searchInput.addEventListener('input', filterTable);
+
+        function filterTable() {
+            const typeVal = typeFilter.value.toLowerCase();
+            const statusVal = statusFilter.value.toLowerCase();
+            const searchVal = searchInput.value.toLowerCase();
+
+            const rows = document.querySelectorAll('#orderTable tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowText = Array.from(cells).map(c => c.textContent.toLowerCase()).join(' ');
+                const typeText = cells[5].textContent.toLowerCase();
+                const statusText = cells[3].textContent.toLowerCase();
+
+                const matchSearch = rowText.includes(searchVal);
+                const matchType = typeVal === "" || typeText.includes(typeVal);
+                const matchStatus = statusVal === "" || statusText.includes(statusVal);
+
+                row.style.display = (matchSearch && matchType && matchStatus) ? '' : 'none';
+            });
+        }
+    </script>
+}

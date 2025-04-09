@@ -11,15 +11,15 @@
     <div class="frame d-flex justify-content-center align-items-center">
         <!-- Khu vực logo + Đăng nhập bằng Google, Facebook -->
         <div class="logo-section">
-            <img src="~/Images/tachnen.png" alt="Logo" class="img-fluid rounded-circle" style="width: 400px; height: 200px; object-fit: cover;">
-            <div class="social-login">
+            <img src="~/Images/MOT.png" alt="Logo" class="img-fluid rounded-circle" style="width: auto; height: 500px; object-fit: cover;">
+           @*  <div class="social-login">
                 <button class="btn-social btn-google">
                     <i class="fab fa-google"></i>
                 </button>
                 <button class="btn-social btn-facebook">
                     <i class="fab fa-facebook-f"></i>
                 </button>
-            </div>
+            </div> *@
         </div>
 
         <!-- Khu vực form đăng nhập -->
@@ -44,7 +44,8 @@
 
                 <div class="form-group">
                     <label>
-                        <input type="checkbox" name="AgreeTerms" required> Tôi đồng ý với điều khoản và dịch vụ
+                       Bằng cách ấn đăng nhập bạn đã đồng ý với <a href="@Url.Action("Terms", "Policy")">Điều khoản và dịch vụ</a>
+
                     </label>
                 </div>
 

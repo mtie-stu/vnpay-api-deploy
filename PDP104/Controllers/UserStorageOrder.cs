@@ -42,7 +42,8 @@ namespace PDP104.Controllers
         [HttpGet("{id}")]
         public IActionResult GetOrderById(int id)
         {
-            var order = _userStorageOrderService.GetStorageOrder(id);
+            var order = _userStorageOrderService.GetStorageOrder(id);    
+
             if (order == null)
                 return NotFound("Không tìm thấy đơn hàng.");
             return Ok(order);
