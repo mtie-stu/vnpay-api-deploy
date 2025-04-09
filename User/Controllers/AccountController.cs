@@ -1,13 +1,12 @@
-﻿using Client.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
-using Client.Models.AuthenViewModel;
+using User.Models.AuthenViewModel;
+using User.Services;
 
-namespace Client.Controllers
+namespace User.Controllers
 {
     public class AccountController : Controller
     {
@@ -53,7 +52,6 @@ namespace Client.Controllers
                 Secure = true,    // Chỉ hoạt động trên HTTPS
                 SameSite = SameSiteMode.Strict // Ngăn tấn công CSRF
             });
-
             return RedirectToAction("Index", "Home");
         }
 
@@ -83,12 +81,9 @@ namespace Client.Controllers
                     return RedirectToAction("Login", "Account");
                 }
             }
-
             TempData["Error"] = "Lỗi khi đăng xuất!";
             return RedirectToAction("Index", "Home");
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
