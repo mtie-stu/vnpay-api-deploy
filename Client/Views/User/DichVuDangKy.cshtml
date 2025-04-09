@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký dịch vụ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f5fc;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            background-color: #3f738a;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .form-layout {
+            display: flex;
+            gap: 20px;
+        }
+
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .image-placeholder {
+            width: 200px;
+            height: 200px;
+            background: #ececec;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+            .image-placeholder img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .upload-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+            .upload-label:hover {
+                background-color: #0056b3;
+            }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 300px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .date-picker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .date-picker input {
+                width: 140px;
+            }
+
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-cancel {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    
+        <h2>Dịch vụ đăng ký:</h2>
+
+        <div class="form-layout">
+            <!-- Phần tải ảnh up ảnh đây không biết có lỗi gì không nửa cẩn thận!!! -->
+            <div class="upload-section">
+                <div class="image-placeholder">
+                    <img id="preview-image" src="/Images/r.png" alt="Ảnh xem trước" />
+                </div>
+                <label for="upload-image" class="upload-label">
+                    📷 Tải ảnh lên
+                </label>
+                <input type="file" id="upload-image" accept="image/*">
+            </div>
+
+            <!-- Phần form tự thêm asp vào nha, thêm vào bị lỗi nên không thêm -->
+            <div>
+                <form>
+                    <div class="form-group">
+                        <label>MÃ KHÁCH HÀNG:</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>HỌ VÀ TÊN:</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email">
+                    </div>
+                    <div class="form-group">
+                        <label>CHỦNG LOẠI HÀNG:</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>SỐ LƯỢNG:</label>
+                        <input type="number">
+                    </div>
+                    <div class="form-group">
+                        <label>TRẠNG THÁI:</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>VỊ TRÍ LƯU TRỮ:</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group date-picker">
+                        <label>NGÀY NHẬP KHO:</label>
+                        <input type="date">
+                        <label>NGÀY XUẤT KHO:</label>
+                        <input type="date">
+                    </div>
+
+                    <!-- Nút đăng ký & hủy -->
+                    <div class="button-group">
+                        <button type="submit" class="btn-submit">Đăng ký</button>
+                        <button type="reset" class="btn-cancel">Hủy</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+  
+
+   
+</body>
+</html>
