@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Client.Models;
 
-namespace Client.ViewModel
+namespace Client.Models.ViewModel
 {
     public class StorageSpacesViewModel
     {

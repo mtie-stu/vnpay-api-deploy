@@ -1,8 +1,73 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Trang Chủ | MOT";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-section text-white text-center py-5" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/Images/storage-banner.jpg') center/cover no-repeat;">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Giải Pháp Lưu Trữ An Toàn & Chuyên Nghiệp</h1>
+        <p class="lead">MOT cung cấp dịch vụ lưu trữ hiệu quả cho cá nhân và doanh nghiệp</p>
+        <a class="btn btn-warning btn-lg mt-3" href="@Url.Action("Contact", "Home")">Liên Hệ Ngay</a>
+    </div>
 </div>
+
+<div class="container my-5">
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <i class="bi bi-shield-lock display-4 text-primary"></i>
+                    <h5 class="card-title mt-3">An Toàn & Bảo Mật</h5>
+                    <p class="card-text">Chúng tôi bảo vệ hàng hóa của bạn với hệ thống an ninh nhiều lớp 24/7.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <i class="bi bi-truck display-4 text-success"></i>
+                    <h5 class="card-title mt-3">Vận Chuyển Linh Hoạt</h5>
+                    <p class="card-text">Hỗ trợ lấy hàng và giao hàng theo yêu cầu với chi phí hợp lý.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <i class="bi bi-building display-4 text-danger"></i>
+                    <h5 class="card-title mt-3">Cơ Sở Hiện Đại</h5>
+                    <p class="card-text">Kho lưu trữ đạt chuẩn, hệ thống quản lý chuyên nghiệp và tiện lợi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="/Images/warehouse.png" alt="Kho Lưu Trữ" class="img-fluid rounded shadow">
+        </div>
+        <div class="col-md-6">
+            <h3 class="fw-bold">Tại Sao Chọn MOT?</h3>
+            <ul class="list-group list-group-flush mt-3">
+                <li class="list-group-item">✔ Giao diện quản lý đơn hàng trực tuyến tiện lợi</li>
+                <li class="list-group-item">✔ Kiểm kê dễ dàng và chính xác</li>
+                <li class="list-group-item">✔ Tư vấn hỗ trợ nhanh chóng, tận tâm</li>
+                <li class="list-group-item">✔ Chính sách giá cạnh tranh, minh bạch</li>
+            </ul>
+            <a class="btn btn-outline-primary mt-4" href="@Url.Action("About", "Home")">Tìm Hiểu Thêm</a>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-5 text-center">
+    <div class="container">
+        <h4 class="fw-bold mb-3">Bạn sẵn sàng lưu trữ hiệu quả cùng MOT?</h4>
+        <a href="@Url.Action("Register", "Account")" class="btn btn-success btn-lg">Đăng Ký Ngay</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
+}

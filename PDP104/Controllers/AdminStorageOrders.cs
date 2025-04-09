@@ -36,9 +36,9 @@ namespace PDP104.Controllers
         }
 
         [HttpPut("SetLocation/{orderId}")]
-        public ActionResult SetLocationStorageOrder(int orderId, [FromForm] AdminStorageViewModel model)
+        public ActionResult SetLocationStorageOrder(int orderId)
         {
-            int result = _storageOrderService.SetLocationStorageOrder(orderId, model);
+            int result = _storageOrderService.SetLocationStorageOrder(orderId);
             if (result == -1)
                 return BadRequest("Không đủ vị trí lưu trữ");
             if (result == 0)
@@ -51,8 +51,8 @@ namespace PDP104.Controllers
         {
             int result = _storageOrderService.EditOrder(id, model);
             if (result == 0)
-                return BadRequest("Không thể chỉnh sửa đơn hàng");
-            return Ok("Chỉnh sửa đơn hàng thành công");
+                return BadRequest("Không thể chỉnh sửa đơn hàng do ngày nhập và ngày xuất không hợp lệ");
+            return Ok("Chỉnh sửa ngày nhập/ xuất thành công");
         }
 
         [HttpPut("Import/{id}")]
@@ -65,9 +65,9 @@ namespace PDP104.Controllers
         }
 
         [HttpPut("Export/{id}")]
-        public ActionResult ExportOrder(int id, [FromQuery] DateTime dateOfShipment)
+        public ActionResult ExportOrder(int id)
         {
-            int result = _storageOrderService.ExportingOrder(id, dateOfShipment);
+            int result = _storageOrderService.ExportingOrder(id);
             if (result == 0)
                 return BadRequest("Không thể xuất hàng");
             return Ok("Xuất hàng thành công");

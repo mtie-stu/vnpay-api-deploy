@@ -58,7 +58,7 @@ namespace PDP104.Service
                 {
                     Floor = storageSpacesVm.Floor,
                     LocationStorage = storageSpacesVm.LocationStorage,
-                    Status = storageSpacesVm.Status,
+                    Status = StatusStorage.empty,
                     WareHouseId = storageSpacesVm.WareHouseId
                 };
 
