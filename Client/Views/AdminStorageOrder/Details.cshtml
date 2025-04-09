@@ -1,101 +1,146 @@
-﻿@using Client.Controllers
-@using Client.Models
+﻿@using Client.Models
 @model Client.Models.ViewModel.AdminStorageViewModel
 @using Client.Services
 @inject ImageService imageService
 
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
 
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý dịch vụ khách hàng</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    @{
-        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    }
-</head>
+<div class="container py-5">
+    <h2 class="mb-5 text-center">Chi tiết đơn hàng #@Model.Id</h2>
 
-<body>
-    <div class="container mt-5">
-        <h2 class="mb-4">Chi tiết đơn hàng #@Model.Id</h2>
-        <div class="card mt-4">
-            <div class="card-body">
-                <h5 class="card-title">Thông tin người dùng</h5>
-                <ul class="list-group">
-                    <li class="list-group-item">Người dùng ID: @Model.NguoiDungId</li>
-                </ul>
-            </div>
+    <!-- Thông tin người dùng -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Thông tin người dùng</h5>
+            <p class="card-text">Người dùng ID: @Model.NguoiDungId</p>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Thông tin đơn hàng </h5>
-                <ul class="list-group">
-                    <li class="list-group-item">Ngày đặt hàng: @Model.OrderDate</li>
-                    <li class="list-group-item">Ngày nhập hàng: @Model.DateOfEntry</li>
-                    <li class="list-group-item">Ngày xuất hàng: @Model.DateOfShipment</li>
-                    <li class="list-group-item">Trạng thái đơn hàng: @Model.StatusOrder.GetDisplayName()</li>
-                    <li class="list-group-item">Trạng thái kho: @Model.StatusStorage.GetDisplayName()</li>
-                    <li class="list-group-item">Loại hàng hóa: @Model.TypeOfGoods.GetDisplayName()</li>
-                    <li class="list-group-item">Số lượng: @Model.Quantity</li>
-                    <li class="list-group-item">Giá: @Model.Price VND</li>
-                </ul>
-            </div>
+    </div>
+
+    <!-- Thông tin đơn hàng -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Thông tin đơn hàng</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Ngày đặt hàng: @Model.OrderDate</li>
+                <li class="list-group-item">Ngày nhập hàng: @Model.DateOfEntry</li>
+                <li class="list-group-item">Ngày xuất hàng: @Model.DateOfShipment</li>
+                <li class="list-group-item">Trạng thái đơn hàng: @Model.StatusOrder.GetDisplayName()</li>
+                <li class="list-group-item">Loại hàng hóa: @Model.TypeOfGoods.GetDisplayName()</li>
+                <li class="list-group-item">Số lượng: @Model.Quantity</li>
+                <li class="list-group-item">Giá: @Model.Price.ToString("N0") VND</li>
+            </ul>
         </div>
-        <!-- Phần gallery hiển thị hình ảnh đơn hàng -->
-        @if (Model.ImageUrls != null && Model.ImageUrls.Any())
-        {
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="card-title">Hình ảnh đơn hàng</h5>
-                    <div class="row">
-                        @foreach (var imageFileName in Model.ImageUrls)
+    </div>
+
+    <!-- Hình ảnh đơn hàng -->
+    @if (Model.ImageUrls != null && Model.ImageUrls.Any())
+    {
+        var carouselId = "orderImageCarousel";
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Hình ảnh đơn hàng</h5>
+                <div id="@carouselId" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner rounded">
+                        @for (int i = 0; i < Model.ImageUrls.Count; i++)
                         {
-                            <div class="col-md-3 mb-3">
-                                <div class="card">
-                                    <img src="@await imageService.GetImageUrl(imageFileName)" class="menu-img" alt="Model.ImageUrls" style="height: 100px;" />
-                                </div>
+                            var imageUrl = await imageService.GetImageUrl(Model.ImageUrls[i]);
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <img src="@imageUrl"
+                                     class="d-block w-100 img-thumbnail"
+                                     style="max-height: 400px; object-fit: cover; cursor: pointer;"
+                                     data-bs-toggle="modal"
+                                     data-bs-target="#imageModal"
+                                     data-img-url="@imageUrl"
+                                     alt="Hình ảnh đơn hàng" />
                             </div>
                         }
                     </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Trước</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Sau</span>
+                    </button>
                 </div>
             </div>
-        }
-  
+        </div>
 
-        @if (Model.StatusOrder == StatusOrder.Confirming)
-        {
-            <!-- Nếu trạng thái đơn hàng là Confirming (Đang xác nhận), hiển thị nút xác nhận -->
-            <div class="mt-4">
-                <a asp-controller="AdminStorageOrder" asp-action="ActiveOrder" asp-route-id="@Model.Id" class="btn btn-primary">
-                    Xác Nhận Đơn Hàng
-                </a>
-                    <a asp-controller="AdminStorageOrder" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
-                       Chỉnh Sửa Ngày Nhập/ Xuất
-                    </a>
-                
-
-            </div>
-        }
-        else
-        {
-            <!-- Nếu không phải trạng thái Confirming, hiển thị thông tin kho bãi -->
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="card-title">Thông tin kho bãi</h5>
-                    <ul class="list-group">
-                        <li class="list-group-item">Tầng: @Model.Floor</li>
-                        <li class="list-group-item">Vị trí lưu trữ: @Model.LocationStorage</li>
-                    </ul>
+        <!-- Modal xem ảnh lớn -->
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <img id="modalImage" src="" alt="Xem ảnh lớn" class="img-fluid w-100" style="object-fit: contain; max-height: 90vh;" />
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const modalImage = document.getElementById("modalImage");
+                const images = document.querySelectorAll("[data-bs-target='#imageModal']");
+                images.forEach(img => {
+                    img.addEventListener("click", () => {
+                        const url = img.getAttribute("data-img-url");
+                        modalImage.src = url;
+                    });
+                });
+            });
+        </script>
+    }
+
+    <!-- Trạng thái và hành động -->
+    @if (Model.StatusOrder == StatusOrder.Confirming)
+    {
+        <div class="d-flex gap-3 mb-4">
+            <a asp-controller="AdminStorageOrder" asp-action="ActiveOrder" asp-route-id="@Model.Id" class="btn btn-success">
+                ✅ Xác Nhận Đơn Hàng
+            </a>
+            <a asp-controller="AdminStorageOrder" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">
+                ✏️ Chỉnh Sửa Ngày Nhập/Xuất
+            </a>
+        </div>
+    }
+    else
+    {
+        <!-- Thông tin kho bãi -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Thông tin kho bãi</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Số Vị Trí Lưu Trữ: @Model.Floor</li>
+                    <li class="list-group-item">Vị trí lưu trữ: @Model.LocationStorage</li>
+                </ul>
+            </div>
+        </div>
+
+        @if (Model.StatusOrder == StatusOrder.Confirmed)
+        {
+   
+            <div class="d-flex gap-3 mb-4">
+                <form asp-controller="AdminStorageOrder" asp-action="Import" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-success">
+                        ✅ Nhập Hàng
+                    </button>
+                </form>
+            </div>
         }
+        @if (Model.StatusOrder == StatusOrder.Exported)
+        {
+            <form asp-controller="AdminStorageOrder" asp-action="Export" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-success">
+                    ✅ Xuất Hàng
+                </button>
+            </form>
+        }
+    }
 
-       
-    </div>
+</div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,0 +1,95 @@
+﻿@using Client.Models
+@using Client.Models.ViewModel
+
+@model IEnumerable<Client.Models.ViewModel.InventoryViewModel>
+@using System.ComponentModel.DataAnnotations
+
+@{
+    ViewBag.Title = "Danh sách kiểm kê ";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Danh sách kiểm kê kho</h2>
+
+    <!-- Bộ lọc -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <label for="statusFilter" class="form-label">Lọc theo trạng thái kiểm kê</label>
+            <select id="statusFilter" class="form-select">
+                <option value="">Tất cả</option>
+                <option value="Hoàn thành">Hoàn thành</option>
+                <option value="Chưa hoàn thành">Chưa hoàn thành</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="searchInput" class="form-label">Tìm kiếm</label>
+            <input type="text" id="searchInput" class="form-control" placeholder="Nhập từ khóa...">
+        </div>
+    </div>
+
+    <!-- Bảng dữ liệu -->
+    <div class="table-responsive">
+        <table id="inventoryTable" class="table table-bordered table-hover align-middle fs-6">
+            <thead class="table-primary">
+                <tr>
+                    <th>Mã đơn hàng kho</th>
+                    <th>Ngày yêu cầu</th>
+                    <th>Trạng thái kiểm kê</th>
+                    <th>Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.StorageOrderId</td>
+                        <td>@item.RequestDate.ToString("dd/MM/yyyy")</td>
+                        <td>@(item.InventoryStatus == InventoryStatus.Complete ? "Hoàn thành" : "Chưa hoàn thành")</td>
+                        <td>
+                            <a asp-controller="Inventory" asp-action="GetItemsByInventoryId" asp-route-id="@item.Id" class="btn btn-sm btn-info">Xem</a>
+                            <form asp-controller="Inventory" asp-action="Create" asp-route-id="@item.Id" method="get" class="d-inline">
+                                <button type="submit" class="btn btn-outline-success btn-sm">
+                                    ➕ Thêm Sản Phẩm
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const statusFilter = document.getElementById('statusFilter');
+        const searchInput = document.getElementById('searchInput');
+
+        statusFilter.addEventListener('change', locBang);
+        searchInput.addEventListener('input', locBang);
+
+        function locBang() {
+            const giaTriTrangThai = statusFilter.value.trim();
+            const tuKhoa = searchInput.value.trim().toLowerCase();
+
+            const hang = document.querySelectorAll('#inventoryTable tbody tr');
+
+            hang.forEach(row => {
+                const o = row.querySelectorAll('td');
+                if (o.length < 3) return;
+
+                        const maDonHang = o[0].textContent.toLowerCase();
+                const ngayYeuCau = o[1].textContent.toLowerCase();
+                const trangThaiText = o[2].textContent.trim(); // Giữ nguyên định dạng tiếng Việt có dấu
+
+                const noiDungHang = `${maDonHang} ${ngayYeuCau} ${trangThaiText.toLowerCase()}`;
+                const khopTuKhoa = noiDungHang.includes(tuKhoa);
+                const khopTrangThai = giaTriTrangThai === "" || trangThaiText === giaTriTrangThai;
+
+                        row.style.display = (khopTuKhoa && khopTrangThai) ? '' : 'none';
+                    });
+                }
+    </script>
+}

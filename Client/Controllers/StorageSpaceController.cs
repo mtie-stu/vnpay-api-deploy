@@ -1,49 +1,93 @@
-﻿using Client.ViewModel;
+﻿using Client.Models;
+using Client.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
-using PDP104.ViewModel;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net.Http.Headers;
 
-namespace PDP104.MVC.Controllers
+namespace Client.Controllers
 {
     public class StorageSpacesController : Controller
     {
         private readonly HttpClient _httpClient;
 
-        public StorageSpacesController(HttpClient httpClient)
+        public StorageSpacesController(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient("MyApiClient");
+
         }
 
         public async Task<IActionResult> Index()
         {
-            var storageSpaces = await _httpClient.GetFromJsonAsync<List<StorageSpacesViewModel>>("StorageSpaces");
-            return View(storageSpaces);
+           
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Gọi API lấy đơn hàng có xác thực
+            var orderRequest = new HttpRequestMessage(HttpMethod.Get, $"StorageSpaces");
+            orderRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var orderResponse = await _httpClient.SendAsync(orderRequest);
+            if (!orderResponse.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+
+            var orders = await orderResponse.Content.ReadFromJsonAsync<List<StorageSpacesViewModel>>();
+            return View(orders);
         }
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Create()
         {
-            var storageSpace = await _httpClient.GetFromJsonAsync<StorageSpacesViewModel>($"StorageSpaces/{id}");
-            if (storageSpace == null) return NotFound();
-            return View(storageSpace);
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            
+            var orderRequest = new HttpRequestMessage(HttpMethod.Get, $"WareHouse");
+            orderRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var orderResponse = await _httpClient.SendAsync(orderRequest);
+            if (!orderResponse.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+
+            var wareHouses = await orderResponse.Content.ReadFromJsonAsync<List<WareHouses>>();
+            ViewBag.WareHouses = wareHouses != null && wareHouses.Count > 0
+                      ? new SelectList(wareHouses, "Id", "Location")
+                      : new SelectList(Enumerable.Empty<WareHouses>(), "Id", "Location");
+            return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Create(StorageSpacesViewModel model)
         {
-            var response = await _httpClient.PostAsJsonAsync("StorageSpaces", model);
-            if (!response.IsSuccessStatusCode) return BadRequest("Không thể thêm vị trí lưu trữ");
-            return RedirectToAction("Index");
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "StorageSpaces");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            request.Content = JsonContent.Create(model); // Đính kèm nội dung JSON
+
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+
+            return RedirectToAction("Index"); // Chuyển hướng về Index nếu thành công
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id, StorageSpacesViewModel model)
-        {
-            var response = await _httpClient.PutAsJsonAsync($"StorageSpaces/{id}", model);
-            if (!response.IsSuccessStatusCode) return NotFound("Không tìm thấy vị trí lưu trữ");
-            return RedirectToAction("Index");
-        }
+
+
     }
 }

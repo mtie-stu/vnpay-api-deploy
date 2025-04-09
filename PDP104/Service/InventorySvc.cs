@@ -28,21 +28,14 @@ namespace PDP104.Service
         }
         public List<InventoryViewModel> GetAllInventory()
         {
-            return _context.StorageOrders
-                .Where(order => order.StatusInventory == StatusInventory.Active // Lọc kho đang hoạt động
-                             && order.StorageSpaces.Any(space => space.Status == StatusStorage.full) // Chỉ lấy đơn hàng có kho đầy
-                             && (order.TypeOfGoods == TypeOfGoods.Container18ft
-                                 || order.TypeOfGoods == TypeOfGoods.Container20ft
-                                 || order.TypeOfGoods == TypeOfGoods.Container22ft) // Chỉ lấy đơn hàng có loại hàng là Container
-                             && order.StatusOrder == StatusOrder.Imported) // Chỉ lấy đơn hàng đã nhập kho
-                .OrderBy(order => order.DateOfEntry) // Sắp xếp theo ngày nhập kho tăng dần
+            return _context.Inventories
                 .Select(order => new InventoryViewModel
                 {
-                    StorageOrderId = order.Id,
-                    RequestDate = order.Inventory.RequestDate,
-                    StatusInventory = order.StatusInventory,
-                    DateOfEntry = order.DateOfEntry,
-                    DateOfShipment = order.DateOfShipment,
+                    Id = order.Id,
+                    StorageOrderId = order.StorageOrdersId,
+                    RequestDate = order.RequestDate,
+                    InventoryStatus = order.InventoryStatus
+
                 })
                 .ToList();
         }
@@ -54,6 +47,7 @@ namespace PDP104.Service
                 .OrderBy(item => item.Model) // Sắp xếp theo Model (tùy chỉnh nếu cần)
                 .Select(item => new InventoryViewModel
                 {
+                    Id = item.Id,   
                     Model = item.Model,
                     Quantity = item.Quantity
                 })
@@ -83,6 +77,7 @@ namespace PDP104.Service
             {
                 InventoryId = inventoryId,
                 Model = model,
+                Quantity = 1,
             };
 
             _context.InventoryItems.Add(inventoryItem);

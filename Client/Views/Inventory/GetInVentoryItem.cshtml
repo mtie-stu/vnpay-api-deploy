@@ -1,0 +1,51 @@
+﻿@model Client.Models.InventoryItemViewModel
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm kiểm kê";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Chi tiết sản phẩm kiểm kê</h2>
+    <h3 class="col-sm-3">Mã kiểm kê</h3>
+    <h3 class="col-sm-9">@Model.InventoryId</h3>
+    <div class="card shadow-sm p-4">
+        <dl class="row fs-5">
+            <dt class="col-sm-3">Mã sản phẩm (ID)</dt>
+            <dd class="col-sm-9">@Model.Id</dd>
+
+            <dt class="col-sm-3">Tên Model</dt>
+            <dd class="col-sm-9">@Model.Model</dd>
+
+            <dt class="col-sm-3">Số lượng</dt>
+            <dd class="col-sm-9">
+                <div class="d-flex align-items-center">
+                    <!-- Nút Giảm -->
+                    <form asp-action="UpdateQuantity" asp-controller="Inventory" method="post" class="d-inline me-2">
+                        <input type="hidden" name="inventoryItemId" value="@Model.Id" />
+                        <input type="hidden" name="newQuantity" value="@(Model.Quantity - 1)" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm" @(Model.Quantity <= 0 ? "disabled" : "")>➖</button>
+                    </form>
+
+                    <!-- Hiển thị số lượng hiện tại -->
+                    <span class="mx-2 fw-bold">@Model.Quantity</span>
+
+                    <!-- Nút Tăng -->
+                    <form asp-action="UpdateQuantity" asp-controller="Inventory" method="post" class="d-inline ms-2">
+                        <input type="hidden" name="inventoryItemId" value="@Model.Id" />
+                        <input type="hidden" name="newQuantity" value="@(Model.Quantity + 1)" />
+                        <button type="submit" class="btn btn-outline-success btn-sm">➕</button>
+                    </form>
+                </div>
+            </dd>
+
+            <dt class="col-sm-3">Mã kiểm kê</dt>
+            <dd class="col-sm-9">@Model.InventoryId</dd>
+        </dl>
+
+        <div class="mt-4">
+            <a asp-action="Index" class="btn btn-secondary">⬅ Quay lại danh sách</a>
+@*             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">✏️ Chỉnh sửa</a>
+ *@        </div>
+    </div>
+</div>
