@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý dịch vụ khách hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    @{
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    <style>
+        .status-confirmed {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        .status-pending {
+            background-color: #ffc107;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        .status-rejected {
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        .pagination {
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h3>Quản lý dịch vụ giao dịch khách hàng</h3>
+        <div class="d-flex justify-content-between mb-3">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmServiceModal">
+                Thêm
+            </button>
+            <input type="text" class="form-control w-25" placeholder="Search">
+        </div>
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>Tên</th>
+                    <th>Hành Động</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody> @* dữ liệu ở dưới test thôi nha *@
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>Jane Cooper</td>
+                    <td><span class="status-confirmed">Xác Nhận</span></td>
+                    <td>jessica.hanson@example.com</td>
+                    <td>27/05/2025</td>
+                    <td><i class="fas fa-info-circle"></i></td>
+                </tr>
+           
+            </tbody>
+        </table>
+     
+    </div>
+    @* Cái đoạn dưới sử dụng chatgpt nó là boostrap nên có j lên chat kêu cách xác nhân *@
+    <div class="modal fade" id="confirmServiceModal" tabindex="-1" aria-labelledby="confirmServiceLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmServiceLabel">Xác nhận dịch vụ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xác nhận dịch vụ này không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-success" id="confirmBtn">Xác nhận</button> @* thêm sử kiện vào để xác nhận *@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

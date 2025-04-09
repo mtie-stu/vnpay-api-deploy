@@ -1,7 +1,7 @@
 ﻿@* @model IEnumerable<User.Models.Order> *@
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Trang chủ";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 
@@ -51,40 +51,40 @@
                 <div class="card-item"><i class="fas fa-calendar card-icon"></i> 01/01/2023</div>
                 <div class="status-btn">Đang xử lý</div>
             </div>
-        </div>
     </div>
+</div>
 
-    @section Scripts {
-        <script>
-            const filterStatus = document.getElementById('filter-status');
-            const filterSort = document.getElementById('filter-sort');
-            const searchInput = document.getElementById('search-input');
-            const orderCardsContainer = document.getElementById('order-cards');
+@section Scripts {
+    <script>
+        const filterStatus = document.getElementById('filter-status');
+        const filterSort = document.getElementById('filter-sort');
+        const searchInput = document.getElementById('search-input');
+        const orderCardsContainer = document.getElementById('order-cards');
 
-            function filterAndSearchOrders() {
-                const statusFilter = filterStatus.value;
-                const sortOption = filterSort.value;
-                const searchText = searchInput.value.toLowerCase();
-                const orderCards = Array.from(orderCardsContainer.getElementsByClassName('order-card'));
+        function filterAndSearchOrders() {
+            const statusFilter = filterStatus.value;
+            const sortOption = filterSort.value;
+            const searchText = searchInput.value.toLowerCase();
+            const orderCards = Array.from(orderCardsContainer.getElementsByClassName('order-card'));
 
-                let filteredOrders = orderCards.filter(card => {
-                    const cardStatus = card.getAttribute('data-status');
-                    const cardText = card.textContent.toLowerCase();
-                    return (statusFilter === 'all' || cardStatus === statusFilter) && cardText.includes(searchText);
-                });
+            let filteredOrders = orderCards.filter(card => {
+                const cardStatus = card.getAttribute('data-status');
+                const cardText = card.textContent.toLowerCase();
+                return (statusFilter === 'all' || cardStatus === statusFilter) && cardText.includes(searchText);
+            });
 
-                filteredOrders.sort((a, b) => {
-                    const idA = parseInt(a.getAttribute('data-id'));
-                    const idB = parseInt(b.getAttribute('data-id'));
-                    return sortOption === 'newest' ? idB - idA : idA - idB;
-                });
+            filteredOrders.sort((a, b) => {
+                const idA = parseInt(a.getAttribute('data-id'));
+                const idB = parseInt(b.getAttribute('data-id'));
+                return sortOption === 'newest' ? idB - idA : idA - idB;
+            });
 
-                orderCardsContainer.innerHTML = '';
-                filteredOrders.forEach(card => orderCardsContainer.appendChild(card));
-            }
+            orderCardsContainer.innerHTML = '';
+            filteredOrders.forEach(card => orderCardsContainer.appendChild(card));
+        }
 
-            filterStatus.addEventListener('change', filterAndSearchOrders);
-            filterSort.addEventListener('change', filterAndSearchOrders);
-            searchInput.addEventListener('input', filterAndSearchOrders);
-        </script>
-    }
+        filterStatus.addEventListener('change', filterAndSearchOrders);
+        filterSort.addEventListener('change', filterAndSearchOrders);
+        searchInput.addEventListener('input', filterAndSearchOrders);
+    </script>
+}
