@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using User.Models.AuthenViewModel;
 using User.Services;
 
@@ -17,7 +19,23 @@ namespace User.Controllers
         public IActionResult Register() => View();
         public IActionResult Login() => View();
         public IActionResult ForgotPassword() => View();
-        public IActionResult EditProfile() => View();
+        public IActionResult ResetPassword(string email, string token)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
+            {
+                ViewBag.Message = "Liên kết không hợp lệ hoặc đã hết hạn.";
+                return View(); // view này phải kiểm tra nếu Model null
+            }
+
+            var model = new ResetPasswordViewModel
+            {
+                Email = email,
+                Token = token
+            };
+
+            return View(model); // ✔ Model không null
+        }
+        public IActionResult AcessDeniedModel() => View();
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -25,7 +43,7 @@ namespace User.Controllers
             if (!ModelState.IsValid) return View(model);
 
             var isSuccess = await _accountService.RegisterAsync(model);
-            if (isSuccess != null)
+            if (isSuccess != null && isSuccess.Errors != null && isSuccess.Errors.Values.Any())
             {
                 ViewBag.Errors = isSuccess.Errors;
                 return View(model);
@@ -41,17 +59,34 @@ namespace User.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var token = await _accountService.LoginAsync(model);
+
+
             if (string.IsNullOrEmpty(token))
             {
-                return Unauthorized(new { message = "Sai thông tin đăng nhập." });
+                ModelState.AddModelError(string.Empty, "Sai thông tin đăng nhập.");
+                return View(model);
             }
 
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(token);
+
+            // Tạo ClaimsPrincipal từ token
+            var claims = jwtSecurityToken.Claims;
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            // Đăng nhập bằng Cookie Auth
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties
+            {
+                IsPersistent = true
+            });
             Response.Cookies.Append("JwtToken", token, new CookieOptions
             {
-                HttpOnly = true,  // Bảo vệ khỏi XSS (chặn JavaScript đọc token)
-                Secure = true,    // Chỉ hoạt động trên HTTPS
-                SameSite = SameSiteMode.Strict // Ngăn tấn công CSRF
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
             });
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -81,61 +116,93 @@ namespace User.Controllers
                     return RedirectToAction("Login", "Account");
                 }
             }
+
             TempData["Error"] = "Lỗi khi đăng xuất!";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Admin");
         }
 
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-
-            var isSuccess = await _accountService.ForgotPasswordAsync(model);
-            if (!isSuccess)
-            {
-                ModelState.AddModelError("", "Không thể gửi yêu cầu đặt lại mật khẩu.");
+            if (!ModelState.IsValid)
                 return View(model);
-            }
 
-            TempData["SuccessMessage"] = "Email đặt lại mật khẩu đã được gửi!";
-            return RedirectToAction("Login");
-        }
+            var result = await _accountService.ForgotPasswordAsync(model);
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Profile()
-        {
-            var token = GetJwtToken();
-            if (string.IsNullOrEmpty(token)) return RedirectToAction("Login");
+            ViewBag.Message = result.Message;
 
-            var userProfile = await _accountService.GetUserProfileAsync(token);
-            if (userProfile == null)
-            {
-                TempData["ErrorMessage"] = "Không thể tải thông tin cá nhân.";
-                return RedirectToAction("Login");
-            }
-
-            return View("EditProfile", userProfile);
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProfile(UserProfileViewModel model)
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            if (!ModelState.IsValid) return View("EditProfile", model);
+            if (!ModelState.IsValid)
+                return View(model);
 
-            var token = GetJwtToken();
-            if (string.IsNullOrEmpty(token)) return RedirectToAction("Login");
+            var (success, message) = await _accountService.ResetPasswordAsync(model);
+            ViewBag.Message = message;
 
-            var isUpdated = await _accountService.UpdateUserProfileAsync(token, model);
-            if (!isUpdated)
+            return RedirectToAction("Login", "Account");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
             {
-                ModelState.AddModelError("", "Cập nhật thất bại.");
-                return View("EditProfile", model);
+                return RedirectToAction("Login", "Account");
             }
 
-            TempData["SuccessMessage"] = "Cập nhật thành công!";
-            return RedirectToAction("Profile");
+            var user = await _accountService.GetUserProfileAsync(token);
+            if (user == null)
+            {
+                ViewBag.Error = "Không thể lấy thông tin người dùng.";
+                return View();
+            }
+
+            return View(user);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
+        {
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token)) return RedirectToAction("Login");
+
+            var user = await _accountService.GetUserProfileAsync(token);
+            if (user == null) return RedirectToAction("Login");
+
+            var model = new EditProfileViewModel
+            {
+                NameND = user.NameND,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Hinh = user.Hinh
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(EditProfileViewModel model)
+        {
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token)) return RedirectToAction("Login");
+
+            var result = await _accountService.EditProfileAsync(model, token);
+
+            if (result)
+            {
+                TempData["Success"] = "Cập nhật thành công!";
+                return RedirectToAction("Profile");
+            }
+
+            ModelState.AddModelError("", "Cập nhật thất bại!");
+            return View(model);
+        }
+
 
         // LẤY TOKEN NGƯỜI DÙNG  
         private string? GetJwtToken()

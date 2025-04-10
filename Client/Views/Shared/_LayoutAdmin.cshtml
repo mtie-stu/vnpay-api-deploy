@@ -1,8 +1,4 @@
-﻿@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -97,34 +93,79 @@
             color: gray;
             text-decoration: none;
         }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        .dropdown-menu {
+            border-radius: 15px;
+        }
     </style>
 </head>
 <body>
     <!-- Sidebar -->
     <nav class="sidebar">
-        <div>
-            <a id="img" class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Index">
-                <img src="~/Images/MỌT-Photoroom.png" alt="Logo" class="img-fluid">
-            </a>
-            <a href="#">Dashboard</a>
-            <a href="#">Order Management</a>
-            <a href="#">Customers</a>
-            <a href="#">Reports</a>
-            <a href="#">Settings</a>
-        </div>
-        <div class="user-info">
-            <img src="~/Images/R.png" alt="User Profile">
-            <div class="user-text">
-                <strong> @User.Identity.Name</strong>
-                <p class="email">@User</p>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+        {
+            <div>
+                <a id="img" class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Index">
+                    <img src="~/Images/MỌT-Photoroom.png" alt="Logo" class="img-fluid">
+                </a>
+                <a href="#">Dashboard</a>
+                <a href="#">Order Management</a>
+                <a href="#">Customers</a>
+                <a href="#">Reports</a>
+                <a href="#">Settings</a>
             </div>
-            <a id="Logout" href="@Url.Action("Logout", "Account")" class="logout-icon">
-                &#x2192;
-            </a>
-        </div>
-    </nav>
-
-    <!-- Main Content Wrapper -->
+            <div class="dropdown dropup text-center">
+                <a class="dropdown-toggle d-inline-block" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="~/Images/MOT.png" alt="User" class="rounded-circle border" style="width: 50px; height: 50px; object-fit: cover;">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end p-3 shadow text-center" style="min-width: 220px;">
+                    <li>
+                        <img src="~/Images/R.png" alt="User" class="rounded-circle border mb-2"
+                             style="width: 60px; height: 60px; object-fit: cover;">
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Profile">
+                            Profile
+                        </a>
+                    </li>
+                    <li>
+                        <strong>@User.Identity.Name</strong>
+                    </li>
+                    <li class="text-muted small">@User.FindFirst("email")?.Value</li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item text-danger" href="@Url.Action("Logout", "Account")">
+                            <i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
+        else if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
+        {
+            <div class="alert alert-danger mt-3">
+                ❌ Bạn không có quyền truy cập vào khu vực quản trị.
+            </div>
+        }
+        else
+        {
+            
+            <div class="user-info d-flex align-items-center justify-content-between p-3 rounded bg-white shadow-sm" style="gap: 10px;">
+                <span class="text-muted me-2">Bạn chưa đăng nhập</span>
+                <div class="d-flex gap-2">
+                    <a class="btn btn-outline-primary btn-sm" href="@Url.Action("Login", "Account")">Đăng nhập</a>
+                    <a class="btn btn-primary btn-sm" href="@Url.Action("Register", "Account")">Đăng ký</a>
+                </div>
+            </div>
+           
+        }
+    </nav> 
     <div class="main-wrapper">
         <div class="content">
             <main role="main">
@@ -139,7 +180,10 @@
                     <!-- About -->
                     <div class="col-md-4">
                         <h5>Về Chúng Tôi</h5>
-                        <p>Cung cấp giải pháp dịch vụ chuyên nghiệp, uy tín và tận tâm đến từng khách hàng. Đội ngũ của chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7.</p>
+                        <p>
+                            Cung cấp giải pháp dịch vụ chuyên nghiệp, uy tín và tận tâm đến từng khách hàng.
+                            Đội ngũ của chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7.
+                        </p>
                     </div>
 
                     <!-- Quick Links -->
@@ -183,5 +227,4 @@
 </body>
 
 @RenderSection("Scripts", required: false)
-
 </html>

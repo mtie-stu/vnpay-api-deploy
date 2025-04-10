@@ -102,17 +102,25 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
        options.SaveTokens = true;
    });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("UserOnly", policy =>
+        policy.RequireRole("User"));
+
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin"));
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost", policy =>
     {
-        policy.WithOrigins("https://localhost:7091","https://localhost:7023")
+        policy.WithOrigins("https://localhost:7091", "https://localhost:7023")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
     });
 });
-
 
 /*builder.Services.AddIdentity<NguoiDung, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()

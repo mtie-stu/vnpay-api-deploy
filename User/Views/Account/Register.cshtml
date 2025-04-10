@@ -1,34 +1,28 @@
-﻿@{
+﻿@model User.Models.ApiErrorResponse
+@{
     ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="frame">
     <!-- Khu vực logo + Đăng ký bằng Google, Facebook -->
     <div class="logo-section">
         <img src="~/Images/tachnen.png" alt="Logo" class="img-fluid rounded-circle" style="width: 400px; height: 200px; object-fit: cover;">
-        <div class="social-login">
+        @*     <div class="social-login">
             <button class="btn-social btn-google">
                 <i class="fab fa-google"></i>
             </button>
             <button class="btn-social btn-facebook">
                 <i class="fab fa-facebook-f"></i>
             </button>
-        </div>
+        </div> *@
     </div>
     @if (ViewBag.Errors != null)
     {
-        <div class="alert alert-danger">
-            @foreach (var error in ViewBag.Errors)
-            {
-                <strong>@error.Key:</strong>
-                <ul>
-                    @foreach (var message in error.Value)
-                    {
-                        <li>@message</li>
-                    }
-                </ul>
-            }
-        </div>
+        foreach (var err in ViewBag.Errors)
+        {
+            <div class="alert alert-danger">@err.Description</div>
+        }
     }
 
     <!-- Khu vực form đăng ký -->
@@ -48,7 +42,7 @@
                 <label>Sdt</label>
                 <input type="number" class="form-control" name="SĐT" placeholder="Enter SDT" required>
             </div>
-           @*  <div class="form-group">
+            @*  <div class="form-group">
                 <label>Địa chỉ</label>
                 <input type="text" class="form-control" name="DiaChi" placeholder="Enter địa chỉ" required>
             </div> *@
@@ -63,12 +57,18 @@
             </div>
 
             <div class="form-group">
-                <label>
-                    <input type="checkbox" required> Tôi đồng ý với điều khoản và dịch vụ
-                </label>
+                <h5>
+                    Bằng cách ấn đăng ký bạn đã đồng ý với <a href="@Url.Action("Terms", "Policy")">Điều khoản và dịch vụ</a> của chúng tôi.
+                </h5>
             </div>
 
             <button type="submit" class="btn btn-primary">Register</button>
+            <div class="text-center no-account">
+                <p style="font-size: 13px;">
+                    Đã có tài khoản
+                    <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="Login">Đăng nhập ngay</a>
+                </p>
+            </div>
         </form>
     </div>
 </div>
@@ -77,8 +77,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <style>
     .frame {
-        width: 800px;
-        height: 550px;
+        width: 850px;
+        height: 700px;
         background-color: #3498db;
         color: white;
         border: 2px solid #217dbb;
@@ -106,11 +106,11 @@
         align-items: center;
     }
 
-    .logo-section img {
-        width: 100px;
-        height: auto;
-        margin-bottom: 15px;
-    }
+        .logo-section img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 15px;
+        }
 
     /* Nút đăng ký Google & Facebook */
     .social-login {
@@ -183,8 +183,8 @@
         cursor: pointer;
     }
 
-    .btn-primary:hover {
-        background-color: #1a5e8c;
-    }
+        .btn-primary:hover {
+            background-color: #1a5e8c;
+        }
 
 </style>

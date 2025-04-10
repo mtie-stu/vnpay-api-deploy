@@ -10,6 +10,9 @@ using PDP104.Models.ViewModel.AuthenModel;
 using PDP104.Service;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Web;
+using System.Net.Mail;
+using System.Net;
 
 namespace PDP104.Controllers
 {
@@ -31,6 +34,59 @@ namespace PDP104.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
+        }
+
+        [HttpGet("loginGoogle")]
+        public IActionResult LoginWithGoogle()
+        {
+            var redirectUrl = Url.Action(nameof(GoogleResponse), "GoogleAuth", null, Request.Scheme);
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = redirectUrl
+            };
+
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet("callback")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest("Đăng nhập thất bại!");
+            }
+
+            var claims = result.Principal.Identities.FirstOrDefault()?.Claims;
+            var userEmail = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                return BadRequest("Không lấy được thông tin từ Google.");
+            }
+            return Ok(userEmail);
+        }
+
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+            return Ok(new
+            {
+                message = "Lấy thông tin người dùng thành công!",
+                user = new
+                {
+                    user.Id,
+                    user.NameND,
+                    user.Email,
+                    user.PhoneNumber,
+                    user.Hinh
+                }
+            });
         }
 
         [HttpPost("register")]
@@ -148,23 +204,73 @@ namespace PDP104.Controllers
             return Ok(new { message = "Đăng xuất thành công!" });
         }
 
-        [HttpGet("profile")]
-        [Authorize]
-        public async Task<IActionResult> Profile()
+        [HttpPost("forgotpassword/{email}")]
+        public async Task<IActionResult> ForgotPassword([FromRoute] string email)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByIdAsync(userId);
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return BadRequest("Không tìm thấy người dùng này");
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = HttpUtility.UrlEncode(token);
+
+            var role = await _userManager.GetRolesAsync(user);
+            var userRole = role.FirstOrDefault();
+
+            string frontEndDomain = userRole == "Admin"
+              ? "https://localhost:7091" : "https://localhost:7023";
+            var resetLink = $"{frontEndDomain}/Account/ResetPassword?email={email}&token={encodedToken}";
+
+            using (var client = new SmtpClient("sandbox.smtp.mailtrap.io", 2525))
+            {
+                client.Credentials = new NetworkCredential("a62a9b76f3f09f", "29b27b34801af6");
+                client.EnableSsl = true;
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress("hungntps38090@gmail.com"),
+                    Subject = "Password Reset",
+                    Body = $"Vui lòng truy cập link: {resetLink}",
+                    IsBodyHtml = false
+                };
+                mailMessage.To.Add(user.Email);
+                await client.SendMailAsync(mailMessage);
+            }
             return Ok(new
             {
-                message = "Lấy thông tin người dùng thành công!",
-                user = new
+                message = "Đường dẫn đặt lại mật khẩu đã được gửi đến email của bạn."
+            });
+        }
+
+        [HttpPost("resetpassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModels model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return BadRequest("Không tìm thấy người dùng này");
+            }
+
+            var tokenValid = await _userManager.VerifyUserTokenAsync(user,
+                TokenOptions.DefaultProvider, "ResetPassword", model.Token);
+            if (!tokenValid)
+            {
+                return BadRequest("Token không hợp lệ");
+            }
+            var resetResult = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            if (!resetResult.Succeeded)
+            {
+                return BadRequest(new
                 {
-                    user.Id,
-                    user.NameND,
-                    user.Email,
-                    user.PhoneNumber,
-                    user.Hinh
-                }
+                    message = "Đặt lại mật khẩu thất bại!",
+                    errors = resetResult.Errors
+                });
+            }
+            return Ok(new
+            {
+                message = "Đặt lại mật khẩu thành công!"
             });
         }
 
@@ -197,39 +303,6 @@ namespace PDP104.Controllers
                 return BadRequest(new { message = "Cập nhật thất bại!", errors = result.Errors });
             }
             return Ok(new { message = "Cập nhật thông tin thành công!" });
-        }
-
-        [HttpGet("loginGoogle")]
-        public IActionResult LoginWithGoogle()
-        {
-            var redirectUrl = Url.Action(nameof(GoogleResponse), "GoogleAuth", null, Request.Scheme);
-            var properties = new AuthenticationProperties
-            {
-                RedirectUri = redirectUrl
-            };
-
-            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
-        }
-
-        [HttpGet("callback")]
-        public async Task<IActionResult> GoogleResponse()
-        {
-            var result = await HttpContext.AuthenticateAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
-
-            if (!result.Succeeded)
-            {
-                return BadRequest("Đăng nhập thất bại!");
-            }
-
-            var claims = result.Principal.Identities.FirstOrDefault()?.Claims;
-            var userEmail = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-
-            if (string.IsNullOrEmpty(userEmail))
-            {
-                return BadRequest("Không lấy được thông tin từ Google.");
-            }
-            return Ok(userEmail);
         }
     }
 }

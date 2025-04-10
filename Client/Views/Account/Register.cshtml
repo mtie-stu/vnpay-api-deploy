@@ -1,12 +1,14 @@
-﻿@{
+﻿@model Client.Models.ApiErrorResponse
+@{
     ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
 <div class="frame">
     <!-- Khu vực logo + Đăng ký bằng Google, Facebook -->
     <div class="logo-section">
         <img src="~/Images/tachnen.png" alt="Logo" class="img-fluid rounded-circle" style="width: 400px; height: 200px; object-fit: cover;">
-    @*     <div class="social-login">
+        @*     <div class="social-login">
             <button class="btn-social btn-google">
                 <i class="fab fa-google"></i>
             </button>
@@ -17,18 +19,10 @@
     </div>
     @if (ViewBag.Errors != null)
     {
-        <div class="alert alert-danger">
-            @foreach (var error in ViewBag.Errors)
-            {
-                <strong>@error.Key:</strong>
-                <ul>
-                    @foreach (var message in error.Value)
-                    {
-                        <li>@message</li>
-                    }
-                </ul>
-            }
-        </div>
+        foreach (var err in ViewBag.Errors)
+        {
+            <div class="alert alert-danger">@err.Description</div>
+        }
     }
 
     <!-- Khu vực form đăng ký -->
@@ -48,7 +42,7 @@
                 <label>Sdt</label>
                 <input type="number" class="form-control" name="SĐT" placeholder="Enter SDT" required>
             </div>
-           @*  <div class="form-group">
+            @*  <div class="form-group">
                 <label>Địa chỉ</label>
                 <input type="text" class="form-control" name="DiaChi" placeholder="Enter địa chỉ" required>
             </div> *@
@@ -69,6 +63,12 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Register</button>
+            <div class="text-center no-account">
+                <p style="font-size: 13px;">
+                    Đã có tài khoản
+                    <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="Login">Đăng nhập ngay</a>
+                </p>
+            </div>
         </form>
     </div>
 </div>
