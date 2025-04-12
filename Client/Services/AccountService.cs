@@ -1,6 +1,7 @@
 ﻿using Client.Models;
 using Client.Models.AuthenViewModel;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -52,33 +53,79 @@ namespace Client.Services
             return tokenResponse?.token; // Trả về token khi thành công
         }
 
-
-        public async Task<bool> ForgotPasswordAsync(ForgotPasswordViewModel model)
+        public async Task<(bool Success, string Message)> ResetPasswordAsync(ResetPasswordViewModel model)
         {
-            var content = new StringContent
-                (JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient
-                .PostAsync("https://your-api.com/api/auth/forgot-password", content);
-            return response.IsSuccessStatusCode;
+            var response = await _httpClient.PostAsJsonAsync("Authentication/resetpassword", model);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                dynamic result = JsonConvert.DeserializeObject(json);
+                string message = result?.message ?? "Đặt lại mật khẩu thành công!";
+                return (true, message);
+            }
+
+            var errorContent = await response.Content.ReadAsStringAsync();
+            return (false, $"Lỗi: {errorContent}");
+        }
+
+        public async Task<(bool Success, string Message)> ForgotPasswordAsync(ForgotPasswordViewModel model)
+        {
+            try
+            {
+                // Encode email để tránh lỗi URL với ký tự đặc biệt (như @)
+                var emailEncoded = Uri.EscapeDataString(model.Email);
+
+                // Gửi POST mà không có body
+                var response = await _httpClient.PostAsync(
+                    $"https://localhost:7145/api/Authentication/forgotpassword/{emailEncoded}",
+                    null
+                );
+
+                Console.WriteLine($"Response status: {response.StatusCode}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    dynamic result = JsonConvert.DeserializeObject(json);
+                    string message = result.message ?? "Yêu cầu thành công nhưng không có thông báo.";
+                    return (true, message);
+                }
+                else
+                {
+                    var errorJson = await response.Content.ReadAsStringAsync();
+                    return (false, $"Yêu cầu thất bại: {errorJson}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Lỗi: {ex.Message}");
+            }
         }
 
         public async Task<UserProfileViewModel?> GetUserProfileAsync(string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            var response = await _httpClient.GetAsync("https://your-api.com/api/auth/profile");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetAsync("https://localhost:7145/api/Authentication/profile");
 
             if (!response.IsSuccessStatusCode) return null;
-            return JsonConvert.DeserializeObject<UserProfileViewModel>(await response.Content.ReadAsStringAsync());
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var json = JObject.Parse(jsonString);
+
+            var user = json["user"]?.ToObject<UserProfileViewModel>();
+            return user;
         }
 
-        public async Task<bool> UpdateUserProfileAsync(string token, UserProfileViewModel model)
+        public async Task<bool> EditProfileAsync(EditProfileViewModel model, string token)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync("https://your-api.com/api/account/update-profile", content);
+
+            var response = await _httpClient.PutAsync("https://localhost:7145/api/Authentication/EditProfile", content);
 
             return response.IsSuccessStatusCode;
         }
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Client.Models;
 
-namespace PDP104.ViewModel
+namespace Client.Models.ViewModel
 {
     public class ServicesViewModel
     {
