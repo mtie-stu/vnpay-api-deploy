@@ -1,37 +1,31 @@
-﻿@model Client.Models.AuthenViewModel.UserProfileViewModel
+﻿@using Client.Models.AuthenViewModel
+@model EditProfileViewModel
 
-@{
-    ViewData["Title"] = "Chỉnh sửa hồ sơ";
-}
+<h2>Cập nhật thông tin cá nhân</h2>
 
-<h2>Chỉnh sửa thông tin cá nhân</h2>
-
-<form asp-action="EditProfile" method="post" enctype="multipart/form-data">
-    <div asp-validation-summary="All" class="text-danger"></div>
-
+<form asp-action="EditProfile" method="post">
     <div class="form-group">
-        <label asp-for="FullName"></label>
-        <input asp-for="FullName" class="form-control" />
+        <label for="NameND">Họ tên</label>
+        <input asp-for="NameND" class="form-control" />
+        <span asp-validation-for="NameND" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Email"></label>
+        <label for="Email">Email</label>
         <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="ImageFile">Ảnh đại diện</label>
-        <input asp-for="ImageFile" type="file" class="form-control" />
-        @if (!string.IsNullOrEmpty(Model.CurrentImage))
-        {
-            <img src="~/uploads/@Model.CurrentImage" alt="avatar" class="img-thumbnail mt-2" width="150" />
-        }
+        <label for="PhoneNumber">Số điện thoại</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Cập nhật</button>
+    <div class="form-group">
+        <label for="Hinh">Ảnh đại diện (URL)</label>
+        <input asp-for="Hinh" class="form-control" />
+        <span asp-validation-for="Hinh" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
 </form>

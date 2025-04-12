@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace PDP104.MVC.Controllers
+namespace Client.Controllers
 {
     public class WareHouseController : Controller
     {

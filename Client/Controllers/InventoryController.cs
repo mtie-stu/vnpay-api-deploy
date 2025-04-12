@@ -1,20 +1,15 @@
 ﻿using Client.Models;
 using Client.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
-using PDP104.ViewModel;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
 
-namespace PDP104.MVC.Controllers
+namespace Client.Controllers
 {
     public class InventoryController : Controller
     {
         private readonly HttpClient _httpClient;
 
-      
+
         public InventoryController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("MyApiClient");
@@ -95,7 +90,7 @@ namespace PDP104.MVC.Controllers
             request.Content = JsonContent.Create(model);
 
             var response = await _httpClient.SendAsync(request);
-        
+
             return RedirectToAction("GetItemsByInventoryId", new { id = inventoryId }); // Quay lại trang chi tiết
 
         }

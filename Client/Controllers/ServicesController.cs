@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PDP104.ViewModel;
+﻿using Client.Models.ViewModel;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace PDP104.MVC.Controllers
+namespace Client.Controllers
 {
     public class ServicesController : Controller
     {

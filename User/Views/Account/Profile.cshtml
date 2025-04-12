@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4>Thông tin cá nhân</h4>
+        </div>
+        <div class="card-body">
+            @if (Model != null)
+            {
+                <div class="row mb-3">
+                    <div class="col-md-3"><strong>Email:</strong></div>
+                    <div class="col-md-9">@Model.Email</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3"><strong>Họ tên:</strong></div>
+                    <div class="col-md-9">@Model.NameND </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3"><strong>Số điện thoại:</strong></div>
+                    <div class="col-md-9">@Model.PhoneNumber</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3"><strong>Ảnh đại diện:</strong></div>
+                    <div class="col-md-9">
+                        @if (!string.IsNullOrEmpty(Model.Hinh))
+                        {
+                            <img src="@Model.Hinh" alt="Avatar" class="img-thumbnail" width="100" />
+                        }
+                        else
+                        {
+                            <span>Chưa cập nhật ảnh</span>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning">Không thể hiển thị thông tin người dùng.</div>
+            }
+        </div>
+    </div>
+    <a asp-action="EditProfile" class="btn btn-warning mt-3">Chỉnh sửa thông tin</a>
+
+</div> 
