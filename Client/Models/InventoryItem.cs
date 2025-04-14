@@ -15,7 +15,7 @@ namespace Client.Models
         public string Model { get; set; }
 
         public int Quantity { get; set; }
-
+        
 
 
     }

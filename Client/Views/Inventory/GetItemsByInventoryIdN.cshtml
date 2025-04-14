@@ -1,0 +1,48 @@
+﻿@using Client.Models
+@using Client.Models.ViewModel
+@model IEnumerable<Client.Models.InventoryItemViewModel>
+@using System.ComponentModel.DataAnnotations
+
+@{
+    ViewBag.Title = "Danh sách kiểm kê";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Danh sách Hàng Hóa</h2>
+
+    <!-- Bộ lọc -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <label for="searchInput" class="form-label">Tìm kiếm</label>
+            <input type="text" id="searchInput" class="form-control" placeholder="Nhập từ khóa...">
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table id="inventoryTable" class="table table-bordered table-hover align-middle fs-6">
+            <thead class="table-primary">
+                <tr>
+                    <th>STT</th>
+                    <th>Tên Hàng Hóa</th>
+                    <th>Số Lượng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int stt = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@stt</td>
+                            <td>@item.Model</td>
+                            <td>@item.Quantity</td>
+                          
+                        </tr>
+                        stt++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

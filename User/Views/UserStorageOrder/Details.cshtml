@@ -1,0 +1,121 @@
+﻿
+ @using User.Models
+@model User.Models.ViewModel.AdminStorageViewModel
+@using User.Services
+@inject ImageService imageService
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <h2 class="mb-5 text-center">Chi tiết đơn hàng #@Model.Id</h2>
+
+    <!-- Thông tin người dùng -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Thông tin người dùng</h5>
+            <p class="card-text">Người dùng ID: @Model.NguoiDungId</p>
+        </div>
+    </div>
+
+    <!-- Thông tin đơn hàng -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Thông tin đơn hàng</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Ngày đặt hàng: @Model.OrderDate</li>
+                <li class="list-group-item">Ngày nhập hàng: @Model.DateOfEntry</li>
+                <li class="list-group-item">Ngày xuất hàng: @Model.DateOfShipment</li>
+                <li class="list-group-item">Trạng thái đơn hàng: @Model.StatusOrder.GetDisplayName()</li>
+                <li class="list-group-item">Loại hàng hóa: @Model.TypeOfGoods.GetDisplayName()</li>
+                <li class="list-group-item">Số lượng: @Model.Quantity</li>
+                <li class="list-group-item">Giá: @Model.Price.ToString("N0") VND</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Hình ảnh đơn hàng -->
+    @if (Model.ImageUrls != null && Model.ImageUrls.Any())
+    {
+        var carouselId = "orderImageCarousel";
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Hình ảnh đơn hàng</h5>
+                <div id="@carouselId" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner rounded">
+                        @for (int i = 0; i < Model.ImageUrls.Count; i++)
+                        {
+                            var imageUrl = await imageService.GetImageUrl(Model.ImageUrls[i]);
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <img src="@imageUrl"
+                                     class="d-block w-100 img-thumbnail"
+                                     style="max-height: 400px; object-fit: cover; cursor: pointer;"
+                                     data-bs-toggle="modal"
+                                     data-bs-target="#imageModal"
+                                     data-img-url="@imageUrl"
+                                     alt="Hình ảnh đơn hàng" />
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Trước</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Sau</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal xem ảnh lớn -->
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <img id="modalImage" src="" alt="Xem ảnh lớn" class="img-fluid w-100" style="object-fit: contain; max-height: 90vh;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const modalImage = document.getElementById("modalImage");
+                const images = document.querySelectorAll("[data-bs-target='#imageModal']");
+                images.forEach(img => {
+                    img.addEventListener("click", () => {
+                        const url = img.getAttribute("data-img-url");
+                        modalImage.src = url;
+                    });
+                });
+            });
+        </script>
+    }
+
+    <!-- Trạng thái và hành động -->
+    @if (Model.StatusOrder == StatusOrder.Confirming)
+    {
+        <span> Đơn hàng của bạn đang chờ xác nhận vui lòng chờ đợi</span>
+    }
+    else
+    {
+        <!-- Thông tin kho bãi -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Thông tin kho bãi</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Số Vị Trí Lưu Trữ: @Model.Floor</li>
+                    <li class="list-group-item">Vị trí lưu trữ: @Model.LocationStorage</li>
+                </ul>
+            </div>
+        </div>
+
+       
+    }
+
+
+</div>
+

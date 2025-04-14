@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "Điều Khoản & Dịch Vụ | MOT";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">📄 Điều Khoản & Dịch Vụ</h2>
+        <button class="btn btn-danger" onclick="downloadPDF()">
+            <i class="bi bi-file-earmark-pdf"></i> Tải xuống PDF
+        </button>
+    </div>
+
+    <div id="terms-content" class="bg-white p-5 shadow rounded-4">
+        <p>Chào mừng quý khách đến với dịch vụ lưu trữ MOT. Khi truy cập và sử dụng dịch vụ của chúng tôi, bạn đồng ý bị ràng buộc bởi các điều khoản dưới đây.</p>
+
+        <section class="mb-5">
+            <h4 class="fw-bold">1. Giới thiệu</h4>
+            <p>MOT là đơn vị cung cấp giải pháp lưu trữ chuyên nghiệp cho doanh nghiệp và cá nhân, bao gồm lưu kho, quản lý tồn kho, vận chuyển và theo dõi hàng hóa theo thời gian thực.</p>
+        </section>
+
+        <section class="mb-5">
+            <h4 class="fw-bold">2. Quy trình đăng ký và xác minh</h4>
+            <ul>
+                <li>Người dùng phải cung cấp thông tin hợp lệ, bao gồm CCCD/CMND (nếu cá nhân) hoặc mã số thuế (nếu doanh nghiệp).</li>
+                <li>Chúng tôi có quyền từ chối phục vụ nếu phát hiện thông tin sai lệch.</li>
+                <li>Xác minh qua email/SMS là bắt buộc để kích hoạt tài khoản.</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h4 class="fw-bold">3. Điều kiện lưu trữ</h4>
+            <ul>
+                <li>Không lưu trữ hàng hóa cấm, độc hại, dễ cháy nổ hoặc trái pháp luật.</li>
+                <li>Hàng hóa phải được đóng gói đúng quy cách và có mã nhận dạng.</li>
+                <li>Chúng tôi có quyền kiểm tra hàng hóa nếu nghi ngờ vi phạm pháp luật.</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h4 class="fw-bold">4. Quyền và nghĩa vụ của khách hàng</h4>
+            <ul>
+                <li>Thanh toán đúng hạn các khoản phí theo hợp đồng hoặc bảng giá niêm yết.</li>
+                <li>Cung cấp thông tin chính xác khi sử dụng dịch vụ.</li>
+                <li>Không sử dụng dịch vụ MOT vào mục đích gian lận, rửa tiền hoặc vi phạm pháp luật.</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h4 class="fw-bold">5. Quyền và nghĩa vụ của MOT</h4>
+            <ul>
+                <li>Đảm bảo an toàn, bảo mật cho hàng hóa và dữ liệu khách hàng.</li>
+                <li>Có quyền từ chối phục vụ hoặc chấm dứt hợp đồng nếu phát hiện vi phạm.</li>
+                <li>Cập nhật, nâng cấp hệ thống định kỳ để nâng cao chất lượng dịch vụ.</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h4 class="fw-bold">6. Bồi thường và giới hạn trách nhiệm</h4>
+            <p>Chúng tôi chỉ chịu trách nhiệm bồi thường trong trường hợp hàng hóa bị mất mát, hư hỏng do lỗi trực tiếp từ MOT và không vượt quá giá trị hàng hóa được khai báo. MOT không chịu trách nhiệm cho các thiệt hại gián tiếp như mất lợi nhuận, trễ hợp đồng,...</p>
+        </section>
+
+        <section class="mb-5">
+            <h4 class="fw-bold">7. Bảo mật thông tin</h4>
+            <p>Tất cả thông tin cá nhân, hàng hóa và giao dịch của khách hàng được bảo mật theo chuẩn ISO/IEC 27001. MOT cam kết không tiết lộ dữ liệu cho bên thứ ba nếu không có sự cho phép rõ ràng từ khách hàng hoặc yêu cầu pháp lý.</p>
+        </section>
+
+        <section class="mb-5">
+            <h4 class="fw-bold">8. Điều khoản chấm dứt</h4>
+            <ul>
+                <li>Khách hàng có thể ngưng sử dụng dịch vụ với thông báo trước tối thiểu 7 ngày.</li>
+                <li>MOT có quyền chấm dứt dịch vụ nếu khách hàng vi phạm hoặc không thanh toán quá 15 ngày sau hạn chót.</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h4 class="fw-bold">9. Luật áp dụng và giải quyết tranh chấp</h4>
+            <p>Tất cả điều khoản này được điều chỉnh bởi luật pháp Việt Nam. Mọi tranh chấp phát sinh sẽ được giải quyết đầu tiên bằng thương lượng, nếu không thành công sẽ đưa ra Tòa án có thẩm quyền tại TP. Hồ Chí Minh.</p>
+        </section>
+
+        <section class="mt-5">
+            <h5 class="fw-bold">Thông tin liên hệ</h5>
+            <p>
+                Công ty TNHH Dịch vụ Lưu trữ MOT<br />
+                Địa chỉ: 123 Nguyễn Văn Linh, Quận 7, TP.HCM<br />
+                Email: <a href="mailto:support@motstorage.vn">support@motstorage.vn</a><br />
+                Hotline: <strong>1900 1234</strong>
+            </p>
+        </section>
+
+        <div class="mt-5 text-center">
+            <p><strong>Ký bởi:</strong> MOT WareHoues CO., LTD</p>
+            <p><em>Chữ ký điện tử hợp lệ - Ngày: @DateTime.Now.ToString("dd/MM/yyyy")</em></p>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/1024px-Check_green_icon.svg.png" alt="Signature Verified" width="50" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        function downloadPDF() {
+            const element = document.getElementById("terms-content");
+            const opt = {
+                margin: 0.5,
+                filename: 'DieuKhoanDichVu_MOT.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+}

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Client.Services
+@inject ImageService imageService
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -108,23 +111,24 @@
     <nav class="sidebar">
         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
         {
+            
             <div>
                 <a id="img" class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Index">
                     <img src="~/Images/MỌT-Photoroom.png" alt="Logo" class="img-fluid">
                 </a>
-                <a href="#">Dashboard</a>
-                <a href="#">Order Management</a>
-                <a href="#">Customers</a>
-                <a href="#">Reports</a>
-                <a href="#">Settings</a>
+                <a href="@Url.Action("Index", "Admin")">Dashboard</a>
+                <a href="@Url.Action("Index", "AdminStorageOrder")">Order Management</a>
+                <a href="@Url.Action("Index", "Inventory")">Inventory Management</a>
+                <a href="@Url.Action("Index", "StorageSpaces")">Storage Space Management</a>
+                <a href="@Url.Action("Profile", "Account")">Your Profile</a>
             </div>
             <div class="dropdown dropup text-center">
                 <a class="dropdown-toggle d-inline-block" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="~/Images/MOT.png" alt="User" class="rounded-circle border" style="width: 50px; height: 50px; object-fit: cover;">
+                    <img src="@await imageService.GetImageUrl(@User.FindFirst("Hinh")?.Value)" alt="User" class="rounded-circle border" style="width: 50px; height: 50px; object-fit: cover;">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end p-3 shadow text-center" style="min-width: 220px;">
                     <li>
-                        <img src="~/Images/R.png" alt="User" class="rounded-circle border mb-2"
+                        <img src="@await imageService.GetImageUrl(@User.FindFirst("Hinh")?.Value)" alt="User" class="rounded-circle border mb-2"
                              style="width: 60px; height: 60px; object-fit: cover;">
                     </li>
                     <li>
@@ -155,15 +159,15 @@
         }
         else
         {
-            
-            <div class="user-info d-flex align-items-center justify-content-between p-3 rounded bg-white shadow-sm" style="gap: 10px;">
-                <span class="text-muted me-2">Bạn chưa đăng nhập</span>
-                <div class="d-flex gap-2">
-                    <a class="btn btn-outline-primary btn-sm" href="@Url.Action("Login", "Account")">Đăng nhập</a>
-                    <a class="btn btn-primary btn-sm" href="@Url.Action("Register", "Account")">Đăng ký</a>
+            <div class="user-info d-flex align-items-start justify-content-between p-3 rounded bg-white shadow-sm">
+                <span class="text-muted" style="line-height: 1.4;">Bạn chưa<br />đăng nhập</span>
+
+                <div class="d-flex flex-column gap-2">
+                    <a class="btn btn-primary btn-sm text-nowrap w-100" href="@Url.Action("Login", "Account")">Đăng nhập</a>
+                    <a class="btn btn-primary btn-sm text-nowrap w-100" href="@Url.Action("Register", "Account")">Đăng ký</a>
                 </div>
             </div>
-           
+
         }
     </nav> 
     <div class="main-wrapper">
@@ -174,54 +178,92 @@
         </div>
 
         <!-- Footer -->
-        <footer class="bg-dark text-white py-5">
+        <!-- Footer -->
+        <footer class="bg-gradient-to-b from-dark to-black text-white pt-5">
             <div class="container">
                 <div class="row">
                     <!-- About -->
-                    <div class="col-md-4">
-                        <h5>Về Chúng Tôi</h5>
-                        <p>
-                            Cung cấp giải pháp dịch vụ chuyên nghiệp, uy tín và tận tâm đến từng khách hàng.
-                            Đội ngũ của chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7.
+                    <div class="col-md-4 mb-4">
+                        <h5 class="text-uppercase fw-bold mb-3"><i class="bi bi-building"></i> Về Chúng Tôi</h5>
+                        <p class="small fst-italic">
+                            Chúng tôi cung cấp giải pháp lưu trữ chuyên nghiệp, uy tín và tận tâm.
+                            Luôn sẵn sàng hỗ trợ bạn 24/7 với đội ngũ chuyên viên dày dạn kinh nghiệm.
                         </p>
+                        <img src="~/Images/MOT.png" alt="MOT Logo" style="height: 100px;">
                     </div>
 
                     <!-- Quick Links -->
-                    <div class="col-md-2">
-                        <h5>Liên kết nhanh</h5>
+                    <div class="col-md-2 mb-4">
+                        <h5 class="text-uppercase fw-bold mb-3"><i class="bi bi-link-45deg"></i> Liên kết</h5>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="text-white text-decoration-none">Trang chủ</a></li>
-                            <li><a href="#" class="text-white text-decoration-none">Dịch vụ</a></li>
-                            <li><a href="#" class="text-white text-decoration-none">Báo giá</a></li>
-                            <li><a href="#" class="text-white text-decoration-none">Hỗ trợ</a></li>
+                            <li><a href="#" class="text-white text-decoration-none hover-link">Trang chủ</a></li>
+                            <li><a href="#" class="text-white text-decoration-none hover-link">Dịch vụ</a></li>
+                            <li><a href="#" class="text-white text-decoration-none hover-link">Báo giá</a></li>
+                            <li><a href="#" class="text-white text-decoration-none hover-link">Hỗ trợ</a></li>
                         </ul>
                     </div>
 
                     <!-- Contact -->
-                    <div class="col-md-3">
-                        <h5>Liên hệ</h5>
-                        <p>Email: contact@motservice.vn</p>
-                        <p>Hotline: 0987 654 321</p>
-                        <p>Địa chỉ: 123 Nguyễn Văn Cừ, Q.5, TP.HCM</p>
+                    <div class="col-md-3 mb-4">
+                        <h5 class="text-uppercase fw-bold mb-3"><i class="bi bi-telephone-inbound"></i> Liên hệ</h5>
+                        <p><i class="bi bi-envelope-fill"></i> contact@motservice.vn</p>
+                        <p><i class="bi bi-telephone-fill"></i> 0987 654 321</p>
+                        <p><i class="bi bi-geo-alt-fill"></i> 123 Nguyễn Văn Cừ, Q.5, TP.HCM</p>
                     </div>
 
                     <!-- Social Media -->
-                    <div class="col-md-3">
-                        <h5>Kết nối với chúng tôi</h5>
-                        <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i> Facebook</a><br>
-                        <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i> Instagram</a><br>
-                        <a href="#" class="text-white"><i class="bi bi-youtube"></i> YouTube</a>
+                    <div class="col-md-3 mb-4">
+                        <h5 class="text-uppercase fw-bold mb-3"><i class="bi bi-share-fill"></i> Kết nối</h5>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="#" class="text-white text-decoration-none hover-social">
+                                <i class="bi bi-facebook fs-5 me-2"></i>Facebook
+                            </a>
+                            <a href="#" class="text-white text-decoration-none hover-social">
+                                <i class="bi bi-instagram fs-5 me-2"></i>Instagram
+                            </a>
+                            <a href="#" class="text-white text-decoration-none hover-social">
+                                <i class="bi bi-youtube fs-5 me-2"></i>YouTube
+                            </a>
+                        </div>
                     </div>
                 </div>
 
                 <hr class="border-secondary mt-4">
 
-                <div class="text-center">
-                    <p class="mb-0">&copy; 2025 MỌT Service. All rights reserved.</p>
+                <div class="text-center pb-3">
+                    <p class="mb-0 small">&copy; 2025 <strong>MỌT Service</strong>. All rights reserved. | Made with ❤️ in HCMC</p>
                 </div>
             </div>
         </footer>
+
+        <style>
+            footer {
+                background: linear-gradient(to right, #212529, #000);
+            }
+
+            .hover-link:hover {
+                color: #0d6efd !important;
+                text-decoration: underline !important;
+                transition: 0.3s;
+            }
+
+            .hover-social:hover {
+                color: #ffc107 !important;
+                transform: scale(1.05);
+                transition: all 0.3s ease;
+            }
+
+            footer p, footer a {
+                font-size: 0.95rem;
+            }
+
+            footer i {
+                vertical-align: middle;
+            }
+        </style>
+
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -1,0 +1,58 @@
+﻿@model Client.Models.ViewModel.AdminStorageViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Chỉnh sửa ngày nhập và xuất</h2>
+
+    <form id="editForm" asp-action="Edit" method="post" onsubmit="return validateDates();">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="DateOfEntry" class="form-label"></label>
+            <input asp-for="DateOfEntry" class="form-control" type="date" />
+            <span asp-validation-for="DateOfEntry" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DateOfShipment" class="form-label"></label>
+            <input asp-for="DateOfShipment" class="form-control" type="date" />
+            <span asp-validation-for="DateOfShipment" class="text-danger"></span>
+        </div>
+
+        <div id="validationMessage" class="text-danger mb-3"></div>
+
+        <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function validateDates() {
+            const entryDate = new Date(document.getElementById("DateOfEntry").value);
+            const shipmentDate = new Date(document.getElementById("DateOfShipment").value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // bỏ thời gian
+
+            const errorContainer = document.getElementById("validationMessage");
+            errorContainer.textContent = "";
+
+            if (shipmentDate < entryDate) {
+                errorContainer.textContent = "Ngày xuất hàng không được trước ngày nhập hàng.";
+                return false;
+            }
+
+            if (shipmentDate < today) {
+                errorContainer.textContent = "Ngày xuất hàng không được nhỏ hơn ngày hôm nay.";
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+}

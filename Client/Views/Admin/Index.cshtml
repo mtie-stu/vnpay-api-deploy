@@ -1,68 +1,142 @@
-﻿@{
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-}
+﻿@model Client.Models.ViewModel.AdminDashboardViewModel
 
 @{
-    ViewData["Title"] = "Admin Dashboard";
+    ViewData["Title"] = "Dashboard";
 }
 
 <div class="container-fluid">
-   
-            <div class="row">
-                <div class="col-md-6">
-            <h2 class="mt-4 text-center" style="color: #32ADE6;">Danh Sách Nhân Viên</h2>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover mt-3" style="background-color: #32ADE6; color: white;">
-                            <thead style="background-color: #32ADE6; color: white;">
-                                <tr>
-                                    <th>Mã Nhân Viên</th>
-                                    <th>Tên</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>ádaa</td>
-                                    <td>Ben</td>
-                                    <td><span class="badge bg-success">Online</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <h2 class="mt-4 text-center" style="color: #32ADE6;">Biểu đồ danh thu</h2>
-                    <div class="chart-container" style="position: relative; height:50vh; width:100%">
-                        <canvas id="revenueChart" class="mt-3"></canvas>
-                    </div>
-                </div>
+    <div class="row">
+        <!-- Biểu đồ tròn: Tỷ lệ sử dụng kho -->
+        <div class="col-md-6">
+            <h2 class="mt-4 text-center" style="color: #32ADE6;">Tỷ Lệ Sử Dụng Kho</h2>
+            <div class="chart-container d-flex justify-content-center align-items-center" style="height:400px;">
+                <canvas id="usageChart" style="max-width: 500px;"></canvas>
             </div>
-        
+            <div class="text-center mt-3" style="font-size: 18px; ">
+                <span><strong>Tổng không gian:</strong> @Model.WarehouseUsage.TotalSpaces</span> |
+                <span><strong>Đã sử dụng:</strong> @Model.WarehouseUsage.UsedSpaces</span> |
+                <span><strong>Tỷ lệ:</strong> @Model.WarehouseUsage.UsageRate.ToString()%</span>
+            </div>
+        </div>
+
+        <!-- Biểu đồ cột: Đơn hàng theo kho -->
+        <div class="col-md-6">
+            <h2 class="mt-4 text-center" style="color: #32ADE6;">Biểu Đồ Đơn Hàng Theo Kho</h2>
+            <div class="chart-container" style="position: relative; height:300px; width:100%">
+                <canvas id="revenueChart" class="mt-3"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bảng đơn hàng theo kho -->
+@*     <div class="row mt-5">
+        <div class="col-md-12">
+            <h2 class="text-center" style="color: #32ADE6;">Đơn Hàng Theo Kho</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover mt-3" style="background-color: #32ADE6; color: white;">
+                    <thead>
+                        <tr>
+                            <th>Kho</th>
+                            <th>Số Đơn Hàng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.WarehouseOrderStats != null && Model.WarehouseOrderStats.Any())
+                        {
+                            foreach (var item in Model.WarehouseOrderStats)
+                            {
+                                <tr>
+                                    <td>@item.Location</td>
+                                    <td>@item.NumberOfOrders</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="2" class="text-center">Không có dữ liệu</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> *@
 </div>
 
-<!-- Chart.js for Revenue Chart -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    var ctx = document.getElementById('revenueChart').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['T12', 'T1', 'T2', 'T3', 'T4', 'T5'],
-            datasets: [{
-                label: 'Revenue',
-                data: [200000, 180000, 250000, 270000, 190000, 50000],
-                backgroundColor: 'rgba(50, 173, 230, 0.6)',
-                borderColor: 'rgba(50, 173, 230, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    @if (Model.WarehouseOrderStats != null && Model.WarehouseOrderStats.Any())
+    {
+        <script>
+            var warehouseLabels = @Html.Raw(Json.Serialize(Model.WarehouseOrderStats.Select(x => x.Location)));
+            var orderCounts = @Html.Raw(Json.Serialize(Model.WarehouseOrderStats.Select(x => x.NumberOfOrders)));
+
+            var ctx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: warehouseLabels,
+                    datasets: [{
+                        label: 'Số đơn hàng theo kho',
+                        data: orderCounts,
+                        backgroundColor: 'rgba(50, 173, 230, 0.6)',
+                        borderColor: 'rgba(50, 173, 230, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 }
+                        }
+                    }
                 }
-            }
-        }
-    });
-</script>
+            });
+        </script>
+    }
+
+    @if (Model.WarehouseUsage != null)
+    {
+        <script>
+            var used = @Model.WarehouseUsage.UsedSpaces;
+            var total = @Model.WarehouseUsage.TotalSpaces;
+            var unused = total - used;
+
+            var usageCtx = document.getElementById('usageChart').getContext('2d');
+            new Chart(usageCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Đã sử dụng', 'Còn trống'],
+                    datasets: [{
+                        data: [used, unused],
+                        backgroundColor: ['#32ADE6', '#e0e0e0'],
+                        borderColor: ['#ffffff', '#ffffff'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    var label = context.label || '';
+                                    var value = context.raw;
+                                    var total = context.chart._metasets[0].total;
+                                    var percentage = ((value / total) * 100).toFixed(1);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    }
+}

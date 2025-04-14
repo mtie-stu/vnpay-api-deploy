@@ -115,7 +115,36 @@ namespace Client.Controllers
             return RedirectToAction("Details", new { id = id });
         }
 
-        public IActionResult Edit() => View();
+        public async Task<IActionResult> EditView(int id)
+        {
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Gọi API lấy đơn hàng có xác thực
+            var orderRequest = new HttpRequestMessage(HttpMethod.Get, $"AdminStorageOrder/Get/{id}");
+            orderRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var orderResponse = await _httpClient.SendAsync(orderRequest);
+            if (!orderResponse.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+
+            var order = await orderResponse.Content.ReadFromJsonAsync<AdminStorageViewModel>();
+
+          
+
+            var model = new AdminStorageViewModel
+            {
+                DateOfEntry = order.DateOfEntry,
+                DateOfShipment = order.DateOfShipment
+            };
+
+            return View(model);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, AdminStorageViewModel model)
@@ -157,10 +186,7 @@ namespace Client.Controllers
             orderRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var orderResponse = await _httpClient.SendAsync(orderRequest);
-            if (!orderResponse.IsSuccessStatusCode)
-            {
-                return View("Error");
-            }
+
             return RedirectToAction("Details", new { id = id });
         }
 

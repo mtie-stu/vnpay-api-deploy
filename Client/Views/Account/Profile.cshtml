@@ -1,4 +1,9 @@
-﻿@{
+﻿ @using Client.Models.AuthenViewModel
+@model UserProfileViewModel
+
+@using Client.Services
+@inject ImageService imageService
+@{
     ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
@@ -28,7 +33,8 @@
                     <div class="col-md-9">
                         @if (!string.IsNullOrEmpty(Model.Hinh))
                         {
-                            <img src="@Model.Hinh" alt="Avatar" class="img-thumbnail" width="100" />
+
+                            <img src="@await imageService.GetImageUrl(Model.Hinh)" alt="Avatar" class="img-thumbnail" width="100" />
                         }
                         else
                         {

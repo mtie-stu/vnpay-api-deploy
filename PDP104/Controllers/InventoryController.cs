@@ -35,6 +35,12 @@ namespace PDP104.Controllers
             var items = _inventorySvc.GetInventoryItemsByInventoryId(inventoryId);
             return Ok(items);
         }
+        [HttpGet("GetInventorybyStorageId/{StorageOrdersId}")]
+        public IActionResult GetInventoryByStorageOrderId(int StorageOrdersId)
+        {
+            var inventory = _inventorySvc.GetInventoryByStorageOrderId(StorageOrdersId);
+            return Ok(inventory);
+        }
 
         // 3. Lấy thông tin sản phẩm trong kho theo InventoryItemId
         [HttpGet("GetItem/{inventoryItemId}")]
@@ -71,6 +77,12 @@ namespace PDP104.Controllers
                 return Ok(item);
             }
             return BadRequest(message);
+        }
+        [HttpPut("SetSuccessInventory/{inventoryId}")]
+        public async Task<IActionResult> SetSuccessInventory(int inventoryId)
+        {
+            var item = await _inventorySvc.SetSuccessInventory(inventoryId);
+            return Ok(item);
         }
     }
 }
