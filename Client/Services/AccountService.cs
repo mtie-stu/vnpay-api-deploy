@@ -117,15 +117,40 @@ namespace Client.Services
             return user;
         }
 
+        /*       public async Task<bool> EditProfileAsync(EditProfileViewModel model, string token)
+               {
+                   _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                   var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+                   var response = await _httpClient.PutAsync("https://localhost:7145/api/Authentication/EditProfile", content);
+
+                   return response.IsSuccessStatusCode;
+               }*/
         public async Task<bool> EditProfileAsync(EditProfileViewModel model, string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            using var formData = new MultipartFormDataContent();
 
-            var response = await _httpClient.PutAsync("https://localhost:7145/api/Authentication/EditProfile", content);
+            // Thêm các trường text
+            formData.Add(new StringContent(model.NameND ?? ""), "NameND");
+            formData.Add(new StringContent(model.Email ?? ""), "Email");
+            formData.Add(new StringContent(model.PhoneNumber ?? ""), "PhoneNumber");
+
+            // Thêm file ảnh nếu có
+            if (model.ImageFile != null && model.ImageFile.Length > 0)
+            {
+                var stream = model.ImageFile.OpenReadStream();
+                var fileContent = new StreamContent(stream);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(model.ImageFile.ContentType);
+                formData.Add(fileContent, "ImageFile", model.ImageFile.FileName);
+            }
+
+            // Gửi request
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.PutAsync("https://localhost:7145/api/Authentication/EditProfile", formData);
 
             return response.IsSuccessStatusCode;
         }
+
 
     }
 }

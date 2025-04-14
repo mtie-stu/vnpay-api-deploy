@@ -2,68 +2,144 @@
 @model LoginViewModel
 @{
     ViewBag.Title = "Login";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
+<!-- FontAwesome + Bootstrap -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<div class="container">
-    <div class="frame d-flex justify-content-center align-items-center">
-        <!-- Khu vực logo + Đăng nhập bằng Google, Facebook -->
-        <div class="logo-section">
-            <img src="~/Images/MOT.png" alt="Logo" class="img-fluid rounded-circle" style="width: auto; height: 50px; object-fit: cover;">
-            @*  <div class="social-login">
-                <button class="btn-social btn-google">
-                    <i class="fab fa-google"></i>
-                </button>
-                <button class="btn-social btn-facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </button>
-            </div> *@
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .bg-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: url('/Images/Black-warehouse.png') center center / cover no-repeat;
+        z-index: 0;
+    }
+
+    .z-index-1 {
+        position: relative;
+        z-index: 1;
+    }
+
+    .frame {
+        display: flex;
+        flex-direction: row;
+        background-color: white;
+        border-radius: 15px;
+        overflow: hidden;
+        max-width: 800px;
+        width: 100%;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        margin: 20px 10px;
+    }
+
+    .left-side {
+        background-color: #32ADE6;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        padding: 30px;
+        text-align: center;
+    }
+
+        .left-side img {
+            height: 100px;
+            object-fit: cover;
+        }
+
+    .right-side {
+        background-color: #ffffff;
+        padding: 40px 30px;
+        flex: 1;
+    }
+
+    .register-container h2 {
+        font-weight: bold;
+        margin-bottom: 25px;
+    }
+
+    .forgot-password {
+        text-align: right;
+        margin-top: -10px;
+        margin-bottom: 10px;
+    }
+
+    .no-account {
+        margin-top: 15px;
+        font-size: 13px;
+    }
+
+    .btn-primary {
+        width: 100%;
+        background-color: #007bff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+</style>
+
+<!-- Overlay Background -->
+<div class="bg-overlay"></div>
+
+<!-- Login Wrapper -->
+<div class="position-relative d-flex justify-content-center align-items-center vh-100 z-index-1">
+    <div class="frame">
+        <!-- Left (Logo) -->
+        <div class="left-side">
+            <img src="~/Images/MOT.png" alt="Logo" class="img-fluid rounded-circle" style="width: auto; height: 150px; object-fit: cover;">
         </div>
 
-        <!-- Khu vực form đăng nhập -->
-        <div class="register-container">
-            <h2>Login</h2>
-            <form asp-controller="Account" asp-action="Login" method="post">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="Email" class="form-control" asp-for="Email" placeholder="Enter username" required>
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
+        <!-- Right (Form) -->
+        <div class="right-side">
+            <div class="register-container">
+                <h2>Login</h2>
+                <form asp-controller="Account" asp-action="Login" method="post">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="Email" class="form-control" asp-for="Email" placeholder="Enter username" required />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="Password" class="form-control" asp-for="Password" placeholder="Enter password" 
-                    required>
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="Password" class="form-control" asp-for="Password" placeholder="Enter password" required />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
 
-                <div class="forgot-password">
-                    <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="ForgotPassword">Quên mật khẩu?</a>
-                </div>
+                    <div class="forgot-password">
+                        <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="ForgotPassword">Quên mật khẩu?</a>
+                    </div>
 
-                <div class="form-group">
-                    <label>
-                        Bằng cách ấn đăng nhâp ban đã đồng ý với <a href="@Url.Action("Terms", "Policy")">Điều khoản và dich vu</a>
+                    <div class="form-group">
+                        <label style="font-size: 13px;">
+                            Bằng cách ấn đăng nhập bạn đã đồng ý với
+                            <a href="@Url.Action("Terms", "Policy")" style="color: #007bff;">Điều khoản và dịch vụ</a>
+                        </label>
+                    </div>
 
-                    </label>
-                </div>
+                    <button type="submit" class="btn btn-primary">Đăng nhập</button>
 
-                <!-- username, password inputs -->
-                <button type="submit" class="btn btn-primary">Đăng nhập</button>
-
-                <div class="text-center no-account">
-                    <p style="font-size: 13px;">
-                        Chưa có tài khoản?
-                        <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="Register">Đăng ký ngay</a>
-                    </p>
-                </div>
-            </form>
-            <div id="error-message"></div>
+                    <div class="text-center no-account">
+                        Chưa có tài khoản? <a asp-controller="Account" asp-action="Register" style="color: #007bff;">Đăng ký ngay</a>
+                    </div>
+                </form>
+                <div id="error-message"></div>
+            </div>
         </div>
     </div>
 </div>
-
-

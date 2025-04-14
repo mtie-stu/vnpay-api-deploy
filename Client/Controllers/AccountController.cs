@@ -87,7 +87,7 @@ namespace Client.Controllers
                 SameSite = SameSiteMode.Strict
             });
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Admin");
         }
 
         [Authorize]

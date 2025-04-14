@@ -48,12 +48,29 @@
                         <td>@item.RequestDate.ToString("dd/MM/yyyy")</td>
                         <td>@(item.InventoryStatus == InventoryStatus.Complete ? "Hoàn thành" : "Chưa hoàn thành")</td>
                         <td>
-                            <a asp-controller="Inventory" asp-action="GetItemsByInventoryId" asp-route-id="@item.Id" class="btn btn-sm btn-info">Xem</a>
-                            <form asp-controller="Inventory" asp-action="Create" asp-route-id="@item.Id" method="get" class="d-inline">
-                                <button type="submit" class="btn btn-outline-success btn-sm">
-                                    ➕ Thêm Sản Phẩm
-                                </button>
-                            </form>
+
+                            @if(item.InventoryStatus==InventoryStatus.Incomplete){
+                                <form asp-controller="Inventory" asp-action="Create" asp-route-id="@item.Id" method="get" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-success btn-sm">
+                                        ➕ Thêm Sản Phẩm
+                                    </button>
+                                </form>
+                                <form asp-controller="Inventory" asp-action="SetSuccessInventory" asp-route-id="@item.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                                        ✅ Hoàn thành
+                                    </button>
+                                </form>
+                                <a asp-controller="Inventory" asp-action="GetItemsByInventoryId" asp-route-id="@item.Id" class="btn btn-sm btn-info">Xem danh sách sản phẩm </a>
+
+                            }
+                            else{
+                                <span>
+                                    Quá trình kiểm kê đã <strong>hoàn thành</strong>
+                                </span>
+                                <a asp-controller="Inventory" asp-action="GetItemsByInventoryIdN" asp-route-id="@item.Id" class="btn btn-sm btn-info">Xem danh sách sản phẩm </a>
+
+                            }
+                           
                         </td>
                     </tr>
                 }

@@ -63,6 +63,30 @@ namespace Client.Controllers
             /* var items = await _httpClient.GetFromJsonAsync<List<InventoryViewModel>>($"Inventory/GetItems/{inventoryId}");
              return View(items);*/
         }
+        public async Task<IActionResult> GetItemsByInventoryIdN(int Id)
+        {
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
+            {
+                // Nếu không có token thì redirect về login hoặc báo lỗi
+                return RedirectToAction("Login", "Account");
+            }
+            var request = new HttpRequestMessage(HttpMethod.Get, $"Inventory/GetItems/{Id}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                // xử lý lỗi, ví dụ: return Unauthorized(), hoặc View("Error")
+                return View("Error");
+            }
+            var orders = await response.Content.ReadFromJsonAsync<List<InventoryItemViewModel>>();
+
+            return View(orders);
+
+            /* var items = await _httpClient.GetFromJsonAsync<List<InventoryViewModel>>($"Inventory/GetItems/{inventoryId}");
+             return View(items);*/
+        }
 
 
         public async Task<IActionResult> Create(int Id)
@@ -118,7 +142,6 @@ namespace Client.Controllers
                 return View("Error");
             }
             var order = await response.Content.ReadFromJsonAsync<InventoryItemViewModel>();
-
             return View(order);
         }
         [HttpPost]
@@ -152,6 +175,28 @@ namespace Client.Controllers
             var response = await _httpClient.PostAsJsonAsync($"Inventory/AddQuantity?inventoryId={inventoryId}", model);
             if (!response.IsSuccessStatusCode) return BadRequest("Không thể thêm số lượng");
             return RedirectToAction("GetItems", new { inventoryId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetSuccessInventory(int Id)
+        {
+         
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Put, $"Inventory/SetSuccessInventory/{Id}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+
+            return RedirectToAction("Index" ); // Quay lại trang chi tiết
         }
     }
 }

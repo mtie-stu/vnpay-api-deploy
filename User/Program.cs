@@ -10,6 +10,11 @@ builder.Services.AddHttpClient<AccountService>(client =>
     client.BaseAddress = new Uri("https://localhost:7145/api/"); // Cập nhật URL API của bạn
 });
 
+builder.Services.AddHttpClient("MyApiClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7145/api/"); // Thay port theo API server của bạn
+});
+builder.Services.AddScoped<ImageService, ImageService>();
 
 builder.Services.AddAuthentication(options =>
 {

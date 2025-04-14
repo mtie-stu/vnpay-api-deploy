@@ -5,65 +5,129 @@
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
+<!-- FontAwesome + Bootstrap -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<div class="container">
-    <div class="frame d-flex justify-content-center align-items-center">
-        <!-- Khu vực logo + Đăng nhập bằng Google, Facebook -->
-        <div class="logo-section">
-            <img src="~/Images/MOT.png" alt="Logo" class="img-fluid rounded-circle" style="width: auto; height: 50px; object-fit: cover;">
-            @*  <div class="social-login">
-                <button class="btn-social btn-google">
+<!-- Custom CSS -->
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .bg-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: url('/Images/Black-warehouse.png') center center / cover no-repeat;
+        z-index: 0;
+    }
+
+    .z-index-1 {
+        position: relative;
+        z-index: 1;
+    }
+
+    .register-container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .logo-section {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+        .logo-section img {
+            height: 50px;
+            object-fit: cover;
+        }
+
+    .vh-100 {
+        height: 100vh;
+    }
+
+    .no-account {
+        margin-top: 15px;
+    }
+
+    .forgot-password {
+        text-align: right;
+        margin-bottom: 10px;
+    }
+</style>
+
+<!-- Background overlay -->
+<div class="bg-overlay"></div>
+
+<!-- Login Container -->
+<div class="position-relative d-flex justify-content-center align-items-center vh-100 z-index-1">
+    <div class="container">
+        <div class="frame d-flex justify-content-center align-items-center flex-column">
+
+            <div class="frame d-flex justify-content-center align-items-center">
+                <!-- Khu vực logo + Đăng nhập bằng Google, Facebook -->
+                <div class="logo-section">
+                    <img src="~/Images/MOT.png" alt="Logo" class="img-fluid rounded-circle" style="width: auto; height: 150px; object-fit: cover;">
+                    @*  <div class="social-login">
+                    <button class="btn-social btn-google">
                     <i class="fab fa-google"></i>
-                </button>
-                <button class="btn-social btn-facebook">
+                    </button>
+                    <button class="btn-social btn-facebook">
                     <i class="fab fa-facebook-f"></i>
-                </button>
-            </div> *@
-        </div>
-
-        <!-- Khu vực form đăng nhập -->
-        <div class="register-container">
-            <h2>Login</h2>
-            <form asp-controller="Account" asp-action="Login" method="post">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="Email" class="form-control" asp-for="Email" placeholder="Enter username" required>
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                    </button>
+                    </div> *@
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="Password" class="form-control" asp-for="Password" placeholder="Enter password" 
-                    required>
-                    <span asp-validation-for="Password" class="text-danger"></span>
+                <!-- Khu vực form đăng nhập -->
+                <div class="register-container">
+                    <h2>Login</h2>
+                    <form asp-controller="Account" asp-action="Login" method="post">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="Email" class="form-control" asp-for="Email" placeholder="Enter username" required>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="Password" class="form-control" asp-for="Password" placeholder="Enter password"
+                                   required>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="forgot-password">
+                            <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="ForgotPassword">Quên mật khẩu?</a>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                Bằng cách ấn đăng nhâp ban đã đồng ý với <a href="@Url.Action("Terms", "Policy")">Điều khoản và dich vu</a>
+
+                            </label>
+                        </div>
+
+                        <!-- username, password inputs -->
+                        <button type="submit" class="btn btn-primary">Đăng nhập</button>
+
+                        <div class="text-center no-account">
+                            <p style="font-size: 13px;">
+                                Chưa có tài khoản?
+                                <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="Register">Đăng ký ngay</a>
+                            </p>
+                        </div>
+                    </form>
+                    <div id="error-message"></div>
                 </div>
-
-                <div class="forgot-password">
-                    <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="ForgotPassword">Quên mật khẩu?</a>
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        Bằng cách ấn đăng nhâp ban đã đồng ý với <a href="@Url.Action("Terms", "Policy")">Điều khoản và dich vu</a>
-
-                    </label>
-                </div>
-
-                <!-- username, password inputs -->
-                <button type="submit" class="btn btn-primary">Đăng nhập</button>
-
-                <div class="text-center no-account">
-                    <p style="font-size: 13px;">
-                        Chưa có tài khoản?
-                        <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="Register">Đăng ký ngay</a>
-                    </p>
-                </div>
-            </form>
-            <div id="error-message"></div>
+            </div>
         </div>
     </div>
 </div>
-
-

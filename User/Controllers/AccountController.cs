@@ -87,7 +87,7 @@ namespace User.Controllers
                 SameSite = SameSiteMode.Strict
             });
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index2", "Home");
         }
 
         [Authorize]
@@ -118,7 +118,7 @@ namespace User.Controllers
             }
 
             TempData["Error"] = "Lỗi khi đăng xuất!";
-            return RedirectToAction("Index", "Admin");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

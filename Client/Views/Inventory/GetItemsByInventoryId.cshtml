@@ -39,11 +39,13 @@
                             <td>@item.Model</td>
                             <td>@item.Quantity</td>
                             <td>
+                              
                                 <form asp-controller="Inventory" asp-action="GetInVentoryItem" asp-route-id="@item.Id" method="get" class="d-inline">
                                     <button type="submit" class="btn btn-outline-primary btn-sm">
                                         ✅ Kiểm kê
                                     </button>
                                 </form>
+                               
                             </td>
                         </tr>
                         stt++;

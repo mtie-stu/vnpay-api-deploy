@@ -1,0 +1,179 @@
+﻿ @using User.Services
+
+@model List<User.Models.ViewModel.UserStorageViewModel>
+
+@{
+    ViewData["Title"] = "Trang chủ khách hàng";
+    var latestOrders = Model.Take(5).ToList(); // Lấy 5 đơn hàng gần nhất
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 15px;
+    }
+
+    .welcome-box {
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 16px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+        .welcome-box h2 {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .welcome-box p {
+            color: #666;
+            font-size: 16px;
+        }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .order-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .order-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        transition: 0.3s;
+    }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .card-item {
+        font-size: 15px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .card-item i {
+            color: #007bff;
+            font-size: 17px;
+        }
+
+    .status-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: bold;
+        color: white;
+        text-transform: uppercase;
+    }
+
+    .status-Confirming {
+        background-color: #f39c12;
+    }
+
+    .status-Confirmed {
+        background-color: #2ecc71;
+    }
+
+    .status-Imported {
+        background-color: #3498db;
+    }
+
+    .status-Exported {
+        background-color: #9b59b6;
+    }
+
+    .status-unknown {
+        background-color: #7f8c8d;
+    }
+
+    .btn-view-all {
+        margin-top: 1.5rem;
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.2s ease;
+    }
+
+        .btn-view-all:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="container">
+    <div class="welcome-box">
+        <h2>Chào mừng bạn @User.FindFirst("Name")?.Value! 🎉</h2>
+        <p>Hệ thống giúp bạn theo dõi tình trạng đơn hàng, quản lý hàng hóa dễ dàng và nhanh chóng.</p>
+    </div>
+
+    <div>
+        <div class="section-title">📋 Đơn hàng gần đây</div>
+        <div class="order-cards">
+            @foreach (var order in latestOrders)
+            {
+                var statusText = order.SatusOrder switch
+                {
+                    StatusOrder.Confirming => "Đang xử lý",
+                    StatusOrder.Confirmed => "Đã xác nhận",
+                    StatusOrder.Imported => "Đã nhập kho",
+                    StatusOrder.Exported => "Đã xuất kho",
+                    _ => "Không xác định"
+                };
+
+                var statusClass = order.SatusOrder switch
+                {
+                    StatusOrder.Confirming => "status-Confirming",
+                    StatusOrder.Confirmed => "status-Confirmed",
+                    StatusOrder.Imported => "status-Imported",
+                    StatusOrder.Exported => "status-Exported",
+                    _ => "status-unknown"
+                };
+
+                <div class="order-card">
+                    <div class="status-badge @statusClass">@statusText</div>
+                    <div class="card-item"><i class="fas fa-list"></i><strong>Đơn hàng #</strong>@order.Id</div>
+                    <div class="card-item"><i class="fas fa-calendar-plus"></i><strong>Ngày đặt:</strong> @order.OrderDate.ToShortDateString()</div>
+                    <div class="card-item"><i class="fas fa-cubes"></i><strong>Loại hàng:</strong> @order.TypeOfGoods</div>
+                    <div class="card-item"><i class="fas fa-boxes"></i><strong>Số lượng:</strong> @order.Quantity</div>
+                </div>
+            }
+        </div>
+
+        <div style="text-align:center;">
+            <a class="btn-view-all" href="/UserStorageOrder/MyOrders"><i class="fas fa-arrow-right"></i> Xem tất cả đơn hàng</a>
+        </div>
+    </div>
+</div>

@@ -1,24 +1,101 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewBag.Title = "Giới Thiệu";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-<h1>@ViewData["Title"]</h1>
 
-<div class="container mt-5">
-    <h2 class="mb-4">Chính Sách Bảo Mật</h2>
-    <p>Chúng tôi cam kết bảo vệ quyền riêng tư và thông tin cá nhân của khách hàng sử dụng dịch vụ MOT.</p>
+<style>
+    body {
+        background-color: #f8fcff;
+    }
 
-    <h4>1. Thông tin thu thập</h4>
-    <p>Chúng tôi có thể thu thập các thông tin như tên, email, số điện thoại để hỗ trợ khách hàng tốt hơn.</p>
+    .about-page {
+        background: linear-gradient(rgba(255, 255, 255, 0.93), rgba(255, 255, 255, 0.93)), url('/images/warehouse.png') no-repeat center center;
+        background-size: cover;
+        padding: 50px 0;
+        border-radius: 12px;
+    }
 
-    <h4>2. Mục đích sử dụng thông tin</h4>
-    <ul>
-        <li>Liên hệ chăm sóc khách hàng và hỗ trợ kỹ thuật.</li>
-        <li>Cải tiến chất lượng dịch vụ.</li>
-    </ul>
+    h1, h3, h4 {
+        color: #32ADE6;
+    }
 
-    <h4>3. Bảo mật thông tin</h4>
-    <p>Tất cả thông tin được mã hóa và lưu trữ an toàn, không chia sẻ với bên thứ ba nếu không có sự đồng ý của khách hàng.</p>
+    .about-section {
+        border-left: 5px solid #32ADE6;
+        padding-left: 20px;
+        background-color: #ffffffe6;
+        border-radius: 8px;
+    }
 
-    <h4>4. Quyền lợi khách hàng</h4>
-    <p>Khách hàng có thể yêu cầu chỉnh sửa hoặc xóa thông tin cá nhân bất kỳ lúc nào bằng cách liên hệ với chúng tôi.</p>
+    .img-fluid {
+        border: 3px solid #32ADE6;
+    }
+
+    .highlight-text {
+        color: #32ADE6;
+        font-weight: bold;
+    }
+
+    .fs-5 {
+        font-size: 1.25rem;
+    }
+</style>
+
+<div class="container about-page">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Chúng Tôi Là Ai Khi Không Có Những Điều Cơ Bản</h1>
+        <p class="text-muted">Một góc nhìn khác về hành trình số hóa lưu trữ</p>
+    </div>
+
+    <div class="row gx-5 mb-5 align-items-center">
+        <div class="col-md-6">
+            <img src="~/images/khohang.jpg" class="img-fluid rounded shadow" alt="Tầm nhìn">
+        </div>
+        <div class="col-md-6 about-section">
+            <h3 class="fw-semibold mb-3">Tầm Nhìn Không Chỉ Là Kế Hoạch</h3>
+            <p>
+                Chúng tôi không xây dựng hệ thống để lưu trữ đơn thuần – mà để tạo ra trải nghiệm thông minh,
+                giúp con người <span class="highlight-text">kiểm soát dữ liệu như kiểm soát chính mình</span>. Dữ liệu không chỉ được cất giữ – mà được trân trọng.
+            </p>
+            <p>
+                Tầm nhìn của chúng tôi là <span class="highlight-text">lưu trữ phải đi trước nhu cầu</span>, và công nghệ phải phản hồi theo cảm xúc người dùng.
+            </p>
+        </div>
+    </div>
+
+    <div class="row gx-5 mb-5 align-items-center flex-md-row-reverse">
+        <div class="col-md-6">
+            <img src="~/images/teamwork.jpg" class="img-fluid rounded shadow" alt="Văn hóa">
+        </div>
+        <div class="col-md-6 about-section">
+            <h3 class="fw-semibold mb-3">Văn Hóa Không Code Chỉ Để Chạy</h3>
+            <p>
+                Mỗi dòng code trong hệ thống là một lời cam kết – rằng <span class="highlight-text">chúng tôi không làm phần mềm cho máy, mà cho con người.</span>
+            </p>
+            <p>
+                Văn hóa làm việc của chúng tôi là sự pha trộn giữa tính chính xác của công nghệ và sự thấu cảm trong thiết kế trải nghiệm.
+                Tại đây, “bug” không phải là lỗi – mà là <span class="highlight-text">cơ hội để hiểu người dùng hơn</span>.
+            </p>
+        </div>
+    </div>
+
+    <div class="row gx-5 mb-5">
+        <div class="col-md-6">
+            <img src="~/images/mission.jpg" class="img-fluid rounded shadow" alt="Sứ mệnh">
+        </div>
+        <div class="col-md-6 about-section">
+            <h3 class="fw-semibold mb-3">Sứ Mệnh Không Phải Là Một Câu Slogan</h3>
+            <p>
+                Mỗi ngày, hàng ngàn dữ liệu di chuyển, được lưu trữ, truy xuất, kiểm kê và đồng bộ. Và chúng tôi có một sứ mệnh duy nhất:
+                <span class="highlight-text">biến tất cả những chuyển động đó thành cảm giác an tâm.</span>
+            </p>
+            <p>
+                Trong một thế giới nhiều biến động, lưu trữ – chính là biểu tượng của sự ổn định. Và chúng tôi là người bảo vệ sự ổn định đó.
+            </p>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <h4 class="fw-bold">Chúng tôi không chỉ viết phần mềm.</h4>
+        <p class="fs-5 fst-italic text-muted">Chúng tôi đang viết lại cách thế giới nghĩ về lưu trữ.</p>
+    </div>
 </div>

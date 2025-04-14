@@ -6,15 +6,18 @@ using System.Collections.Generic;
 using System.Linq;
 using PDP104.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace PDP104.Service
 {
     public interface IInvetorySvc
     {
         List<InventoryViewModel> GetAllInventory();
+        List<InventoryViewModel> GetInventoryByStorageOrderId(int StorageOrdersId);
         Task<InventoryItem> CreateInventoryItem(int inventoryId, string model);
         List<InventoryViewModel> GetInventoryItemsByInventoryId(int inventoryId);
         Task<InventoryItem> GetInventoryItemById(int inventoryItemId);
+        Task<Inventory> SetSuccessInventory(int inventoryId);
         Task<InventoryItem> UpdateInventoryItemQuantity(int inventoryItemId, int newQuantity);
         Task<(InventoryItem? item, string message)> AddInventoryItemQuantity(int inventoryId, string model);
     }
@@ -53,7 +56,19 @@ namespace PDP104.Service
                 })
                 .ToList();
         }
+        public List<InventoryViewModel> GetInventoryByStorageOrderId(int StorageOrdersId)
+        {
+            return _context.InventoryItems
+                .Where(item => item.Inventory.StorageOrdersId == StorageOrdersId) // Lọc theo InventoryId
+               .Select(item => new InventoryViewModel
+               {
+                   Id = item.Id,
+                   RequestDate = item.Inventory.RequestDate,
+                   InventoryStatus = item.Inventory.InventoryStatus
 
+               })
+                .ToList();
+        }
         public async Task<InventoryItem> CreateInventoryItem(int inventoryId, string model)
         {
             // Kiểm tra Inventory có tồn tại không
@@ -132,8 +147,27 @@ namespace PDP104.Service
                 // Trả về thông báo yêu cầu xác nhận thêm sản phẩm mới
                 return (null, $"Model '{model}' không có trong danh sách kiểm kê. Bạn có muốn thêm mới không?");
             }
-        }
 
+
+           
+        }
+        public async Task<Inventory> SetSuccessInventory(int inventoryId)
+        {
+            var inventory = await _context.Inventories.FindAsync(inventoryId);
+            if (inventory == null)
+            {
+                throw new Exception($"InventoryItem với ID {inventoryId} không tồn tại.");
+            }
+
+            // Cập nhật số lượng
+            inventory.InventoryStatus = InventoryStatus.Complete;
+
+
+            _context.Inventories.Update(inventory);
+            await _context.SaveChangesAsync();
+
+            return inventory;
+        }
 
 
 

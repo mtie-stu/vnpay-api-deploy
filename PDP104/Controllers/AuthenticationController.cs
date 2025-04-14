@@ -274,9 +274,38 @@ namespace PDP104.Controllers
             });
         }
 
+        /*  [HttpPut("EditProfile")]
+          [Authorize]
+          public async Task<IActionResult> EditProfile([FromBody] EditProfileModel model)
+          {
+              if (!ModelState.IsValid)
+              {
+                  return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
+              }
+
+              var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+              var user = await _userManager.FindByIdAsync(userId);
+
+              if (user == null)
+              {
+                  return NotFound(new { message = "Người dùng không tồn tại!" });
+              }
+
+              // Cập nhật thông tin người dùng
+              user.NameND = model.NameND;
+              user.Email = model.Email;
+              user.PhoneNumber = model.PhoneNumber;
+
+              var result = await _userManager.UpdateAsync(user);
+              if (!result.Succeeded)
+              {
+                  return BadRequest(new { message = "Cập nhật thất bại!", errors = result.Errors });
+              }
+              return Ok(new { message = "Cập nhật thông tin thành công!" });
+          }*/
         [HttpPut("EditProfile")]
         [Authorize]
-        public async Task<IActionResult> EditProfile([FromBody] EditProfileModel model)
+        public async Task<IActionResult> EditProfile([FromForm] EditProfileModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -295,14 +324,36 @@ namespace PDP104.Controllers
             user.NameND = model.NameND;
             user.Email = model.Email;
             user.PhoneNumber = model.PhoneNumber;
-            user.Hinh = model.Hinh;
+
+            // Xử lý lưu ảnh nếu có
+            if (model.ImageFile != null)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImageFile.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.ImageFile.CopyToAsync(fileStream);
+                }
+
+                // Lưu đường dẫn ảnh vào user (giả sử có trường ImageUrl hoặc Avatar)
+                user.Hinh = uniqueFileName;
+            }
 
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
                 return BadRequest(new { message = "Cập nhật thất bại!", errors = result.Errors });
             }
+
             return Ok(new { message = "Cập nhật thông tin thành công!" });
         }
+
     }
 }

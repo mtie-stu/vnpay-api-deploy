@@ -12,6 +12,8 @@ namespace PDP104.Models.ViewModel.AuthenModel
 
         public string PhoneNumber { get; set; }
 
+        public IFormFile? ImageFile { get; set; }
+
         public string? Hinh { get; set; }
     }
 }
