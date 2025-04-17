@@ -49,7 +49,7 @@ namespace PDP104.Service
                 _config["AuthSettings:Issuer"],
                 _config["AuthSettings:Audience"],
                 claims,
-                expires: DateTime.UtcNow.AddHours(2),
+                expires: DateTime.UtcNow.AddDays(30),
                 signingCredentials: creds
             );
             return new JwtSecurityTokenHandler().WriteToken(token);

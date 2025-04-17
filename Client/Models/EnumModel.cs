@@ -9,7 +9,9 @@ namespace Client.Models
 
         [Display(Name = "Đã xác nhận")]
         Confirmed,
+        [Display(Name = "Đã thanh toán")]
 
+        PAID,
         [Display(Name = "Đã nhập hàng")]
         Imported,
 

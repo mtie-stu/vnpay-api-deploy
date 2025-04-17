@@ -1,0 +1,3 @@
+[build]
+buildCommand = "dotnet build PDP104/PDP104.csproj"
+startCommand = "dotnet run --project PDP104/PDP104.csproj"

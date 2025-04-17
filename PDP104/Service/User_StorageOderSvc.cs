@@ -59,6 +59,8 @@ namespace PDP104.Service
                     Price = s.Price,
                     Quantity = s.Quantity,
                     Hinh = s.Hinh,
+                    
+
                 })
                 .FirstOrDefault();
         }
@@ -78,6 +80,7 @@ namespace PDP104.Service
 */                Quantity = userStorageViewModel.Quantity,
                 Hinh = userStorageViewModel.Hinh,
                 NguoiDungId = userStorageViewModel.NguoiDungId // Đảm bảo có ID người dùng
+
             };
 
             _context.StorageOrders.Add(newOrder);

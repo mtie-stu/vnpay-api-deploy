@@ -37,6 +37,7 @@ namespace PDP104.Models.ViewModel
         public List<IFormFile>? ImageFiles { get; set; } // Cho phép upload nhiều ảnh
 
         public string? NguoiDungId { get; set; }
+        public string? NameND { get; set; } 
 
     }
 }

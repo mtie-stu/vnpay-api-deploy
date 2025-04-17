@@ -63,8 +63,8 @@ namespace PDP104.Service
                .Select(item => new InventoryViewModel
                {
                    Id = item.Id,
-                   RequestDate = item.Inventory.RequestDate,
-                   InventoryStatus = item.Inventory.InventoryStatus
+                   Model=item.Model,
+                   Quantity=item.Quantity,
 
                })
                 .ToList();

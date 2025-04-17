@@ -30,7 +30,7 @@ builder.Services.AddTransient<IServicesSvc, ServicesSvc>();
 builder.Services.AddTransient<IUserStorageOrder, UserStorageOrderSvc>();
 builder.Services.AddTransient<IAdminStorageOrderSvc, Admin_StorageOrderSvc>();
 builder.Services.AddTransient<IInvetorySvc, InventorySvc>();
-
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddIdentity<NguoiDung, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
@@ -88,7 +88,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         //options.Cookie.HttpOnly = true;
-        options.Cookie.SameSite = SameSiteMode.None; // Cho phép cookie hoạt động trong cross-site
+        options.Cookie.SameSite = SameSiteMode.Lax; // Cho phép cookie hoạt động trong cross-site
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Bắt buộc dùng HTTPS
         options.LoginPath = "/api/Authentication/loginGoogle";
         options.LogoutPath = "/api/Authentication/logout";
@@ -133,7 +133,8 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Hiển thị Swagger trong cả môi trường Production & Development
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
