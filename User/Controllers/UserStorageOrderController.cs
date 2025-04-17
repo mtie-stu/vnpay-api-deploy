@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Text.Json;
 using User.Models.ViewModel;
+using static System.Net.WebRequestMethods;
 
 namespace User.Controllers
 {
@@ -87,22 +88,30 @@ namespace User.Controllers
             // Gọi API lấy đơn hàng có xác thực
             var orderRequest = new HttpRequestMessage(HttpMethod.Get, $"AdminStorageOrder/Get/{id}");
             orderRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
             var orderResponse = await client.SendAsync(orderRequest);
             if (!orderResponse.IsSuccessStatusCode)
             {
                 return View("Error");
             }
-
             var order = await orderResponse.Content.ReadFromJsonAsync<AdminStorageViewModel>();
 
+            // Gọi API lấy danh sách hình ảnh (nếu không cần token)
             var images = await client.GetFromJsonAsync<List<string>>($"Images/GetImgForId/{id}");
-            if (images == null)
-            {
-                images = new List<string>();
-            }
+            images ??= new List<string>();
 
-            var model = new AdminStorageViewModel
+            // Gọi API lấy vật phẩm kho có xác thực
+            var inventoryRequest = new HttpRequestMessage(HttpMethod.Get, $"Inventory/GetInventorybyStorageId/{id}");
+            inventoryRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var inventoryResponse = await client.SendAsync(inventoryRequest);
+            if (!inventoryResponse.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            var inventoryItem = await inventoryResponse.Content.ReadFromJsonAsync<List<InventoryItem>>();
+            inventoryItem ??= new List<InventoryItem>();
+
+            // Gán vào model
+            var model = new DetailsOrderUser
             {
                 Id = order.Id,
                 OrderDate = order.OrderDate,
@@ -116,11 +125,13 @@ namespace User.Controllers
                 NguoiDungId = order.NguoiDungId,
                 Floor = order.Floor,
                 LocationStorage = order.LocationStorage,
-                ImageUrls = images
+                ImageUrls = images,
+                InventoryItem = inventoryItem
             };
 
             return View(model);
         }
+
 
 
         [HttpGet]
@@ -147,6 +158,24 @@ namespace User.Controllers
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             return View(orders);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Pay(int Id)
+        {
+            // Sử dụng client có tên "MyApiClient"
+            var client = _httpClientFactory.CreateClient("MyApiClient");
+
+            // Không cần ghi rõ domain, chỉ cần endpoint thôi vì đã có BaseAddress
+            var res = await client.PostAsJsonAsync("vnpay/create", Id);
+
+            if (res.IsSuccessStatusCode)
+            {
+                var result = await res.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                return Redirect(result["paymentUrl"]);
+            }
+
+            TempData["Error"] = "Không thể tạo thanh toán.";
+            return RedirectToAction("Details", new { Id });
         }
     }
 }

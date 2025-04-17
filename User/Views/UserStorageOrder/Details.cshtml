@@ -1,6 +1,6 @@
 ﻿
  @using User.Models
-@model User.Models.ViewModel.AdminStorageViewModel
+@model User.Models.ViewModel.DetailsOrderUser
 @using User.Services
 @inject ImageService imageService
 
@@ -115,7 +115,41 @@
 
        
     }
+  
+    <!-- Trạng thái và kiểm kê -->
+    @if (Model.StatusInventory == StatusInventory.Active)
+    {
+       
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Thông tin kiểm kê </h5>
+                @foreach (var item in Model.InventoryItem)
+                {
+                    <p>@item.Model - Số lượng: @item.Quantity</p>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+ 
 
+    }
+    <!-- Trạng thái và kiểm kê -->
+    @if (Model.StatusOrder == StatusOrder.Confirmed)
+    {
+
+        <form asp-action="Pay" method="post">
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <button type="submit">Thanh toán</button>
+        </form>
+
+    }
+    else
+    {
+
+
+    }
 
 </div>
 

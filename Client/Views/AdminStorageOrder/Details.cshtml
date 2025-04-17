@@ -2,6 +2,8 @@
 @model Client.Models.ViewModel.AdminStorageViewModel
 @using Client.Services
 @inject ImageService imageService
+@inject UserService user
+
 
 @{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -15,6 +17,18 @@
         <div class="card-body">
             <h5 class="card-title">Thông tin người dùng</h5>
             <p class="card-text">Người dùng ID: @Model.NguoiDungId</p>
+            <p class="card-text">Tên Người Dùng: @await user.GetUserNameAsync(Model.NguoiDungId)</p>
+            @{
+                var email = await user.GeEmailAsync(Model.NguoiDungId);
+                var subject = $"Liên hệ về đơn hàng {Model.Id}";
+                var body = $"Xin chào, tôi là nhân viên CSKH của Mot warehouse, chúng tôi có 1 chút vấn đề cần liên hệ với bạn để giải quyết một số vấn đề với đơn hàng #{Model.Id} của bạn.";
+                var gmailUrl = $"https://mail.google.com/mail/?view=cm&to={email}&su={Uri.EscapeDataString(subject)}&body={Uri.EscapeDataString(body)}";
+            }
+
+            <a href="@gmailUrl" target="_blank" class="btn btn-primary">
+                Gửi email CSKH
+            </a>
+
         </div>
     </div>
 

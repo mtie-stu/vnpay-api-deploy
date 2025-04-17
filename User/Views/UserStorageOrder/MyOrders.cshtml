@@ -129,6 +129,13 @@
         font-size: 14px;
     }
 
+    .order-card-link {
+        text-decoration: none; /* bỏ underline */
+        color: inherit; /* giữ nguyên màu chữ gốc */
+        display: block; /* để toàn bộ thẻ div bên trong có thể click */
+    }
+
+
     media (max-width: 768px) {
         .search-bar {
             justify-content: center;
@@ -177,17 +184,20 @@
                 _ => "status-unknown"
             };
 
-            <div class="order-card" data-id="@order.Id" data-status="@order.SatusOrder.ToString().ToLower()">
-                <div class="status-badge @statusClass">@statusText</div>
+            <a asp-controller="UserStorageOrder" asp-action="Details" asp-route-id="@order.Id" class="order-card-link">
+                <div class="order-card" data-id="@order.Id" data-status="@order.SatusOrder.ToString().ToLower()">
+                    <div class="status-badge @statusClass">@statusText</div>
+                    <div class="card-item"><i class="fas fa-list"></i><strong>Đơn hàng #</strong>@order.Id</div>
+                    <div class="card-item"><i class="fas fa-calendar-plus"></i><strong>Ngày đặt:</strong> @order.OrderDate</div>
+                    <div class="card-item"><i class="fas fa-warehouse"></i><strong>Nhập kho:</strong> @order.DateOfEntry</div>
+                    <div class="card-item"><i class="fas fa-truck-loading"></i><strong>Xuất kho:</strong> @order.DateOfShipment</div>
+                    <div class="card-item"><i class="fas fa-cubes"></i><strong>Loại hàng:</strong> @order.TypeOfGoods</div>
+                    <div class="card-item"><i class="fas fa-boxes"></i><strong>Số lượng:</strong> @order.Quantity</div>
+                    <div class="card-item"><i class="fas fa-dollar-sign"></i><strong>Giá:</strong> @order.Price.ToString("N0") VNĐ</div>
+                </div>
+            </a>
 
-                <div class="card-item"><i class="fas fa-list"></i><strong>Đơn hàng #</strong>@order.Id</div>
-                <div class="card-item"><i class="fas fa-calendar-plus"></i><strong>Ngày đặt:</strong> @order.OrderDate:dd/MM/yyyy</div>
-                <div class="card-item"><i class="fas fa-warehouse"></i><strong>Nhập kho:</strong> @order.DateOfEntry:dd/MM/yyyy</div>
-                <div class="card-item"><i class="fas fa-truck-loading"></i><strong>Xuất kho:</strong> @order.DateOfShipment:dd/MM/yyyy</div>
-                <div class="card-item"><i class="fas fa-cubes"></i><strong>Loại hàng:</strong> @order.TypeOfGoods</div>
-                <div class="card-item"><i class="fas fa-boxes"></i><strong>Số lượng:</strong> @order.Quantity</div>
-                <div class="card-item"><i class="fas fa-dollar-sign"></i><strong>Giá:</strong> @order.Price.ToString("N0") VNĐ</div>
-            </div>
+            
         }
     </div>
 </div>

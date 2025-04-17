@@ -30,9 +30,10 @@ builder.Services.AddAuthentication(options =>
 
 
 builder.Services.AddAuthorization();
+builder.Services.AddTransient<UserService, UserService>();
+builder.Services.AddScoped<ImageService, ImageService>();
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<ImageService, ImageService>();
 
 var app = builder.Build();
 

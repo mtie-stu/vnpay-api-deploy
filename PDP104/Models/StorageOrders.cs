@@ -8,14 +8,14 @@ namespace PDP104.Models
     {
         Confirming,
         Confirmed,
+        PAID,
         Imported,
         Exported
     }
 
     public enum StatusInventory
     {
-        Active,
-        Inactive
+        Active,                   
     }
     public enum TypeOfGoods
     {

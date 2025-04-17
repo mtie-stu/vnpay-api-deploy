@@ -54,6 +54,8 @@ namespace PDP104.Controllers
         public IActionResult AddOrder([FromForm] UserStorageViewModel orderModel)
         {
             string nguoiDungId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string namend = User.FindFirst(ClaimTypes.Name)?.Value;
+
             if (nguoiDungId == null)
                 return Unauthorized("Không thể xác định người dùng.");
 
@@ -64,7 +66,7 @@ namespace PDP104.Controllers
             {
                 foreach (var imageFile in orderModel.ImageFiles)
                 {
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                    string uniqueFileName = Guid.NewGuid().ToString() + "PAID" + imageFile.FileName;
                     string filePath = Path.Combine("uploads", uniqueFileName);
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
