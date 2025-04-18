@@ -88,31 +88,27 @@ namespace PDP104.Controllers
             return Content("FAIL");
         }
 
-        [HttpGet("return")]
-        public async Task<IActionResult> ReturnAsync()
+        public IActionResult Return()
         {
             var vnp = new VnPayLibrary();
             var isValid = vnp.ValidateSignature(Request.Query, _config["Vnpay:HashSecret"]);
+
             var orderId = Request.Query["vnp_TxnRef"];
-            // ✅ Xử lý logic đơn hàng
-            var order = await _context.StorageOrders.FindAsync(orderId);
             if (!isValid)
                 return Content("Chữ ký không hợp lệ");
 
             var responseCode = Request.Query["vnp_ResponseCode"];
-            var txnRef = Request.Query["vnp_TxnRef"];
-
             if (responseCode == "00")
             {
                 // ✅ Sau khi hiển thị thông báo → Redirect về trang chi tiết
-                order.StatusOrder = Models.StatusOrder.PAID;
-                await _context.SaveChangesAsync();
                 return Redirect($"https://localhost:7023/UserStorageOrder/Details/{orderId}");
 
             }
 
-            return Content("Thanh toán thất bại hoặc bị huỷ.");
+            return Redirect($"https://localhost:7023/UserStorageOrder/Details/{orderId}");
+
         }
+
     }
 
 }
