@@ -1,0 +1,24 @@
+Tiêu đề: [HỖ TRỢ] Giao dịch bị lỗi code 70 - Mã tra cứu: yPhu9mvDp2
+
+Dear VNPAY team,
+
+Em đang gặp lỗi code=70 khi tạo URL thanh toán, dù đã encode đúng chuẩn các trường, đặc biệt vnp_ReturnUrl (theo RFC 3986) và không dùng vnp_IpnUrl.
+
+Em xin gửi thông tin chi tiết như sau:
+
+- TmnCode: 30WTIE38
+- SignData:
+vnp_Amount=20000000&vnp_Command=pay&vnp_CreateDate=20250418142127&vnp_CurrCode=VND&vnp_ExpireDate=20250418143627&vnp_IpAddr=0.0.0.1&vnp_Locale=vn&vnp_OrderInfo=TestPayment&vnp_OrderType=other&vnp_ReturnUrl=https://vnpay-api-deploy.onrender.com/api/vnpay/return&vnp_TmnCode=30WTIE38&vnp_TxnRef=2&vnp_Version=2.1.0
+
+- SecureHash:
+A203348651C89E45BD08F4128A32F9F004417EB873E321FAC56591A40AE9ED9E1891F07728E4B3E044D9BC506ECE7396FBA91B527145FB272EFF18B81CCCF137
+
+- Mã tra cứu giao dịch: yPhu9mvDp2
+
+- Link thanh toán:
+https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=20000000&vnp_Command=pay&vnp_CreateDate=20250418142127&vnp_CurrCode=VND&vnp_ExpireDate=20250418143627&vnp_IpAddr=0.0.0.1&vnp_Locale=vn&vnp_OrderInfo=TestPayment&vnp_OrderType=other&vnp_ReturnUrl=https%3A%2F%2Fvnpay-api-deploy.onrender.com%2Fapi%2Fvnpay%2Freturn&vnp_TmnCode=30WTIE38&vnp_TxnRef=2&vnp_Version=2.1.0&vnp_SecureHash=A203348651C89E45BD08F4128A32F9F004417EB873E321FAC56591A40AE9ED9E1891F07728E4B3E044D9BC506ECE7396FBA91B527145FB272EFF18B81CCCF137
+
+Mong anh/chị kiểm tra và phản hồi giúp em ạ.
+
+Trân trọng,
+Minh Tiến

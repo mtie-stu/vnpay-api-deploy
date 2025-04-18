@@ -17,7 +17,6 @@ namespace PDP104.Controllers
             _config = config;
             _context = context;
         }
-
         [HttpPost("create")]
         public async Task<IActionResult> CreatePayment([FromBody] int storageOrderId)
         {
@@ -25,54 +24,46 @@ namespace PDP104.Controllers
             if (order == null) return NotFound("Không tìm thấy đơn hàng");
 
             var vnp = new VnPayLibrary();
-
-            // Bắt buộc thứ tự và chính xác tên param
             vnp.AddRequestData("vnp_Version", "2.1.0");
             vnp.AddRequestData("vnp_Command", "pay");
             vnp.AddRequestData("vnp_TmnCode", _config["Vnpay:TmnCode"]);
 
-            // Nhân 100 (VNP yêu cầu) và chuyển thành long
             var amount = Convert.ToInt64(order.Price * 100);
             vnp.AddRequestData("vnp_Amount", amount.ToString());
-
             vnp.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
             vnp.AddRequestData("vnp_ExpireDate", DateTime.Now.AddMinutes(15).ToString("yyyyMMddHHmmss"));
-
             vnp.AddRequestData("vnp_CurrCode", "VND");
 
-            // Lấy IP
-            var ipAddress = HttpContext.Connection.RemoteIpAddress;
-            string ip = "127.0.0.1";
-            if (ipAddress != null)
-            {
-                ip = ipAddress.IsIPv4MappedToIPv6 ? ipAddress.MapToIPv4().ToString() : ipAddress.ToString();
-                if (ip == "::1") ip = "127.0.0.1";
-            }
-            vnp.AddRequestData("vnp_IpAddr", ip);
+            string ip = HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString() ?? "127.0.0.1";
+            vnp.AddRequestData("vnp_IpAddr", ip == "::1" ? "127.0.0.1" : ip);
 
             vnp.AddRequestData("vnp_Locale", "vn");
-
-            // KHÔNG DẤU & KHÔNG URL đặc biệt
-            vnp.AddRequestData("vnp_OrderInfo", "TestPayment");
+            vnp.AddRequestData("vnp_OrderInfo", "TestPayment"); // KHÔNG dấu
             vnp.AddRequestData("vnp_OrderType", "other");
-
-            // ✅ Không thêm IpnUrl vào đây
-            vnp.AddRequestData("vnp_ReturnUrl", _config["Vnpay:ReturnUrl"]);
             vnp.AddRequestData("vnp_TxnRef", storageOrderId.ToString());
 
-            // Tạo URL thanh toán
-            var paymentUrl = vnp.CreateRequestUrl(_config["Vnpay:Url"], _config["Vnpay:HashSecret"]);
+            // ✅ ReturnUrl phải encode đúng theo RFC 3986
+            vnp.AddRequestData("vnp_ReturnUrl", _config["Vnpay:ReturnUrl"]);
 
-            Console.WriteLine("✅ Final URL: " + paymentUrl);
+            // ❌ KHÔNG ADD vnp_IpnUrl nếu đang chạy ở môi trường test
+            // vnp.AddRequestData("vnp_IpnUrl", _config["Vnpay:IpnUrl"]);
+
+            var paymentUrl = vnp.CreateRequestUrl(
+                _config["Vnpay:Url"],
+                _config["Vnpay:HashSecret"]);
+
+            Console.WriteLine("✅ Final URL = " + paymentUrl);
             return Ok(new { paymentUrl });
         }
+
+
 
 
         [HttpGet("ipn")]
         public async Task<IActionResult> Ipn()
         {
             var vnp = new VnPayLibrary();
-            if (!vnp.ValidateSignature(Request.Query, _config["Vnpay:HashSecret"]))
+            if (!vnp.ValidateSignature(Request.Query,_config["Vnpay:HashSecret"]))
                 return Content("INVALID SIGNATURE");
 
             var orderId = int.Parse(Request.Query["vnp_TxnRef"]);

@@ -1,0 +1,40 @@
+
+Subject: Hỗ trợ lỗi 70 - Giao dịch không thành công do checksum không hợp lệ (Mã tra cứu: yPhu9mvDp2)
+
+Kính gửi bộ phận kỹ thuật VNPAY,
+
+Tôi đang trong quá trình tích hợp hệ thống thanh toán VNPAY tại môi trường sandbox.  
+Tuy nhiên, hiện tại tôi đang gặp lỗi mã 70 - Giao dịch không thành công do checksum không hợp lệ mặc dù tôi đã xử lý logic tạo chữ ký đúng theo tài liệu hướng dẫn của VNPAY.
+
+Thông tin giao dịch:
+
+- Mã tra cứu: yPhu9mvDp2  
+- Thời gian giao dịch: 18/04/2025 13:36:59  
+- TmnCode: 30WTIE38  
+- HashSecret: AOVEURJBKHY90Y9TUXHUNTMWNU4AWZ83  
+- SignData (dùng để tạo chữ ký SHA512):
+
+vnp_Amount=20000000&vnp_Command=pay&vnp_CreateDate=20250418133659&vnp_CurrCode=VND&vnp_ExpireDate=20250418135159&vnp_IpAddr=0.0.0.1&vnp_Locale=vn&vnp_OrderInfo=TestPayment&vnp_OrderType=other&vnp_ReturnUrl=https%3a%2f%2fvnpay-api-deploy.onrender.com%2fapi%2fvnpay%2freturn&vnp_TmnCode=30WTIE38&vnp_TxnRef=2&vnp_Version=2.1.0
+
+- SecureHash tôi tạo được:  
+3A91C5E23D6670161D8BF17C7CBECC0ADFA334AD0C8A9C78B915A5675A9716274BB89E7E15C9310728F3A3C46A3E8255CE19A1E5196136951062ACEE41DBB13D
+
+- URL thanh toán tôi đã truy cập:
+
+https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=20000000&vnp_Command=pay&vnp_CreateDate=20250418133659&vnp_CurrCode=VND&vnp_ExpireDate=20250418135159&vnp_IpAddr=0.0.0.1&vnp_Locale=vn&vnp_OrderInfo=TestPayment&vnp_OrderType=other&vnp_ReturnUrl=https%3a%2f%2fvnpay-api-deploy.onrender.com%2fapi%2fvnpay%2freturn&vnp_TmnCode=30WTIE38&vnp_TxnRef=2&vnp_Version=2.1.0&vnp_SecureHash=3A91C5E23D6670161D8BF17C7CBECC0ADFA334AD0C8A9C78B915A5675A9716274BB89E7E15C9310728F3A3C46A3E8255CE19A1E5196136951062ACEE41DBB13D
+
+Tôi đã kiểm tra toàn bộ:
+- Các tham số được sắp xếp đúng thứ tự alpha A-Z khi tạo SignData.
+- Encode giá trị chính xác.
+- Tạo SecureHash bằng thuật toán SHA512 với HashSecret trên.
+- Đảm bảo không có tham số vnp_IpnUrl gửi đi (vì đã được thông báo gây lỗi 99).
+
+Mặc dù vậy, tôi vẫn gặp lỗi 70 và không thể tiếp tục quy trình tích hợp.  
+Mong VNPAY có thể kiểm tra giúp tôi liệu HashSecret đang dùng có đúng với tài khoản sandbox TmnCode = 30WTIE38 không, hoặc có điều gì chưa phù hợp.
+
+Xin cảm ơn anh/chị hỗ trợ.
+
+Trân trọng,  
+[Họ tên bạn]  
+[Email đăng ký tài khoản VNPAY sandbox]  
+[SĐT nếu có]

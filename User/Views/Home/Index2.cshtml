@@ -1,10 +1,13 @@
-﻿ @using User.Services
-
+﻿@using User.Services
 @model List<User.Models.ViewModel.UserStorageViewModel>
 
 @{
     ViewData["Title"] = "Trang chủ khách hàng";
-    var latestOrders = Model.Take(5).ToList(); // Lấy 5 đơn hàng gần nhất
+    var latestOrders = Model.Take(5).ToList();
+    var totalOrders = Model.Count;
+    var paidOrders = Model.Count(x => x.SatusOrder == StatusOrder.PAID);
+    var confirmingOrders = Model.Count(x => x.SatusOrder == StatusOrder.Confirming);
+    var totalQuantity = Model.Sum(x => x.Quantity);
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -13,7 +16,7 @@
 <style>
     body {
         font-family: 'Roboto', sans-serif;
-        background-color: #f0f2f5;
+        background-color: #f5f7fa;
         margin: 0;
         padding: 0;
     }
@@ -33,15 +36,42 @@
         text-align: center;
     }
 
-        .welcome-box h2 {
-            font-weight: 500;
-            margin-bottom: 10px;
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: #ffffff;
+        padding: 1.5rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        text-align: center;
+        transition: 0.3s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
         }
 
-        .welcome-box p {
-            color: #666;
-            font-size: 16px;
-        }
+    .stat-icon {
+        font-size: 32px;
+        margin-bottom: 10px;
+        color: #007bff;
+    }
+
+    .stat-number {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .stat-label {
+        font-size: 15px;
+        color: #666;
+    }
 
     .section-title {
         font-size: 20px;
@@ -116,8 +146,12 @@
         background-color: #7f8c8d;
     }
 
+    .status-Paid {
+        background-color: #0097b2;
+    }
+
     .btn-view-all {
-        margin-top: 1.5rem;
+        margin-top: 2rem;
         display: inline-block;
         padding: 12px 24px;
         background-color: #007bff;
@@ -135,12 +169,40 @@
 
 <div class="container">
     <div class="welcome-box">
-        <h2>Chào mừng bạn @User.FindFirst("Name")?.Value! 🎉</h2>
-        <p>Hệ thống giúp bạn theo dõi tình trạng đơn hàng, quản lý hàng hóa dễ dàng và nhanh chóng.</p>
+        <h2>Xin chào, @User.FindFirst("Name")?.Value! 👋</h2>
+        <p>Hệ thống giúp bạn quản lý đơn hàng & hàng hóa một cách trực quan và nhanh chóng.</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
+            <div class="stat-number">@totalOrders</div>
+            <div class="stat-label">Tổng đơn hàng</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-number">@paidOrders</div>
+            <div class="stat-label">Đã thanh toán</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-sync-alt"></i></div>
+            <div class="stat-number">@confirmingOrders</div>
+            <div class="stat-label">Đang xử lý</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-boxes"></i></div>
+            <div class="stat-number">@totalQuantity</div>
+            <div class="stat-label">Tổng số lượng hàng đã lưu trữ</div>
+        </div>
     </div>
 
     <div>
-        <div class="section-title">📋 Đơn hàng gần đây</div>
+        <div class="section-title">📋 Đơn hàng gần đây
+            <div style="text-align:left;">
+                <a class="btn-view-all" href="/UserStorageOrder/MyOrders"><i class="fas fa-arrow-right"></i> Xem tất cả đơn hàng</a>
+            </div>
+        </div>
+        
         <div class="order-cards">
             @foreach (var order in latestOrders)
             {
@@ -150,6 +212,7 @@
                     StatusOrder.Confirmed => "Đã xác nhận",
                     StatusOrder.Imported => "Đã nhập kho",
                     StatusOrder.Exported => "Đã xuất kho",
+                    StatusOrder.PAID => "Đã thanh toán",
                     _ => "Không xác định"
                 };
 
@@ -159,6 +222,7 @@
                     StatusOrder.Confirmed => "status-Confirmed",
                     StatusOrder.Imported => "status-Imported",
                     StatusOrder.Exported => "status-Exported",
+                    StatusOrder.PAID => "status-Paid",
                     _ => "status-unknown"
                 };
 
@@ -172,8 +236,6 @@
             }
         </div>
 
-        <div style="text-align:center;">
-            <a class="btn-view-all" href="/UserStorageOrder/MyOrders"><i class="fas fa-arrow-right"></i> Xem tất cả đơn hàng</a>
-        </div>
+     
     </div>
 </div>
