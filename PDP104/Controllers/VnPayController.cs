@@ -104,7 +104,7 @@ namespace PDP104.Controllers
             if (responseCode == "00")
             {
                 // ✅ Sau khi hiển thị thông báo → Redirect về trang chi tiết
-                return Redirect($"https://localhost:7023/Order/Details/{orderId}");
+                return Redirect($"https://localhost:7023/UserStorageOrder/Details/{orderId}");
 
             }
 
