@@ -88,6 +88,7 @@ namespace PDP104.Controllers
             return Content("FAIL");
         }
 
+        [HttpGet("return")]
         public IActionResult Return()
         {
             var vnp = new VnPayLibrary();
