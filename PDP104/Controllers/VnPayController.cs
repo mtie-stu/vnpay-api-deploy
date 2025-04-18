@@ -63,26 +63,37 @@ namespace PDP104.Controllers
         public async Task<IActionResult> Ipn()
         {
             var vnp = new VnPayLibrary();
-            if (!vnp.ValidateSignature(Request.Query,_config["Vnpay:HashSecret"]))
-                return Content("INVALID SIGNATURE");
 
+            // ✅ Kiểm tra chữ ký
+            if (!vnp.ValidateSignature(Request.Query, _config["Vnpay:HashSecret"]))
+                return Content("INVALID_SIGNATURE");
+
+            // ✅ Lấy dữ liệu cần thiết
             var orderId = int.Parse(Request.Query["vnp_TxnRef"]);
             var status = Request.Query["vnp_TransactionStatus"];
+            var responseCode = Request.Query["vnp_ResponseCode"];
+
+            // ✅ Xử lý logic đơn hàng
             var order = await _context.StorageOrders.FindAsync(orderId);
-            if (order != null && status == "00")
+            if (order == null)
+                return Content("ORDER_NOT_FOUND");
+
+            if (status == "00" && responseCode == "00")
             {
                 order.StatusOrder = Models.StatusOrder.PAID;
                 await _context.SaveChangesAsync();
-                return Content("OK");
+                return Content("SUCCESS");
             }
 
             return Content("FAIL");
         }
+
         [HttpGet("return")]
         public IActionResult Return()
         {
             var vnp = new VnPayLibrary();
             var isValid = vnp.ValidateSignature(Request.Query, _config["Vnpay:HashSecret"]);
+            var orderId = Request.Query["vnp_TxnRef"];
 
             if (!isValid)
                 return Content("Chữ ký không hợp lệ");
@@ -92,7 +103,9 @@ namespace PDP104.Controllers
 
             if (responseCode == "00")
             {
-                return Content($"Thanh toán thành công! Mã đơn: {txnRef}");
+                // ✅ Sau khi hiển thị thông báo → Redirect về trang chi tiết
+                return Redirect($"https://localhost:7023/Order/Details/{orderId}");
+
             }
 
             return Content("Thanh toán thất bại hoặc bị huỷ.");
