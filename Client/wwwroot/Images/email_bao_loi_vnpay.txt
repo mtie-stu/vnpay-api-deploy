@@ -1,0 +1,36 @@
+
+📩 Tiêu đề email:  
+❗ [HỖ TRỢ] Kiểm tra lỗi thanh toán mã 70 – Tài khoản test VNPAY
+
+Nội dung email:
+
+Kính gửi bộ phận kỹ thuật VNPAY,
+
+Em tên là [Tên bạn], hiện em đang tích hợp cổng thanh toán VNPAY vào hệ thống website của mình. Trong quá trình test với môi trường sandbox, em liên tục gặp lỗi mã `70 - Invalid Checksum`.
+
+Em xin gửi thông tin để quý anh/chị kỹ thuật kiểm tra giúp:
+
+🔹 Mã TMN: 30WTIE38  
+🔹 Mã tra cứu: AFQzyBuRXW  
+🔹 Thời điểm gọi API: 18/04/2025 - 12:37  
+🔹 URL gọi tới hệ thống VNPAY:
+
+https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=20000000&vnp_Command=pay&vnp_CreateDate=20250418123712&vnp_CurrCode=VND&vnp_ExpireDate=20250418125212&vnp_IpAddr=0.0.0.1&vnp_Locale=vn&vnp_OrderInfo=TestPayment&vnp_OrderType=other&vnp_ReturnUrl=https%3a%2f%2fvnpay-api-deploy.onrender.com%2fapi%2fvnpay%2freturn&vnp_TmnCode=30WTIE38&vnp_TxnRef=2&vnp_Version=2.1.0&vnp_SecureHash=7FF470793A65035105A6332DE91747D3C23E3BE4F1B84B5753219E34652AAA9575BD2DA597F83916A8E3C169955D8201850F827C74D9E0BB57B83E...
+
+🔍 Dữ liệu tạo chữ ký (SignData):
+
+vnp_Amount=20000000&vnp_Command=pay&vnp_CreateDate=20250418123712&vnp_CurrCode=VND&vnp_ExpireDate=20250418125212&vnp_IpAddr=0.0.0.1&vnp_Locale=vn&vnp_OrderInfo=TestPayment&vnp_OrderType=other&vnp_ReturnUrl=https%3a%2f%2fvnpay-api-deploy.onrender.com%2fapi%2fvnpay%2freturn&vnp_TmnCode=30WTIE38&vnp_TxnRef=2&vnp_Version=2.1.0
+
+🔐 SecureHash đã băm:  
+7FF470793A65035105A6332DE91747D3C23E3BE4F1B84B5753219E34652AAA9575BD2DA597F83916A8E3C169955D8201850F827C74D9E0BB57B83E7A223E1C29
+
+Em đã encode các giá trị (bao gồm cả dấu `/`, `:` trong returnUrl), sắp xếp key theo thứ tự alphabet và sử dụng thuật toán HMAC-SHA512 với HashSecret được cấp trong môi trường test.
+
+Tuy nhiên vẫn gặp lỗi `70`, kính mong anh/chị kiểm tra giúp em xem em đã thực hiện đúng chưa, hoặc cần điều chỉnh thêm thông số nào.
+
+Em xin chân thành cảm ơn!
+
+Trân trọng,  
+[Tên bạn]  
+[Số điện thoại nếu cần]  
+[Email của bạn]

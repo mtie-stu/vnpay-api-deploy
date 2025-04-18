@@ -118,7 +118,14 @@
     .status-Confirmed { background-color: #2ecc71; }
     .status-Imported { background-color: #3498db; }
     .status-Exported { background-color: #9b59b6; }
-    .status-unknown { background-color: #7f8c8d; }
+
+    .status-unknown {
+        background-color: #7f8c8d;
+    }
+
+    .status-Paid {
+        background-color: #0097b2;
+    }
 
     footer {
         text-align: center;
@@ -147,13 +154,6 @@
     }
 </style>
 
-<header>
-    <h1><i class="fas fa-archive"></i> Quản lý đơn hàng lưu trữ</h1>
-    <nav>
-        <a href="/">Trang chủ</a>
-        <a href="/Account/Profile">Tài khoản</a>
-    </nav>
-</header>
 
 <div class="container">
     <div class="search-bar">
@@ -162,7 +162,9 @@
     </div>
 
     <h2>📦 Danh sách các đơn hàng của bạn</h2>
-
+    <a asp-controller="UserStorageOrder" asp-action="ExportToExcel" class="btn btn-success">
+        <i class="fas fa-file-excel"></i> Xuất Excel
+    </a>
     <div class="order-cards" id="order-cards">
         @foreach (var order in Model)
         {
@@ -172,6 +174,8 @@
                 StatusOrder.Confirmed => "Đã xác nhận",
                 StatusOrder.Imported => "Đã nhập kho",
                 StatusOrder.Exported => "Đã xuất kho",
+                StatusOrder.PAID => "Đã thanh toán",
+
                 _ => "Không xác định"
             };
 
@@ -181,6 +185,8 @@
                 StatusOrder.Confirmed => "status-Confirmed",
                 StatusOrder.Imported => "status-Imported",
                 StatusOrder.Exported => "status-Exported",
+                StatusOrder.PAID => "status-Paid",
+
                 _ => "status-unknown"
             };
 
@@ -202,9 +208,7 @@
     </div>
 </div>
 
-<footer>
-    &copy; @DateTime.Now.Year Công ty Dịch vụ Lưu trữ MOT - Bảo mật & Uy tín hàng đầu.
-</footer>
+
 
 <script>
     function filterOrders() {

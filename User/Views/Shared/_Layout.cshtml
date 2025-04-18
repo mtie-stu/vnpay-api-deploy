@@ -4,10 +4,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Favicons -->
+    <link href="~/Images/MOT.png" rel="icon">
+    <link href="~/Images/MOT.png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MOT Warehouse- @ViewData["Title"]</title>
+    <title>MOT Warehouse - @ViewData["Title"]</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         html, body {
             height: 100%;
@@ -33,11 +37,16 @@
             .sidebar a {
                 color: white;
                 text-decoration: none;
-                display: block;
+                display: flex;
+                align-items: center;
                 padding: 10px;
                 margin-bottom: 5px;
                 border-radius: 5px;
             }
+
+                .sidebar a i {
+                    margin-right: 8px;
+                }
 
                 .sidebar a:hover {
                     background: #1e5f7d;
@@ -104,72 +113,88 @@
         .dropdown-menu {
             border-radius: 15px;
         }
+
+        footer {
+            background: linear-gradient(to right, #212529, #000);
+        }
+
+        .hover-link:hover {
+            color: #0d6efd !important;
+            text-decoration: underline !important;
+            transition: 0.3s;
+        }
+
+        .hover-social:hover {
+            color: #ffc107 !important;
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+
+        footer p, footer a {
+            font-size: 0.95rem;
+        }
+
+        footer i {
+            vertical-align: middle;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .back-to-top {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <nav class="sidebar">
-        @if (User.Identity.IsAuthenticated )
+        @if (User.Identity.IsAuthenticated)
         {
-            
             <div>
-                <a id="img" class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Index">
+                <a id="img" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/Images/MOT.png" alt="Logo" class="img-fluid">
                 </a>
-                @* <a href="@Url.Action("Index", "Admin")">Dashboard</a>
-                <a href="@Url.Action("Index", "AdminStorageOrder")">Order Management</a>
-                <a href="@Url.Action("Index", "Inventory")">Inventory Management</a>
-                <a href="@Url.Action("Index", "StorageSpaces")">Storage Space Management</a> *@
-                <a href="@Url.Action("Profile", "Account")">Your Profile</a>
+                <a href="@Url.Action("Index2", "Home")"><i class="bi bi-speedometer2"></i>Dashboard</a>
+                <a href="@Url.Action("MyOrders", "UserStorageOrder")"><i class="bi bi-basket3"></i>Your Orders</a>
+                <a href="@Url.Action("Create", "UserStorageOrder")"><i class="bi bi-plus-square"></i>Create Orders</a>
+                <a href="@Url.Action("Profile", "Account")"><i class="bi bi-person-circle"></i>Your Profile</a>
             </div>
             <div class="dropdown dropup text-center">
-                <a class="dropdown-toggle d-inline-block" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="@await imageService.GetImageUrl(@User.FindFirst("Hinh")?.Value)" alt="User" class="rounded-circle border" style="width: 50px; height: 50px; object-fit: cover;">
+                <a class="dropdown-toggle d-inline-block" href="#" role="button" data-bs-toggle="dropdown">
+                    <img src="@await imageService.GetImageUrl(@User.FindFirst("Hinh")?.Value)" alt="User" class="rounded-circle border border-2 border-primary shadow-sm" style="width:50px; height:50px; object-fit:cover;">
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end p-3 shadow text-center" style="min-width: 220px;">
-                    <li>
-                        <img src="@await imageService.GetImageUrl(@User.FindFirst("Hinh")?.Value)" alt="User" class="rounded-circle border mb-2"
-                             style="width: 60px; height: 60px; object-fit: cover;">
-                    </li>
-                    <li>
-                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Profile">
-                            Profile
-                        </a>
-                    </li>
-                    <li>
-                        <strong>@User.FindFirst("Name")?.Value</strong>
-                    </li>
-                    <li class="text-muted small">@User.FindFirst("email")?.Value</li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <a class="dropdown-item text-danger" href="@Url.Action("Logout", "Account")">
-                            <i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
-                        </a>
-                    </li>
+                <ul class="dropdown-menu dropdown-menu-end p-3 shadow-lg text-center animate__animated animate__fadeIn" style="min-width:240px; border-radius:1rem;">
+                    <li class="mb-2"><img src="@await imageService.GetImageUrl(@User.FindFirst("Hinh")?.Value)" alt="User" class="rounded-circle border border-secondary" style="width:70px; height:70px; object-fit:cover;"></li>
+                    <li class="mb-1"><strong class="d-block text-dark" style="font-size:1.1rem;">@User.FindFirst("Name")?.Value</strong></li>
+                    <li class="text-muted small mb-2">@User.FindFirst("email")?.Value</li>
+                    <li><a class="btn btn-outline-primary btn-sm w-100 mb-2 text-primary d-flex align-items-center justify-content-center" asp-controller="Account" asp-action="Profile"><i class="bi bi-person"></i> Hồ sơ cá nhân</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="btn btn-outline-danger btn-sm w-100 text-danger d-flex align-items-center justify-content-center" href="@Url.Action("Logout", "Account")"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
                 </ul>
-            </div>
-        }
-        else if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
-        {
-            <div class="alert alert-danger mt-3">
-                ❌ Bạn không có quyền truy cập vào khu vực quản trị.
             </div>
         }
         else
         {
             <div class="user-info d-flex align-items-start justify-content-between p-3 rounded bg-white shadow-sm">
-                <span class="text-muted" style="line-height: 1.4;">Bạn chưa<br />đăng nhập</span>
-
+                <span class="text-muted" style="line-height:1.4;"><i class="bi bi-exclamation-circle-fill"></i> Bạn chưa<br />đăng nhập</span>
                 <div class="d-flex flex-column gap-2">
-                    <a class="btn btn-primary btn-sm text-nowrap w-100" href="@Url.Action("Login", "Account")">Đăng nhập</a>
-                    <a class="btn btn-primary btn-sm text-nowrap w-100" href="@Url.Action("Register", "Account")">Đăng ký</a>
+                    <a class="btn btn-primary btn-sm text-nowrap w-100" href="@Url.Action("Login", "Account")"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</a>
+                    <a class="btn btn-primary btn-sm text-nowrap w-100" href="@Url.Action("Register", "Account")"><i class="bi bi-pencil-square"></i> Đăng ký</a>
                 </div>
             </div>
-
         }
-    </nav> 
+    </nav>
+
     <div class="main-wrapper">
         <div class="content">
             <main role="main">
@@ -177,33 +202,25 @@
             </main>
         </div>
 
-        <!-- Footer -->
-        <!-- Footer -->
-        <footer class="bg-gradient-to-b from-dark to-black text-white pt-5">
+        <footer class="text-white pt-5">
             <div class="container">
                 <div class="row">
-                    <!-- About -->
                     <div class="col-md-4 mb-4">
                         <h5 class="text-uppercase fw-bold mb-3"><i class="bi bi-building"></i> Về Chúng Tôi</h5>
-                        <p class="small fst-italic">
-                            Chúng tôi cung cấp giải pháp lưu trữ chuyên nghiệp, uy tín và tận tâm.
-                            Luôn sẵn sàng hỗ trợ bạn 24/7 với đội ngũ chuyên viên dày dạn kinh nghiệm.
-                        </p>
-                        <img src="~/Images/MOT.png" alt="MOT Logo" style="height: 100px;">
+                        <p class="small fst-italic">Chúng tôi cung cấp giải pháp lưu trữ chuyên nghiệp, uy tín và tận tâm. Luôn sẵn sàng hỗ trợ bạn 24/7 với đội ngũ chuyên viên dày dạn kinh nghiệm.</p>
+                        <img src="~/Images/MOT.png" alt="MOT Logo" style="height:100px;">
                     </div>
 
-                    <!-- Quick Links -->
                     <div class="col-md-2 mb-4">
                         <h5 class="text-uppercase fw-bold mb-3"><i class="bi bi-link-45deg"></i> Liên kết</h5>
                         <ul class="list-unstyled">
-                            <li><a href="#" class="text-white text-decoration-none hover-link">Trang chủ</a></li>
-                            <li><a href="#" class="text-white text-decoration-none hover-link">Dịch vụ</a></li>
-                            <li><a href="#" class="text-white text-decoration-none hover-link">Báo giá</a></li>
-                            <li><a href="#" class="text-white text-decoration-none hover-link">Hỗ trợ</a></li>
+                            <li><a href="#" class="text-white text-decoration-none hover-link"><i class="bi bi-house-door"></i> Trang chủ</a></li>
+                            <li><a href="#" class="text-white text-decoration-none hover-link"><i class="bi bi-tools"></i> Dịch vụ</a></li>
+                            <li><a href="#" class="text-white text-decoration-none hover-link"><i class="bi bi-tag"></i> Báo giá</a></li>
+                            <li><a href="#" class="text-white text-decoration-none hover-link"><i class="bi bi-life-preserver"></i> Hỗ trợ</a></li>
                         </ul>
                     </div>
 
-                    <!-- Contact -->
                     <div class="col-md-3 mb-4">
                         <h5 class="text-uppercase fw-bold mb-3"><i class="bi bi-telephone-inbound"></i> Liên hệ</h5>
                         <p><i class="bi bi-envelope-fill"></i> contact@motservice.vn</p>
@@ -211,19 +228,12 @@
                         <p><i class="bi bi-geo-alt-fill"></i> 123 Nguyễn Văn Cừ, Q.5, TP.HCM</p>
                     </div>
 
-                    <!-- Social Media -->
                     <div class="col-md-3 mb-4">
                         <h5 class="text-uppercase fw-bold mb-3"><i class="bi bi-share-fill"></i> Kết nối</h5>
                         <div class="d-flex flex-column gap-2">
-                            <a href="#" class="text-white text-decoration-none hover-social">
-                                <i class="bi bi-facebook fs-5 me-2"></i>Facebook
-                            </a>
-                            <a href="#" class="text-white text-decoration-none hover-social">
-                                <i class="bi bi-instagram fs-5 me-2"></i>Instagram
-                            </a>
-                            <a href="#" class="text-white text-decoration-none hover-social">
-                                <i class="bi bi-youtube fs-5 me-2"></i>YouTube
-                            </a>
+                            <a href="#" class="text-white text-decoration-none hover-social"><i class="bi bi-facebook fs-5 me-2"></i>Facebook</a>
+                            <a href="#" class="text-white text-decoration-none hover-social"><i class="bi bi-instagram fs-5 me-2"></i>Instagram</a>
+                            <a href="#" class="text-white text-decoration-none hover-social"><i class="bi bi-youtube fs-5 me-2"></i>YouTube</a>
                         </div>
                     </div>
                 </div>
@@ -234,39 +244,17 @@
                     <p class="mb-0 small">&copy; 2025 <strong>MỌT Service</strong>. All rights reserved. | Made with ❤️ in HCMC</p>
                 </div>
             </div>
+            <button class="btn btn-primary back-to-top">
+                <i class="bi bi-arrow-up-short"></i>
+            </button>
         </footer>
-
-        <style>
-            footer {
-                background: linear-gradient(to right, #212529, #000);
-            }
-
-            .hover-link:hover {
-                color: #0d6efd !important;
-                text-decoration: underline !important;
-                transition: 0.3s;
-            }
-
-            .hover-social:hover {
-                color: #ffc107 !important;
-                transform: scale(1.05);
-                transition: all 0.3s ease;
-            }
-
-            footer p, footer a {
-                font-size: 0.95rem;
-            }
-
-            footer i {
-                vertical-align: middle;
-            }
-        </style>
-
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const btn = document.querySelector('.back-to-top');
+        btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+    @RenderSection("Scripts", required: false)
 </body>
-
-@RenderSection("Scripts", required: false)
 </html>

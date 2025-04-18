@@ -3,40 +3,158 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="hero-section text-white text-center py-5" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/Images/storage-banner.jpg') center/cover no-repeat;">
+<style>
+    /* --- Tổng quan --- */
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-section .container {
+            position: relative;
+            z-index: 1;
+        }
+
+    /* --- Typography --- */
+    .hero-title {
+        font-size: 3rem;
+        line-height: 1.2;
+    }
+
+    .hero-lead {
+        font-size: 1.25rem;
+        margin-top: 1rem;
+    }
+
+    /* --- Button --- */
+    .btn-contact {
+        transition: transform .2s, box-shadow .2s;
+    }
+
+        .btn-contact:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+    /* --- Service Cards --- */
+    .service-card {
+        transition: transform .3s, box-shadow .3s;
+        border: none;
+        border-radius: .75rem;
+        overflow: hidden;
+    }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .service-card i {
+            font-size: 3rem;
+        }
+
+        .service-card .card-body {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .service-card .card-title {
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        .service-card .card-text {
+            color: #555;
+        }
+
+    /* --- About Section --- */
+    .about-img {
+        border-radius: .75rem;
+        transition: transform .3s;
+    }
+
+        .about-img:hover {
+            transform: scale(1.02);
+        }
+
+    .about-list .list-group-item {
+        border: none;
+        padding-left: 0;
+    }
+
+        .about-list .list-group-item::before {
+            content: "✔";
+            color: #28a745;
+            display: inline-block;
+            width: 1.5em;
+        }
+
+    /* --- Call to Action --- */
+    .cta-section {
+        background: #f1f7fb;
+    }
+
+        .cta-section h4 {
+            font-weight: 600;
+        }
+
+    .btn-register {
+        padding: .75rem 2rem;
+        font-size: 1.1rem;
+        transition: background .2s;
+    }
+
+        .btn-register:hover {
+            background: #218838;
+            color: #fff;
+        }
+</style>
+
+<div class="hero-section text-white text-center py-5" style="background: url('/Images/storage-banner.jpg') center/cover no-repeat;">
     <div class="container">
-        <h1 class="display-4 fw-bold">Giải Pháp Lưu Trữ An Toàn & Chuyên Nghiệp</h1>
-        <p class="lead">MOT cung cấp dịch vụ lưu trữ hiệu quả cho cá nhân và doanh nghiệp</p>
-        <a class="btn btn-warning btn-lg mt-3" href="https://mail.google.com/mail/?view=cm&to=Motwarehouse@gmail.com&su=H%E1%BB%97%20tr%E1%BB%A3%20kh%C3%A1ch%20h%C3%A0ng&body=Ch%C3%A0o%20MOT%2C%20t%C3%B4i%20c%E1%BA%A7n%20h%E1%BB%97%20tr%E1%BB%A3%20v%E1%BB%81%20v%E1%BA%A5n%20%C4%91%E1%BB%81%20d%E1%BB%8Bch%20v%E1%BB%A5%20l%C6%B0u%20tr%E1%BB%AF" target="_blank">Liên Hệ Ngay</a>
+        <h1 class="hero-title fw-bold">Giải Pháp Lưu Trữ An Toàn & Chuyên Nghiệp</h1>
+        <p class="hero-lead">MOT cung cấp dịch vụ lưu trữ hiệu quả cho cá nhân và doanh nghiệp</p>
+        <a class="btn btn-warning btn-lg mt-3 btn-contact"
+           href="https://mail.google.com/mail/?view=cm&to=Motwarehouse@gmail.com&su=H%E1%BB%97%20tr%E1%BB%A3%20kh%C3%A1ch%20h%C3%A0ng&body=Ch%C3%A0o%20MOT%2C%20t%C3%B4i%20c%E1%BA%A7n%20h%E1%BB%97%20tr%E1%BB%A3%20v%E1%BB%81%20v%E1%BA%A5n%20%C4%91%E1%BB%81%20d%E1%BB%8Bch%20v%E1%BB%A5%20l%C6%B0u%20tr%E1%BB%AF"
+           target="_blank">
+            Liên Hệ Ngay
+        </a>
     </div>
 </div>
 
 <div class="container my-5">
-    <div class="row text-center">
-        <div class="col-md-4 mb-4">
-            <div class="card shadow h-100">
+    <div class="row g-4 text-center">
+        <div class="col-md-4">
+            <div class="card service-card h-100">
                 <div class="card-body">
-                    <i class="bi bi-shield-lock display-4 text-primary"></i>
-                    <h5 class="card-title mt-3">An Toàn & Bảo Mật</h5>
+                    <i class="bi bi-shield-lock text-primary"></i>
+                    <h5 class="card-title">An Toàn & Bảo Mật</h5>
                     <p class="card-text">Chúng tôi bảo vệ hàng hóa của bạn với hệ thống an ninh nhiều lớp 24/7.</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow h-100">
+        <div class="col-md-4">
+            <div class="card service-card h-100">
                 <div class="card-body">
-                    <i class="bi bi-truck display-4 text-success"></i>
-                    <h5 class="card-title mt-3">Vận Chuyển Linh Hoạt</h5>
-                    <p class="card-text">Hỗ trợ lấy hàng và giao hàng theo yêu cầu với chi phí hợp lý.</p>
+                    <i class="bi bi-truck text-success"></i>
+                    <h5 class="card-title">Vận Chuyển Linh Hoạt</h5>
+                    <p class="card-text">Hỗ trợ lấy và giao hàng theo yêu cầu với chi phí hợp lý.</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow h-100">
+        <div class="col-md-4">
+            <div class="card service-card h-100">
                 <div class="card-body">
-                    <i class="bi bi-building display-4 text-danger"></i>
-                    <h5 class="card-title mt-3">Cơ Sở Hiện Đại</h5>
-                    <p class="card-text">Kho lưu trữ đạt chuẩn, hệ thống quản lý chuyên nghiệp và tiện lợi.</p>
+                    <i class="bi bi-building text-danger"></i>
+                    <h5 class="card-title">Cơ Sở Hiện Đại</h5>
+                    <p class="card-text">Kho đạt chuẩn, hệ thống quản lý chuyên nghiệp và tiện lợi.</p>
                 </div>
             </div>
         </div>
@@ -44,27 +162,27 @@
 </div>
 
 <div class="container my-5">
-    <div class="row">
+    <div class="row align-items-center g-5">
         <div class="col-md-6">
-            <img src="/Images/warehouse.png" alt="Kho Lưu Trữ" class="img-fluid rounded shadow">
+            <img src="/Images/warehouse.png" alt="Kho Lưu Trữ" class="img-fluid about-img shadow">
         </div>
         <div class="col-md-6">
             <h3 class="fw-bold">Tại Sao Chọn MOT?</h3>
-            <ul class="list-group list-group-flush mt-3">
-                <li class="list-group-item">✔ Giao diện quản lý đơn hàng trực tuyến tiện lợi</li>
-                <li class="list-group-item">✔ Kiểm kê dễ dàng và chính xác</li>
-                <li class="list-group-item">✔ Tư vấn hỗ trợ nhanh chóng, tận tâm</li>
-                <li class="list-group-item">✔ Chính sách giá cạnh tranh, minh bạch</li>
+            <ul class="list-group about-list mt-3">
+                <li class="list-group-item">Giao diện quản lý đơn hàng trực tuyến tiện lợi</li>
+                <li class="list-group-item">Kiểm kê dễ dàng và chính xác</li>
+                <li class="list-group-item">Tư vấn hỗ trợ nhanh chóng, tận tâm</li>
+                <li class="list-group-item">Chính sách giá cạnh tranh, minh bạch</li>
             </ul>
             <a class="btn btn-outline-primary mt-4" href="@Url.Action("Privacy", "Home")">Tìm Hiểu Thêm</a>
         </div>
     </div>
 </div>
 
-<div class="bg-light py-5 text-center">
+<div class="cta-section bg-light py-5 text-center">
     <div class="container">
-        <h4 class="fw-bold mb-3">Bạn sẵn sàng lưu trữ hiệu quả cùng MOT?</h4>
-        <a href="@Url.Action("Register", "Account")" class="btn btn-success btn-lg">Đăng Ký Ngay</a>
+        <h4 class="mb-3">Bạn sẵn sàng lưu trữ hiệu quả cùng MOT?</h4>
+        <a href="@Url.Action("Register", "Account")" class="btn btn-success btn-lg btn-register">Đăng Ký Ngay</a>
     </div>
 </div>
 

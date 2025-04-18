@@ -1,155 +1,218 @@
-﻿
- @using User.Models
+﻿@using User.Models
 @model User.Models.ViewModel.DetailsOrderUser
 @using User.Services
 @inject ImageService imageService
+@using User.Extensions;
+
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <style>
+        .order-header {
+            background: linear-gradient(90deg, #4e73df 0%, #224abe 100%);
+            color: #fff;
+            padding: 2rem;
+            border-radius: .5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+            .order-header h2 {
+                font-weight: 600;
+            }
+
+        .info-card {
+            border-left: 5px solid #32ADE6;
+        }
+
+        .badge-status {
+            font-size: 1rem;
+            padding: .5em 1em;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: #2e2e2e;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: .5rem;
+        }
+
+        .carousel-inner img {
+            cursor: pointer;
+        }
+
+        .btn-pay {
+            background-color: #1cc88a;
+            border-color: #17a673;
+            color: #fff;
+        }
+
+            .btn-pay:hover {
+                background-color: #17a673;
+                border-color: #13855c;
+            }
+    </style>
+
+
 <div class="container py-5">
-    <h2 class="mb-5 text-center">Chi tiết đơn hàng #@Model.Id</h2>
-
-    <!-- Thông tin người dùng -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title">Thông tin người dùng</h5>
-            <p class="card-text">Người dùng ID: @Model.NguoiDungId</p>
-        </div>
+    <!-- Header -->
+    <div class="order-header">
+        <h2><i class="fas fa-receipt"></i> Chi tiết đơn hàng #@Model.Id</h2>
+        <small>Ngày đặt: <strong>@Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</strong></small>
     </div>
 
-    <!-- Thông tin đơn hàng -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title">Thông tin đơn hàng</h5>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">Ngày đặt hàng: @Model.OrderDate</li>
-                <li class="list-group-item">Ngày nhập hàng: @Model.DateOfEntry</li>
-                <li class="list-group-item">Ngày xuất hàng: @Model.DateOfShipment</li>
-                <li class="list-group-item">Trạng thái đơn hàng: @Model.StatusOrder.GetDisplayName()</li>
-                <li class="list-group-item">Loại hàng hóa: @Model.TypeOfGoods.GetDisplayName()</li>
-                <li class="list-group-item">Số lượng: @Model.Quantity</li>
-                <li class="list-group-item">Giá: @Model.Price.ToString("N0") VND</li>
-            </ul>
+    <div class="row gy-4">
+        <!-- Thông tin đơn hàng -->
+        <div class="col-12">
+            <div class="card info-card shadow-sm">
+                <div class="card-body">
+                    <h5 class="section-title"><i class="fas fa-box-open"></i> Thông Tin Đơn Hàng</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span><i class="fas fa-calendar-alt me-2"></i>Nhập hàng:</span>
+                            <span>@Model.DateOfEntry.ToString("dd/MM/yyyy HH:mm")</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span><i class="fas fa-truck-loading me-2"></i>Xuất hàng:</span>
+                            <span>@Model.DateOfShipment.ToString("dd/MM/yyyy HH:mm")</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span><i class="fas fa-tags me-2"></i>Loại hàng:</span>
+                            <span>@Model.TypeOfGoods.GetDisplayName()</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span><i class="fas fa-hashtag me-2"></i>Số lượng:</span>
+                            <span>@Model.Quantity</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span><i class="fas fa-dollar-sign me-2"></i>Giá:</span>
+                            <span>@Model.Price.ToString("N0") VND</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-info-circle me-2"></i>Trạng thái:</span>
+                            <span class="badge badge-status \
+                                @(Model.StatusOrder == StatusOrder.Confirming ? "bg-warning text-dark" :
+                                  Model.StatusOrder == StatusOrder.Confirmed  ? "bg-success" :
+                                  "bg-secondary")">
+                                @Model.StatusOrder.GetDisplayName()
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- Hình ảnh đơn hàng -->
-    @if (Model.ImageUrls != null && Model.ImageUrls.Any())
-    {
-        var carouselId = "orderImageCarousel";
-        <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title mb-3">Hình ảnh đơn hàng</h5>
-                <div id="@carouselId" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner rounded">
-                        @for (int i = 0; i < Model.ImageUrls.Count; i++)
-                        {
-                            var imageUrl = await imageService.GetImageUrl(Model.ImageUrls[i]);
-                            <div class="carousel-item @(i == 0 ? "active" : "")">
-                                <img src="@imageUrl"
-                                     class="d-block w-100 img-thumbnail"
-                                     style="max-height: 400px; object-fit: cover; cursor: pointer;"
-                                     data-bs-toggle="modal"
-                                     data-bs-target="#imageModal"
-                                     data-img-url="@imageUrl"
-                                     alt="Hình ảnh đơn hàng" />
+        <!-- Hình ảnh đơn hàng -->
+        @if (Model.ImageUrls?.Any() == true)
+        {
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="section-title"><i class="fas fa-images"></i> Hình Ảnh Đính Kèm</h5>
+                        <div id="orderCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner rounded">
+                                @for (int i = 0; i < Model.ImageUrls.Count; i++)
+                                {
+                                    var url = await imageService.GetImageUrl(Model.ImageUrls[i]);
+                                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                                        <img src="@url"
+                                             class="d-block w-100 img-fluid"
+                                             style="max-height:400px; object-fit:cover;"
+                                             data-bs-toggle="modal"
+                                             data-bs-target="#imageModal"
+                                             data-img-url="@url"
+                                             alt="Hình đơn hàng" />
+                                    </div>
+                                }
                             </div>
-                        }
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Trước</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Sau</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal xem ảnh lớn -->
-        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
-                <div class="modal-content">
-                    <div class="modal-body p-0">
-                        <img id="modalImage" src="" alt="Xem ảnh lớn" class="img-fluid w-100" style="object-fit: contain; max-height: 90vh;" />
+                            <button class="carousel-control-prev" type="button" data-bs-target="#orderCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                                <span class="visually-hidden">Trước</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#orderCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                                <span class="visually-hidden">Sau</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const modalImage = document.getElementById("modalImage");
-                const images = document.querySelectorAll("[data-bs-target='#imageModal']");
-                images.forEach(img => {
-                    img.addEventListener("click", () => {
-                        const url = img.getAttribute("data-img-url");
-                        modalImage.src = url;
-                    });
-                });
-            });
-        </script>
-    }
-
-    <!-- Trạng thái và hành động -->
-    @if (Model.StatusOrder == StatusOrder.Confirming)
-    {
-        <span> Đơn hàng của bạn đang chờ xác nhận vui lòng chờ đợi</span>
-    }
-    else
-    {
-        <!-- Thông tin kho bãi -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">Thông tin kho bãi</h5>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Số Vị Trí Lưu Trữ: @Model.Floor</li>
-                    <li class="list-group-item">Vị trí lưu trữ: @Model.LocationStorage</li>
-                </ul>
+            <!-- Modal xem ảnh lớn -->
+            <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content border-0 bg-transparent">
+                        <div class="modal-body p-0">
+                            <img id="modalImage" src="" class="img-fluid w-100" style="object-fit:contain; max-height:90vh;" />
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        }
 
-       
-    }
-  
-    <!-- Trạng thái và kiểm kê -->
-    @if (Model.StatusInventory == StatusInventory.Active)
-    {
-       
-        <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">Thông tin kiểm kê </h5>
-                @foreach (var item in Model.InventoryItem)
-                {
-                    <p>@item.Model - Số lượng: @item.Quantity</p>
-                }
+        <!-- Thông tin kho bãi (khi đã xác nhận) -->
+        @if (Model.StatusOrder == StatusOrder.Confirmed)
+        {
+            <div class="col-md-6">
+                <div class="card info-card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="section-title"><i class="fas fa-warehouse"></i> Vị Trí Lưu Trữ</h5>
+                        <p><strong>Vị trí:</strong> @Model.LocationStorage</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    }
-    else
-    {
- 
+        }
 
-    }
-    <!-- Trạng thái và kiểm kê -->
-    @if (Model.StatusOrder == StatusOrder.Confirmed)
-    {
+        <!-- Kiểm kê -->
+        @if (Model.StatusInventory == StatusInventory.Active)
+        {
+            <div class="col-md-6">
+                <div class="card info-card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="section-title"><i class="fas fa-clipboard-check"></i> Kiểm Kê</h5>
+                        <ul class="list-group list-group-flush">
+                            @foreach (var item in Model.InventoryItem)
+                            {
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>@item.Model</span>
+                                    <span>@item.Quantity</span>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
 
-        <form asp-action="Pay" method="post">
-            <input type="hidden" name="Id" value="@Model.Id" />
-            <button type="submit">Thanh toán</button>
-        </form>
-
-    }
-    else
-    {
-
-
-    }
-
+        <!-- Nút Thanh toán -->
+        @if (Model.StatusOrder == StatusOrder.Confirmed)
+        {
+            <div class="col-12 text-center">
+                <form asp-action="Pay" method="post" class="d-inline-block">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-pay btn-lg">
+                        <i class="fas fa-credit-card me-2"></i> Thanh Toán
+                    </button>
+                </form>
+            </div>
+        }
+    </div>
 </div>
 
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const modalImage = document.getElementById("modalImage");
+            document.querySelectorAll("[data-bs-target='#imageModal']").forEach(img => {
+                img.addEventListener("click", () => {
+                    modalImage.src = img.getAttribute("data-img-url");
+                });
+            });
+        });
+    </script>
+}

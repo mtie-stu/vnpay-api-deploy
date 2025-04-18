@@ -4,6 +4,8 @@ using System.Net.Http;
 using System.Text.Json;
 using User.Models.ViewModel;
 using static System.Net.WebRequestMethods;
+using ClosedXML.Excel;
+using User.Extensions;
 
 namespace User.Controllers
 {
@@ -177,5 +179,146 @@ namespace User.Controllers
             TempData["Error"] = "Không thể tạo thanh toán.";
             return RedirectToAction("Details", new { Id });
         }
+        // Mới: xuất Excel
+        /*[HttpGet]
+        public async Task<IActionResult> ExportToExcel()
+        {
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
+                return RedirectToAction("Login", "Account");
+
+            var client = _httpClientFactory.CreateClient("MyApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.GetAsync("UserStorageOrder/GetAllByUser");
+            if (!response.IsSuccessStatusCode)
+                return View("Error", $"Không thể tải đơn hàng để xuất Excel: {response.ReasonPhrase}");
+
+            var ordersJson = await response.Content.ReadAsStringAsync();
+            var orders = JsonSerializer.Deserialize<List<UserStorageViewModel>>(ordersJson,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            using var wb = new XLWorkbook();
+            var ws = wb.Worksheets.Add("Đơn hàng");
+
+            // Header
+            ws.Cell(1, 1).Value = "Mã đơn hàng";
+            ws.Cell(1, 2).Value = "Ngày đặt";
+            ws.Cell(1, 3).Value = "Nhập kho";
+            ws.Cell(1, 4).Value = "Xuất kho";
+            ws.Cell(1, 5).Value = "Loại hàng";
+            ws.Cell(1, 6).Value = "Số lượng";
+            ws.Cell(1, 7).Value = "Giá (VNĐ)";
+            ws.Cell(1, 8).Value = "Trạng thái";
+
+            int row = 2;
+            foreach (var o in orders)
+            {
+                ws.Cell(row, 1).Value = o.Id;
+                ws.Cell(row, 2).Value = o.OrderDate.ToString("yyyy-MM-dd");
+                ws.Cell(row, 3).Value = o.DateOfEntry.ToString("yyyy-MM-dd");
+                ws.Cell(row, 4).Value = o.DateOfShipment.ToString("yyyy-MM-dd");
+                ws.Cell(row, 5).Value = o.TypeOfGoods.GetDisplayName();
+                ws.Cell(row, 6).Value = o.Quantity;
+                ws.Cell(row, 7).Value = o.Price;
+                ws.Cell(row, 8).Value = o.SatusOrder.ToString();
+                row++;
+            }
+
+            ws.Column(7).Style.NumberFormat.Format = "#,##0";
+            ws.Columns().AdjustToContents();
+
+            using var stream = new MemoryStream();
+            wb.SaveAs(stream);
+            var content = stream.ToArray();
+            return File(
+                content,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"DonHang_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx"
+            );
+        }*/
+        [HttpGet]
+        public async Task<IActionResult> ExportToExcel()
+        {
+            var token = Request.Cookies["JwtToken"];
+            if (string.IsNullOrEmpty(token))
+                return RedirectToAction("Login", "Account");
+
+            var client = _httpClientFactory.CreateClient("MyApiClient");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.GetAsync("UserStorageOrder/GetAllByUser");
+            if (!response.IsSuccessStatusCode)
+                return View("Error", $"Không thể tải đơn hàng để xuất Excel: {response.ReasonPhrase}");
+
+            var ordersJson = await response.Content.ReadAsStringAsync();
+            var orders = JsonSerializer.Deserialize<List<UserStorageViewModel>>(ordersJson,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            using var wb = new XLWorkbook();
+            var ws = wb.Worksheets.Add("Đơn hàng");
+
+            // 1. Chèn logo
+            var logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "tachnen.png");
+            if (System.IO.File.Exists(logoPath))
+            {
+                var pic = ws.AddPicture(logoPath)
+                            .MoveTo(ws.Cell("A1"))
+                            .WithSize(100, 60); // điều chỉnh kích thước logo
+            }
+
+            // 2. Header bắt đầu từ dòng 4 (để chừa khoảng cho logo)
+            var headerRow = 4;
+            ws.Cell(headerRow, 1).Value = "Mã đơn hàng";
+            ws.Cell(headerRow, 2).Value = "Ngày đặt";
+            ws.Cell(headerRow, 3).Value = "Nhập kho";
+            ws.Cell(headerRow, 4).Value = "Xuất kho";
+            ws.Cell(headerRow, 5).Value = "Loại hàng";
+            ws.Cell(headerRow, 6).Value = "Số lượng";
+            ws.Cell(headerRow, 7).Value = "Giá (VNĐ)";
+            ws.Cell(headerRow, 8).Value = "Trạng thái";
+
+            // 3. Style header
+            var headerRange = ws.Range(headerRow, 1, headerRow, 8);
+            headerRange.Style.Font.Bold = true;
+            headerRange.Style.Fill.BackgroundColor = XLColor.LightGray;
+            headerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+            // 4. Ghi dữ liệu bắt đầu từ dòng 5
+            int row = headerRow + 1;
+            foreach (var o in orders)
+            {
+                ws.Cell(row, 1).Value = o.Id;
+                ws.Cell(row, 2).Value = o.OrderDate.ToString("yyyy-MM-dd");
+                ws.Cell(row, 3).Value = o.DateOfEntry.ToString("yyyy-MM-dd");
+                ws.Cell(row, 4).Value = o.DateOfShipment.ToString("yyyy-MM-dd");
+                ws.Cell(row, 5).Value = o.TypeOfGoods.GetDisplayName();
+                ws.Cell(row, 6).Value = o.Quantity;
+                ws.Cell(row, 7).Value = o.Price;
+                ws.Cell(row, 8).Value = o.SatusOrder.ToString();
+                row++;
+            }
+
+            // 5. Biến vùng thành table với style
+            var tableRange = ws.Range(headerRow, 1, row - 1, 8);
+            var table = tableRange.CreateTable();
+            table.Theme = XLTableTheme.TableStyleMedium2;
+
+            // 6. Định dạng cột và căn giữa
+            ws.Columns(1, 8).AdjustToContents();
+            ws.Columns(2, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            ws.Column(7).Style.NumberFormat.Format = "#,##0";
+
+            // 7. Xuống lệnh lưu và trả file
+            using var stream = new MemoryStream();
+            wb.SaveAs(stream);
+            var content = stream.ToArray();
+            return File(
+                content,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"DonHang_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx"
+            );
+        }
+
     }
 }

@@ -1,190 +1,232 @@
-﻿@model User.Models.ApiErrorResponse
+﻿@model User.Models.AuthenViewModel.RegisterViewModel
+
 @{
-    ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
-<div class="frame">
-    <!-- Khu vực logo + Đăng ký bằng Google, Facebook -->
-    <div class="logo-section">
-        <img src="~/Images/tachnen.png" alt="Logo" class="img-fluid rounded-circle" style="width: 400px; height: 200px; object-fit: cover;">
-        @*     <div class="social-login">
-            <button class="btn-social btn-google">
-                <i class="fab fa-google"></i>
-            </button>
-            <button class="btn-social btn-facebook">
-                <i class="fab fa-facebook-f"></i>
-            </button>
-        </div> *@
-    </div>
-    @if (ViewBag.Errors != null)
-    {
-        foreach (var err in ViewBag.Errors)
-        {
-            <div class="alert alert-danger">@err.Description</div>
-        }
-    }
+<!-- Overlay Background -->
+<div class="bg-overlay"></div>
 
-    <!-- Khu vực form đăng ký -->
-    <div class="register-container">
-        <h2>Register</h2>
-        <form action="@Url.Action("Register", "Account")" method="post">
-            <div class="form-group">
-                <label>User Name</label>
-                <input type="text" class="form-control" name="nameND" placeholder="Enter username" required>
+<!-- Wrapper chính -->
+<div class="position-relative d-flex justify-content-center align-items-center vh-100 z-index-1">
+    <div class="frame">
+        <!-- Logo + social -->
+        <div class="logo-section">
+            <img src="~/Images/MOT.png" alt="Logo" class="img-fluid rounded-circle" style="width: auto; height: 150px; object-fit: cover;">
+            @* Nếu muốn bật social-login, bỏ comment khối sau *@
+            @*
+            <div class="social-login">
+            <button class="btn-social btn-google"><i class="fab fa-google"></i></button>
+            <button class="btn-social btn-facebook"><i class="fab fa-facebook-f"></i></button>
             </div>
+            *@
+        </div>
 
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" class="form-control" name="Email" placeholder="Enter email" required>
-            </div>
-            <div class="form-group">
-                <label>Sdt</label>
-                <input type="number" class="form-control" name="SĐT" placeholder="Enter SDT" required>
-            </div>
-            @*  <div class="form-group">
-                <label>Địa chỉ</label>
-                <input type="text" class="form-control" name="DiaChi" placeholder="Enter địa chỉ" required>
-            </div> *@
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" class="form-control" name="Password" placeholder="Enter password" required>
-            </div>
+        <!-- Form Register -->
+        <div class="register-container">
+            <h2 class="text-center mb-4">Register</h2>
 
-            <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" class="form-control" name="ConfirmPassword" placeholder="Confirm password" required>
-            </div>
+            @if (ViewBag.Errors != null)
+            {
+                foreach (var err in ViewBag.Errors)
+                {
+                    <div class="alert alert-danger">@err.Description</div>
+                }
+            }
 
-            <div class="form-group">
-                <h5>
-                    Bằng cách ấn đăng ký bạn đã đồng ý với <a href="@Url.Action("Terms", "Policy")">Điều khoản và dịch vụ</a> của chúng tôi.
-                </h5>
-            </div>
+            <form asp-action="Register" asp-controller="Account" method="post">
+                @Html.AntiForgeryToken()
 
-            <button type="submit" class="btn btn-primary">Register</button>
-            <div class="text-center no-account">
-                <p style="font-size: 13px;">
-                    Đã có tài khoản
-                    <a style="color: #5dade2; font-size: 13px;" asp-controller="Account" asp-action="Login">Đăng nhập ngay</a>
-                </p>
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="nameND"></label>
+                    <input asp-for="nameND" class="form-control" placeholder="Enter username" />
+                    <span asp-validation-for="nameND" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" placeholder="Enter email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="SĐT">Số điện thoại</label>
+                    <input asp-for="SĐT" class="form-control" placeholder="Enter phone" />
+                    <span asp-validation-for="SĐT" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" placeholder="Enter password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-4">
+                    <small>
+                        Bằng cách ấn đăng ký bạn đã đồng ý với
+                        <a href="@Url.Action("Terms", "Policy")" class="text-decoration-none" style="color:#0056b3;">
+                            Điều khoản & Dịch vụ
+                        </a>
+                    </small>
+                </div>
+
+                <button type="submit" class="btn btn-primary mb-3">Register</button>
+
+                <div class="text-center">
+                    <small>
+                        Đã có tài khoản?
+                        <a asp-controller="Account" asp-action="Login" style="color:#32ADE6;">Đăng nhập ngay</a>
+                    </small>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
-<!-- Nhúng Font Awesome để hiển thị icon -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <style>
-    .frame {
-        width: 850px;
-        height: 700px;
-        background-color: #3498db;
-        color: white;
-        border: 2px solid #217dbb;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 18px;
-        font-weight: bold;
-        border-radius: 10px;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding: 20px;
-        margin-top: 40px;
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
     }
 
-    /* Khu vực logo + social login */
+    /* Overlay chung */
+    .bg-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('/Images/Black-warehouse.png') center/cover no-repeat;
+        z-index: 0;
+    }
+
+    .z-index-1 {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Khung chính */
+    .frame {
+        display: flex;
+        background-color: white;
+        border-radius: 15px;
+        overflow: hidden;
+        max-width: 800px;
+        width: 100%;
+        box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+        margin: 20px;
+    }
+
+    /* Logo side */
     .logo-section {
         flex: 1;
+        background-color: #32ADE6;
+        padding: 30px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
     }
 
         .logo-section img {
-            width: 100px;
+            width: 150px;
             height: auto;
-            margin-bottom: 15px;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
-    /* Nút đăng ký Google & Facebook */
+    /* Nếu mở social-login */
     .social-login {
+        margin-top: 20px;
         display: flex;
-        gap: 15px;
-        margin-top: 10px;
+        gap: 10px;
     }
 
     .btn-social {
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
         border-radius: 50%;
         display: flex;
-        justify-content: center;
         align-items: center;
-        font-size: 22px;
+        justify-content: center;
+        font-size: 20px;
+        color: #fff;
         border: none;
         cursor: pointer;
-        color: white;
     }
 
     .btn-google {
-        background-color: #db4437;
+        background: #db4437;
     }
+
+        .btn-google:hover {
+            background: #c1351d;
+        }
 
     .btn-facebook {
-        background-color: #1877f2;
+        background: #1877f2;
     }
 
-    .btn-google:hover {
-        background-color: #c1351d;
-    }
+        .btn-facebook:hover {
+            background: #145db8;
+        }
 
-    .btn-facebook:hover {
-        background-color: #145db8;
-    }
-
-    /* Khu vực form đăng ký */
+    /* Form side */
     .register-container {
-        width: 420px;
-        background: white;
-        color: black;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        background: #fff;
+        padding: 40px 30px;
     }
 
         .register-container h2 {
-            text-align: center;
+            color: #224abe;
+            font-weight: 600;
         }
 
     .form-group {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 
     .form-control {
-        width: 100%;
-        padding: 6px;
+        border-radius: .5rem;
+        padding: .75rem 1rem;
         border: 1px solid #ccc;
-        border-radius: 5px;
+        transition: border-color .2s;
     }
 
+        .form-control:focus {
+            border-color: #32ADE6;
+            box-shadow: 0 0 0 .2rem rgba(50, 173, 230, .25);
+        }
+
     .btn-primary {
-        width: 100%;
-        padding: 8px;
-        background-color: #003366;
-        color: white;
+        background-color: #32ADE6;
         border: none;
-        border-radius: 5px;
-        cursor: pointer;
+        width: 100%;
+        padding: .75rem;
+        border-radius: .5rem;
+        font-size: 1rem;
+        transition: background .2s;
     }
 
         .btn-primary:hover {
-            background-color: #1a5e8c;
+            background-color: #1f8fbf;
         }
 
+    .text-center small a {
+        text-decoration: none;
+        font-weight: 500;
+    }
 </style>
+@* FontAwesome + Bootstrap (nếu chưa include ở layout) *@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
