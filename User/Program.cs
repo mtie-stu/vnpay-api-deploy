@@ -27,6 +27,10 @@ builder.Services.AddAuthentication(options =>
 {
     options.LoginPath = "/Account/Login";
     options.LogoutPath = "/Account/Logout";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.None;   // ⟵ giống trên
+    options.ExpireTimeSpan = TimeSpan.FromHours(1);
 });
 
 builder.Services.AddAuthorization();
