@@ -21,7 +21,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });*/
 // Đăng ký ApplicationDbContext với SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddTransient<IWareHousesSvc, WareHouseSvc>();
@@ -131,7 +131,11 @@ builder.Services.AddScoped<IStorageSpacesSvc, StorageSpaceSvc>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 
 var app = builder.Build();
-
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
 // Configure the HTTP request pipeline.
 // Hiển thị Swagger trong cả môi trường Production & Development
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())

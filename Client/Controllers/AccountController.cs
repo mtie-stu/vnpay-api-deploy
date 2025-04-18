@@ -80,12 +80,20 @@ namespace Client.Controllers
             {
                 IsPersistent = true
             });
+            /* Response.Cookies.Append("JwtToken", token, new CookieOptions
+             {
+                 HttpOnly = true,
+                 Secure = true,
+                 SameSite = SameSiteMode.Strict
+             });*/
             Response.Cookies.Append("JwtToken", token, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict
+                Secure = true,              // Bắt buộc khi dùng SameSite=None
+                SameSite = SameSiteMode.None, // Cho phép gửi cookie khi VNPAY redirect về :contentReference[oaicite:0]{index=0}
+                Expires = DateTimeOffset.UtcNow.AddHours(1) // Thiết lập thời gian sống cookie
             });
+
 
             return RedirectToAction("Index", "Admin");
         }
