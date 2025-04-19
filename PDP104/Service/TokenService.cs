@@ -26,14 +26,13 @@ namespace PDP104.Service
         public async Task<string> GenerateJwtToken(NguoiDung user)
         {
             var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("Hinh", user.Hinh ?? string.Empty), // ✅ Thêm claim ảnh đại diện
-                new Claim(JwtRegisteredClaimNames.Name, user.NameND),
+{
+    new Claim(JwtRegisteredClaimNames.Sub, user.Id ?? ""),
+    new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+    new Claim("Hinh", user.Hinh ?? string.Empty),
+    new Claim(JwtRegisteredClaimNames.Name, user.NameND ?? "")
+};
 
-
-            };
 
             var roles = await _userManager.GetRolesAsync(user);
             foreach (var role in roles)

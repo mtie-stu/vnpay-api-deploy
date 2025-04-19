@@ -10,7 +10,6 @@ namespace PDP104.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")] // Chỉ Admin mới có quyền truy cập
     public class InventoryController : ControllerBase
     {
         private readonly IInvetorySvc _inventorySvc;

@@ -89,7 +89,7 @@ namespace PDP104.Controllers
         }
 
         [HttpGet("return")]
-        public IActionResult Return()
+        public async Task<IActionResult> ReturnAsync()
         {
             var vnp = new VnPayLibrary();
             var isValid = vnp.ValidateSignature(Request.Query, _config["Vnpay:HashSecret"]);
@@ -99,14 +99,19 @@ namespace PDP104.Controllers
                 return Content("Chữ ký không hợp lệ");
 
             var responseCode = Request.Query["vnp_ResponseCode"];
+            var order = await _context.StorageOrders.FindAsync(orderId);
+
             if (responseCode == "00")
             {
                 // ✅ Sau khi hiển thị thông báo → Redirect về trang chi tiết
+                order.StatusOrder = Models.StatusOrder.PAID;
+                await _context.SaveChangesAsync();
                 return Redirect($"https://localhost:7023/UserStorageOrder/Details/{orderId}");
+
 
             }
 
-            return Redirect($"https://localhost:7023/UserStorageOrder/Details/{orderId}");
+            return Content("FAIL");
 
         }
 

@@ -344,7 +344,7 @@ namespace PDP104.Service
                 Console.WriteLine("📋 Tạo bản ghi kiểm kê mới.");
                 var newInventory = new Inventory
                 {
-                    RequestDate = DateTime.Now,
+                    RequestDate = DateTime.UtcNow,
                     StorageOrdersId = order.Id
                 };
                 _context.Inventories.Add(newInventory);

@@ -70,18 +70,17 @@ namespace PDP104.Service
         {
             var newOrder = new StorageOrders
             {
-                OrderDate = userStorageViewModel.OrderDate,
-                DateOfEntry = userStorageViewModel.DateOfEntry,
-                DateOfShipment = userStorageViewModel.DateOfShipment,
-                TypeOfGoods=userStorageViewModel.TypeOfGoods,
-                StatusOrder = StatusOrder.Confirming, // Đặt trạng thái mặc định là Confirming
-                StatusInventory = userStorageViewModel.StatusInventory, 
-/*                Price = userStorageViewModel.Price,
-*/                Quantity = userStorageViewModel.Quantity,
+                OrderDate = DateTime.SpecifyKind(userStorageViewModel.OrderDate, DateTimeKind.Utc),
+                DateOfEntry = DateTime.SpecifyKind(userStorageViewModel.DateOfEntry, DateTimeKind.Utc),
+                DateOfShipment = DateTime.SpecifyKind(userStorageViewModel.DateOfShipment, DateTimeKind.Utc),
+                TypeOfGoods = userStorageViewModel.TypeOfGoods,
+                StatusOrder = StatusOrder.Confirming,
+                StatusInventory = userStorageViewModel.StatusInventory,
+                Quantity = userStorageViewModel.Quantity,
                 Hinh = userStorageViewModel.Hinh,
-                NguoiDungId = userStorageViewModel.NguoiDungId // Đảm bảo có ID người dùng
-
+                NguoiDungId = userStorageViewModel.NguoiDungId
             };
+
 
             _context.StorageOrders.Add(newOrder);
             _context.SaveChanges();
@@ -95,24 +94,7 @@ namespace PDP104.Service
 
 
 
-   /*     public int EditOrder(int id, Models.ViewModel.UserStorageViewModel userStorageViewModel)
-        {
-            var order = _context.StorageOrders.Find(id);
-            if (order == null)
-            {
-                return 0; // Trả về 0 nếu không tìm thấy đơn hàng
-            }
-
-            order.DateOfEntry = userStorageViewModel.DateOfEntry;
-
-            order.DateOfShipment = userStorageViewModel.DateOfShipment;
-
-
-            _context.StorageOrders.Update(order);
-            _context.SaveChanges();
-
-            return order.Id;
-        }*/
+  
 
     }
 }

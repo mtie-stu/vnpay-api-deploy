@@ -138,7 +138,7 @@ namespace PDP104.Controllers
                     });
             }
 
-            await _userManager.AddToRoleAsync(user, "User");
+            await _userManager.AddToRoleAsync(user, "Admin");
             return Ok(new
             {
                 message = "Đăng ký thành công!",

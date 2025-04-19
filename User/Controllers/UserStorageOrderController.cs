@@ -88,14 +88,14 @@ namespace User.Controllers
             var client = _httpClientFactory.CreateClient("MyApiClient");
 
             // Gọi API lấy đơn hàng có xác thực
-            var orderRequest = new HttpRequestMessage(HttpMethod.Get, $"AdminStorageOrder/Get/{id}");
+            var orderRequest = new HttpRequestMessage(HttpMethod.Get, $"UserStorageOrder/{id}");
             orderRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var orderResponse = await client.SendAsync(orderRequest);
             if (!orderResponse.IsSuccessStatusCode)
             {
                 return View("Error");
             }
-            var order = await orderResponse.Content.ReadFromJsonAsync<AdminStorageViewModel>();
+            var order = await orderResponse.Content.ReadFromJsonAsync<DetailsOrderUser>();
 
             // Gọi API lấy danh sách hình ảnh (nếu không cần token)
             var images = await client.GetFromJsonAsync<List<string>>($"Images/GetImgForId/{id}");

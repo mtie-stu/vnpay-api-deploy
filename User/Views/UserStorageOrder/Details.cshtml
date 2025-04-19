@@ -190,7 +190,7 @@
         }
 
         <!-- Nút Thanh toán -->
-        @if (Model.StatusOrder == StatusOrder.Confirmed)
+        @if (Model.StatusOrder == StatusOrder.Confirming)
         {
             <div class="col-12 text-center">
                 <form asp-action="Pay" method="post" class="d-inline-block">
