@@ -43,7 +43,7 @@ namespace User.Controllers
             formData.Add(new StringContent(model.OrderDate.ToString("o")), "OrderDate");
             formData.Add(new StringContent(model.DateOfEntry.ToString("o")), "DateOfEntry");
             formData.Add(new StringContent(model.DateOfShipment.ToString("o")), "DateOfShipment");
-            formData.Add(new StringContent(((int)model.SatusOrder).ToString()), "SatusOrder");
+            formData.Add(new StringContent(((int)model.StatusOrder).ToString()), "SatusOrder");
             formData.Add(new StringContent(((int)model.StatusInventory).ToString()), "StatusInventory");
             formData.Add(new StringContent(((int)model.TypeOfGoods).ToString()), "TypeOfGoods");
             formData.Add(new StringContent(model.Price.ToString()), "Price");
@@ -64,7 +64,7 @@ namespace User.Controllers
             }
 
             // Gửi yêu cầu
-            var response = await client.PostAsync("UserStorageOrder/Add", formData);
+            var response = await client.PostAsync($"UserStorageOrder/Add", formData);
 
             if (response.IsSuccessStatusCode)
             {
@@ -128,6 +128,7 @@ namespace User.Controllers
                 Floor = order.Floor,
                 LocationStorage = order.LocationStorage,
                 ImageUrls = images,
+                
                 InventoryItem = inventoryItem
             };
 
@@ -295,7 +296,7 @@ namespace User.Controllers
                 ws.Cell(row, 5).Value = o.TypeOfGoods.GetDisplayName();
                 ws.Cell(row, 6).Value = o.Quantity;
                 ws.Cell(row, 7).Value = o.Price;
-                ws.Cell(row, 8).Value = o.SatusOrder.ToString();
+                ws.Cell(row, 8).Value = o.StatusOrder.ToString();
                 row++;
             }
 

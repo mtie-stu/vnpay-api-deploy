@@ -5,8 +5,8 @@
     ViewData["Title"] = "Trang chủ khách hàng";
     var latestOrders = Model.Take(5).ToList();
     var totalOrders = Model.Count;
-    var paidOrders = Model.Count(x => x.SatusOrder == StatusOrder.PAID);
-    var confirmingOrders = Model.Count(x => x.SatusOrder == StatusOrder.Confirming);
+    var paidOrders = Model.Count(x => x.StatusOrder == StatusOrder.PAID);
+    var confirmingOrders = Model.Count(x => x.StatusOrder == StatusOrder.Confirming);
     var totalQuantity = Model.Sum(x => x.Quantity);
 }
 
@@ -206,7 +206,7 @@
         <div class="order-cards">
             @foreach (var order in latestOrders)
             {
-                var statusText = order.SatusOrder switch
+                var statusText = order.StatusOrder switch
                 {
                     StatusOrder.Confirming => "Đang xử lý",
                     StatusOrder.Confirmed => "Đã xác nhận",
@@ -216,7 +216,7 @@
                     _ => "Không xác định"
                 };
 
-                var statusClass = order.SatusOrder switch
+                var statusClass = order.StatusOrder switch
                 {
                     StatusOrder.Confirming => "status-Confirming",
                     StatusOrder.Confirmed => "status-Confirmed",

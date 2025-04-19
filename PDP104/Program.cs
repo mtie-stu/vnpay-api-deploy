@@ -63,7 +63,7 @@ builder.Services.AddSwaggerGen(opt =>
         }
     });
 });
-
+/*
 builder.Services.AddAuthentication(auth =>
 {
     auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -101,6 +101,60 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
        options.CallbackPath = "/api/Authentication/callback"; // Đường dẫn callback
        options.SaveTokens = true;
    });
+*/
+// 2) Chỉ gọi AddAuthentication một lần, thiết lập DefaultAuthenticateScheme là JWT
+builder.Services
+    .AddAuthentication(options =>
+    {
+        // Mỗi request MVC/App sẽ được xác thực bằng JWT scheme
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        // Nếu bạn dùng [Authorize] trên MVC controller, nó sẽ dùng JWT
+    })
+    // 3) Cấu hình JWT Bearer, nhưng OnMessageReceived sẽ lấy token từ cookie “JwtToken”
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = builder.Configuration["AuthSettings:Issuer"],
+            ValidAudience = builder.Configuration["AuthSettings:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                                           Encoding.UTF8.GetBytes(builder.Configuration["AuthSettings:Key"])),
+            RequireExpirationTime = true,
+            ValidateIssuerSigningKey = true
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = ctx =>
+            {
+                // Lấy token từ cookie thay vì header
+                var token = ctx.Request.Cookies["JwtToken"];
+                if (!string.IsNullOrEmpty(token))
+                    ctx.Token = token;
+                return Task.CompletedTask;
+            }
+        };
+    })
+    // 4) Thêm tiếp CookieAuth (chỉ dùng để handle Login/Logout của Google)
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+    {
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.LoginPath = "/api/Authentication/loginGoogle";
+        options.LogoutPath = "/api/Authentication/logout";
+    })
+    // 5) Và Google OAuth
+    .AddGoogle(options =>
+    {
+        var googleAuth = builder.Configuration.GetSection("Authentication:Google");
+        options.ClientId = googleAuth["ClientId"];
+        options.ClientSecret = googleAuth["ClientSecret"];
+        options.CallbackPath = "/api/Authentication/callback";
+        options.SaveTokens = true;
+    });
+
 
 builder.Services.AddAuthorization(options =>
 {

@@ -16,7 +16,7 @@ namespace PDP104.Models.ViewModel
         [Display(Name = "Ngày Xuất Kho")]
         public DateTime DateOfShipment { get; set; }
 
-        public StatusOrder SatusOrder { get; set; }
+        public StatusOrder StatusOrder { get; set; }
         public StatusInventory StatusInventory { get; set; }
         public TypeOfGoods TypeOfGoods { get; set; }
 
@@ -36,6 +36,8 @@ namespace PDP104.Models.ViewModel
         [Display(Name = "Chọn Hình")]
         public List<IFormFile>? ImageFiles { get; set; } // Cho phép upload nhiều ảnh
 
+        [Display(Name = "Vị Trí Lưu Trữ")]
+        public string? LocationStorage { get; set; }
         public string? NguoiDungId { get; set; }
         public string? NameND { get; set; } 
 

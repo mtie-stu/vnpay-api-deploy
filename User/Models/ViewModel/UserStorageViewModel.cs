@@ -15,9 +15,11 @@ namespace User.Models.ViewModel
 
         [Display(Name = "Ngày Xuất Kho")]
         public DateTime DateOfShipment { get; set; }
-
-        public StatusOrder SatusOrder { get; set; }
+        [Display(Name = "Trạng thái đơn hàng")]
+        public StatusOrder StatusOrder { get; set; }
+        [Display(Name = "Kiểm kê hàng hóa")]
         public StatusInventory StatusInventory { get; set; }
+        [Display(Name = "Loại Hàng Hóa")]
         public TypeOfGoods TypeOfGoods { get; set; }
 
 

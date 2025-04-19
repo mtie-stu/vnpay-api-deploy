@@ -4,13 +4,13 @@ namespace User.Models
 {
     public enum StatusOrder
     {
-        [Display(Name = "Đang xác nhận")]
+        [Display(Name = "Đang xử lý")]
         Confirming,
 
         [Display(Name = "Đã xác nhận")]
         Confirmed,
-        [Display(Name = "Đã thanh toán")]
 
+        [Display(Name = "Đã thanh toán")]
         PAID,
         [Display(Name = "Đã nhập hàng")]
         Imported,
@@ -21,7 +21,9 @@ namespace User.Models
 
     public enum StatusInventory
     {
+        [Display(Name = "Có")]
         Active,
+        [Display(Name = "Không")]
         Inactive
     }
     public enum TypeOfGoods

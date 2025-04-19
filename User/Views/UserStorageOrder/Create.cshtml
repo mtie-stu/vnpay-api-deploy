@@ -151,6 +151,12 @@
                        required />
                 <div class="invalid-feedback"></div>
             </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="StatusInventory" class="form-label"></label>
+                <select asp-for="StatusInventory"
+                        asp-items="Html.GetEnumSelectList<StatusInventory>()"
+                        class="form-select"></select>
+            </div>
         </div>
     </div>
 

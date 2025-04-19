@@ -45,7 +45,6 @@ namespace Client.Models.ViewModel
         [Display(Name = "Tầng")]
         public int Floor { get; set; }
 
-        [StringLength(100)]
         [Display(Name = "Vị Trí Lưu Trữ")]
         public string LocationStorage { get; set; }
 

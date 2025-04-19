@@ -34,7 +34,7 @@ namespace PDP104.Service
                     OrderDate = s.OrderDate,
                     DateOfEntry = s.DateOfEntry,
                     DateOfShipment = s.DateOfShipment,
-                    SatusOrder = s.StatusOrder,
+                    StatusOrder = s.StatusOrder,
                     TypeOfGoods=s.TypeOfGoods,
                     Price = s.Price,
                     Quantity = s.Quantity,
@@ -54,12 +54,14 @@ namespace PDP104.Service
                     OrderDate = s.OrderDate,
                     DateOfEntry = s.DateOfEntry,
                     DateOfShipment = s.DateOfShipment,
-                    SatusOrder = s.StatusOrder,
+                    StatusOrder = s.StatusOrder,
                     TypeOfGoods = s.TypeOfGoods,
                     Price = s.Price,
                     Quantity = s.Quantity,
                     Hinh = s.Hinh,
-                    
+                    LocationStorage = s.StorageSpaces != null ? string.Join(", ", s.StorageSpaces.Select(s => s.LocationStorage)) : ""
+
+
 
                 })
                 .FirstOrDefault();

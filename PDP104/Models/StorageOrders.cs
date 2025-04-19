@@ -11,11 +11,14 @@ namespace PDP104.Models
         PAID,
         Imported,
         Exported
+        
+
     }
 
     public enum StatusInventory
     {
-        Active,                   
+        Active,
+        Inactive
     }
     public enum TypeOfGoods
     {

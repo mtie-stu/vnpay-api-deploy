@@ -168,7 +168,7 @@
     <div class="order-cards" id="order-cards">
         @foreach (var order in Model)
         {
-            var statusText = order.SatusOrder switch
+            var statusText = order.StatusOrder switch
             {
                 StatusOrder.Confirming => "Đang xử lý",
                 StatusOrder.Confirmed => "Đã xác nhận",
@@ -179,7 +179,7 @@
                 _ => "Không xác định"
             };
 
-            var statusClass = order.SatusOrder switch
+            var statusClass = order.StatusOrder switch
             {
                 StatusOrder.Confirming => "status-Confirming",
                 StatusOrder.Confirmed => "status-Confirmed",
@@ -191,7 +191,7 @@
             };
 
             <a asp-controller="UserStorageOrder" asp-action="Details" asp-route-id="@order.Id" class="order-card-link">
-                <div class="order-card" data-id="@order.Id" data-status="@order.SatusOrder.ToString().ToLower()">
+                <div class="order-card" data-id="@order.Id" data-status="@order.StatusOrder.ToString().ToLower()">
                     <div class="status-badge @statusClass">@statusText</div>
                     <div class="card-item"><i class="fas fa-list"></i><strong>Đơn hàng #</strong>@order.Id</div>
                     <div class="card-item"><i class="fas fa-calendar-plus"></i><strong>Ngày đặt:</strong> @order.OrderDate</div>
